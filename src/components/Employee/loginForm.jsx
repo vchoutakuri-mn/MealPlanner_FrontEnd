@@ -1,7 +1,5 @@
 import React, { useContext ,useState } from "react";
-import { Marginer } from "../marginer";
-import { AccountContext } from "./accountContext";
-import UserComponent from "../UserComponent";
+
 import reactDom from "react-dom";
 import './css/loginFormcss.css'
 //import { Datepicker } from "@datepicker-react/styled";
@@ -10,11 +8,14 @@ import  SignupForm  from "./signupForm";
 import ReactCalendar from "./emp-home";
 import App from "./Emp_history";
 import MyApp from "./Emp_home_new";
-import Employee from "../Employee";
+
 import Start from "./home";
+import Vender from "../Vender";
+import Finance from "../FinanaceTeam/finance";
 
 export default function LoginForm(props) {
     const [value, onChange] = useState(false);
+    const [userType,setUser]=useState('Employee');
 //   const { switchToSignup  } = useContext(AccountContext);
 
 //   const [userID, setUserID] = useState('');
@@ -48,6 +49,11 @@ function goTOSignUp(){
 }
 function goToStart(){
     reactDom.render(<Start/>,document.getElementById("root"))
+}
+
+function setTypeOfUser(e){
+    setUser(e.target.value)
+    
 }
 
 function goToHome(){
@@ -85,10 +91,16 @@ function goToHome(){
     //         }).catch(err=>console.log('Something went wrong'))
     //       onChange(true)
           
-
-       {
-        reactDom.render(<MyApp/>,document.getElementById("root"))
-    }
+        if(userType=="Employee"){
+            reactDom.render(<MyApp/>,document.getElementById("root"))
+        }else if(userType=="vendor"){
+            reactDom.render(<Vender/>,document.getElementById("root"))
+        }else{
+            reactDom.render(<Finance/>,document.getElementById("root"))
+        }
+       
+       
+    
 
 }
     //Take the values form the input fields
@@ -143,7 +155,7 @@ return (
                  
                   <form >
                   <label style={{marginTop:"-30px",fontSize:"14px",marginLeft:"25%" }}>Login   </label>
-                  <select name="logs" id="log" style={{marginTop:"-10px",width:"40%",marginLeft:"80px"}} >
+                  <select name="logs" id="log" style={{marginTop:"-10px",width:"40%",marginLeft:"80px"}} onChange={setTypeOfUser} >
                   <option value="employee">Employee</option>
                   <option value="vendor" >Vendor</option>
                   <option value="financier">Financier</option>
