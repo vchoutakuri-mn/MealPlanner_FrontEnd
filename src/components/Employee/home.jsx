@@ -1,9 +1,9 @@
 import React, { useContext ,useState } from "react";
-import { Marginer } from "../marginer";
+
 import { AccountContext } from "./accountContext";
-import UserComponent from "../UserComponent";
+
 import "../../App.css";
-import ReactCalendar from "./emp-home";
+
 import reactDom from "react-dom";
 //import Calendar from 'react-calendar';
 //import ReactCalendar from "../emp_home";
@@ -147,10 +147,6 @@ export default function Start(props) {
   
   
 </header> */}
-
-
-
-
 
 <div class="w3-container" style={{padding:"50px", marginTop:"-1000px"}} id="about">
   <h3 class="w3-center">ABOUT THE PROJECT</h3>

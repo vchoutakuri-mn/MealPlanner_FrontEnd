@@ -1,11 +1,8 @@
 import React, { useContext , useState } from "react";
 import "../../App.css";
-import { Button,Modal} from 'react-bootstrap';  
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
+
 
 import reactDom  from "react-dom";
-import UserComponent from "../UserComponent";
 import './css/signUpFormcss.css'
 import  LoginForm  from "./loginForm";
 import MyApp from "./Emp_home_new";
