@@ -75,12 +75,13 @@ function goToHome(){
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
 
-    if(empid.match(numbers) != null && 
-       empasswd.length >= 8  &&
-       empasswd.match(lowerCaseLetters) != null && 
-       empasswd.match(upperCaseLetters) !=null && 
-       empasswd.match(numbers) != null 
-    ){
+    // if(empid.match(numbers) != null && 
+    //    empasswd.length >= 8  &&
+    //    empasswd.match(lowerCaseLetters) != null && 
+    //    empasswd.match(upperCaseLetters) !=null && 
+    //    empasswd.match(numbers) != null 
+    // )
+    {
     // Employee.checkValidation(strUser,empid,empasswd).then(Response=>{
     //     if(Response.STATUS_CODE==200){
     //                 //go to next page
