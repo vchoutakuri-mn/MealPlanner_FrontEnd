@@ -75,6 +75,9 @@ function goToHome(){
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
 
+
+    //This is a comment 
+    
     // if(empid.match(numbers) != null && 
     //    empasswd.length >= 8  &&
     //    empasswd.match(lowerCaseLetters) != null && 
