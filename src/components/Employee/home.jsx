@@ -52,6 +52,7 @@ export default function Start(props) {
   
   
   function buttons(){
+    console.log("in button class")
   const buttons = document.querySelectorAll('button');
   buttons.forEach( button =>{
       button.addEventListener('click',()=>{
@@ -72,6 +73,9 @@ export default function Start(props) {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"/>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     {/*---- Include the above in your HEAD tag --------*/}
 
 <div class="container">
@@ -159,22 +163,22 @@ export default function Start(props) {
             <div class="questions-container">
                 <div class="question">
                     <button onClick={buttons}>
-                        <span>What is Meal Planner</span>
-                        <i class="fas fa-chevron-up"></i>
+                        <span >What is Meal Planner</span>
+                        <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
                     <p>Meal planner is an web service designed to digitalize the traditional system</p>
                 </div>
                 <div class="question"  onClick={buttons}>
                     <button>
                         <span>How it Works?</span>
-                        <i class="fas fa-chevron-up"></i>
+                        <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
                     <p>There are few entities like employees,vendors and finance department who are the main actors</p>
                 </div>
                 <div class="question"  onClick={buttons}>
                     <button>
                         <span>What is meal subsciprion</span>
-                        <i class="fas fa-chevron-up"></i>
+                        <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
                     <p>The employee must subscribe mentioning a specific meal type 
                       in order to take the meals.
@@ -213,9 +217,9 @@ export default function Start(props) {
   <h3 class="w3-center" style={{ marginTop:"-0.5%"}}>Contact Us</h3>
   <br></br>
           {/* <h4 style={{fontSize:"20px" , marginLeft:"200px"}}>Team</h4> */}
-          <h6 style={{marginLeft:"100px" }}>Vyshali Chava <br></br> mail: vchava@modeln.com</h6>
-          <h6 style={{marginLeft:"400px" , marginTop:"-2.89%"}}>Vishnu Vadhan Dhandu <br></br> mail: vdhandu@modeln.com</h6>
-          <h6 style={{marginLeft:"700px" , marginTop:"-2.79%"}}>Sandeep Kumar<br></br> mail: sdkumar@modeln.com</h6>
+          <h6 style={{marginLeft:"-1000px" }}>Vyshali Chava <br></br> mail: vchava@modeln.com</h6>
+          <h6 style={{marginLeft:"-400px" , marginTop:"-2.89%"}}>Vishnu Vadhan Dhandu <br></br> mail: vdhandu@modeln.com</h6>
+          <h6 style={{marginLeft:"300px" , marginTop:"-2.79%"}}>Sandeep Kumar<br></br> mail: sdkumar@modeln.com</h6>
           <h6 style={{marginLeft:"1000px", marginTop:"-2.6%"}}>Vikas Chotukuti <br></br> mail: vchotukuri@modeln.com</h6>
           {/* <ul>
             <li style={{fontSize:"16px" , marginLeft:"200px"}}> Vyshali Chava</li>

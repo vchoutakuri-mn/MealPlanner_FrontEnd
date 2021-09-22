@@ -75,12 +75,16 @@ function goToHome(){
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
 
+
+    //This is a comment 
+    
     if(empid.match(numbers) != null && 
        empasswd.length >= 8  &&
        empasswd.match(lowerCaseLetters) != null && 
        empasswd.match(upperCaseLetters) !=null && 
        empasswd.match(numbers) != null 
-    ){
+    )
+    {
     // Employee.checkValidation(strUser,empid,empasswd).then(Response=>{
     //     if(Response.STATUS_CODE==200){
     //                 //go to next page
@@ -151,11 +155,11 @@ return (
          <div class="right" style={{marginLeft:"25%"}}>
         
               <div class="formBox" style={{backgroundColor:"#D3D3D3"}} >
-                  <p class="sign" style={{marginTop:"20px" ,fontSize:"25px"}}>Sign into Your Account</p>
+                  <p class="sign" style={{marginTop:"15%" ,fontSize:"25px"}}>Sign into Your Account</p>
                  
                   <form >
-                  <label style={{marginTop:"-30px",fontSize:"14px",marginLeft:"25%" }}>Login   </label>
-                  <select name="logs" id="log" style={{marginTop:"-10px",width:"40%",marginLeft:"80px"}} onChange={setTypeOfUser} >
+                  <label style={{marginTop:"1%",fontSize:"14px",marginLeft:"25%" }}>Login   </label>
+                  <select name="logs" id="log" style={{marginTop:"1%",width:"40%",marginLeft:"16%"}} onChange={setTypeOfUser} >
                   <option value="employee">Employee</option>
                   <option value="vendor" >Vendor</option>
                   <option value="financier">Financier</option>
