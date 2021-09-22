@@ -15,6 +15,8 @@ var TABLE_HIDE='none';
 var btn_hide = 'none';
 var datesArray;
 var dates = []
+var typeOfMeal;
+var sub = false;
 
 export default function MyApp() {
   const [value, onChange] = useState(false);
@@ -32,10 +34,15 @@ function goToStart(){
 
 
 function goToTable(){
+  if(sub == true){
     document.getElementById('mealsTable').style.display='block';
     document.getElementById('btn1').style.display='block';
     setDates(datesArray)
     //console.log("type of dates ...",typeof datesArray)
+  }
+  else{
+    alert("Please subscribe! ")
+  }
 }
 
 
@@ -94,10 +101,49 @@ function getDetails(e){
 
   }
 
+
+function subscribed(e){
+  //var type = document.getElementById("veg").value
+  
+  typeOfMeal = e.target.id
+  console.log("typeOfMeal....",typeOfMeal)
+  //console.log(e.target.id)
+  if(e.target.id.includes('nonveg') ){
+    if(e.target.checked){
+      document.getElementById('nonveg').disabled=false
+        document.getElementById('veg').disabled=true
+      }else{
+        document.getElementById('veg').disabled=false
+        document.getElementById('nonveg').disabled=false
+      }
+  
+    }else{
+      if(e.target.checked){
+        document.getElementById('nonveg').disabled=true
+        document.getElementById('veg').disabled=false
+      }else{
+        document.getElementById('veg').disabled=false
+        document.getElementById('nonveg').disabled=false
+  
+      }
+    }
+    
+}
+
+function finalSubsciption(){
+  console.log("in finalsubscription")
+  alert("subscribed for "+typeOfMeal+" successfully")
+  sub = true
+  //alert(typeOfMeal)
+}
+
+
 function check(){
   alert("Meal details submitted successfully")
   document.location.reload();
 }
+
+
 function submitDetails(e){
  
   //window.location.href=window.location.href
@@ -106,7 +152,7 @@ function submitDetails(e){
   //e.preventDefault();
   //document.location.reload();
  
-    Location.reload(true);
+    //Location.reload(true);
   
   //window.onload = check();
 }
@@ -140,12 +186,14 @@ e.target.parentNode.parentNode.parentNode.style.display="none"
 }
 
 function goToSubs(){
-  console.log("entering into sub")
+  console.log("entering into subscibe")
   
   document.getElementById("sub").style.display = "block";
+  
   //this.handleModal();
   //reactDom.render(<Demo/>,document.getElementById("root"))
 }
+
 
 
 function closeForm1() {
@@ -230,10 +278,10 @@ tomorrow.setDate(tomorrow.getDate() + 1)
         <p>The minimum meal price for vegetarian is Rs.800/-</p>
           <p>The minimum meal price for non-vegetarian is Rs.1400/-</p>
            <p>Please select the meal type : </p>
-           <input type="checkbox"/>
+           <input type="checkbox" id="veg" value="veg"  onChange={subscribed}/>
             <label>veg</label>
            <br></br>
-           <input type="checkbox"/>
+           <input type="checkbox" id="nonveg" value="nonveg"  onChange={subscribed}/>
             <label>nonveg</label>
             <br/>
             <p><strong>NOTE:</strong></p>
@@ -243,7 +291,7 @@ tomorrow.setDate(tomorrow.getDate() + 1)
            <p>
              *This subscription is valid for 1 year
            </p>
-    <button type="button" class="btn btn-primary" onClick={closeForm1}>Subscribe</button>
+    <button type="button" class="btn btn-primary" onClick={finalSubsciption}>Proceed to subscribe</button>
     <button type="button" class="btn btn-primary" onClick={closeForm1}>Close</button>
   </form>
 </div> 
@@ -280,10 +328,10 @@ tomorrow.setDate(tomorrow.getDate() + 1)
    <Calendar selectRange  onChange={onChangeDate} value={date}  minDate={tomorrow}  id = "demo1"/>
     {console.log(date)}  
     {/* {date.toString()}   */}
-    <button onClick={goToTable}  class ="btn btn-primary pull-right " style={{marginLeft:"7px" ,marginTop:"5px"}} >Submit</button>
+    <button onClick={goToTable}  class ="btn btn-primary pull-right " style={{marginLeft:"1px" ,marginTop:"5px"}} >Submit</button>
   </div>
           
-  <table class="table"  id="mealsTable"  style={{border:"1px" ,  marginTop:"-120px", marginLeft:"35%", display:TABLE_HIDE}} >
+  <table class="table"  id="mealsTable"  style={{border:"1px" ,  marginTop:"-120px", marginLeft:"1%", display:TABLE_HIDE}} >
     <thead>
       <tr >
         <th style={{marginLeft:"100px"}}>Date</th>
@@ -441,3 +489,31 @@ tomorrow.setDate(tomorrow.getDate() + 1)
 
 
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
