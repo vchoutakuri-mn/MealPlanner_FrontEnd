@@ -25,7 +25,8 @@ export default class EmployeeMealDetails extends React.Component {
             searchBy:'Employee ID',
             pageSize:DEFAULT_PAGE_SIZE,
             pageNo:1,
-            totalNoOfRecords:0
+            totalNoOfRecords:0,
+            triggerFooter:false
         }
         this.setEmployes = this.setEmployes.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -68,9 +69,16 @@ export default class EmployeeMealDetails extends React.Component {
                     ShowUsers.push(user.id)
                 }
             )
+            if(Response.data.content!=undefined){
+                this.triggerFooter=true
+            }
             this.setState({ users: Response.data.content })
             Users=this.state.users;
             
+
+            
+        }).catch(err=>{
+            this.triggerFooter=false
         });
     }
     //Returns the length of the data that is coming from the api
@@ -322,14 +330,16 @@ selectRowsPerPage(pageSize){
                                                 </label>
                                             </td>
                                         </tr>
-                                ):
-                                <p style={{width:'100%',marginTop:'10%'}}>No data found</p>
+                                ):<>
+                                <p style={{padding:'15% 45% '}}>No data found</p>
+                               </>
                             }
                         </tbody>
                     </table>
                 </div>
                 
-                <Footer selectRowsPerPage={this.selectRowsPerPage} rowsPerPage={10} pageNo={this.state.pageNo} noOfRecords={this.state.totalNoOfRecords} backward={this.backward} previousPage={this.previousPage} nextPage={this.nextPage} forward={this.forward} pageSize={this.state.pageSize}/>
+               {(this.triggerFooter)?(<Footer open={this.triggerFooter} selectRowsPerPage={this.selectRowsPerPage} rowsPerPage={10} pageNo={this.state.pageNo} noOfRecords={this.state.totalNoOfRecords} backward={this.backward} previousPage={this.previousPage} nextPage={this.nextPage} forward={this.forward} pageSize={this.state.pageSize}/>):<></>}
+
                 <SimpleDialog open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} Users={Users} doSave={this.props.doSave} />
                 {/* <SendValidation  open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} uncheck={this.uncheck} /> */}
             </>

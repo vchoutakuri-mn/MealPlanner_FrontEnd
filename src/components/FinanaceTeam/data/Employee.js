@@ -1,9 +1,6 @@
 import axios  from "axios";
+import { USERS_REST_API_URL ,SUBMIT_REST_API_URL} from "../../API's/CommonService";
 
-
-// const USERS_REST_API_URL="https://api.github.com/users";
-const USERS_REST_API_URL="http://localhost:8080/employee/getAll";
-const SUBMIT_REST_API_URL="http://localhost:8080/employee//employees/"
 
 class Employee {
     getUsers(){
