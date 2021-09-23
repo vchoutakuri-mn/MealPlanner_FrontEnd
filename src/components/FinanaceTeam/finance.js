@@ -3,7 +3,8 @@ import '../Vender/css/App.css'
 
 import React from 'react';
 import EmployeeMealDetails from './EmployeeDetsils';
-
+import LoginForm from '../Employee/loginForm';
+import  ReactDOM  from 'react-dom';
 
 
 const notification=[];
@@ -11,6 +12,10 @@ let  EmployeeList=[]
 let Users={};
 let doOpen=false;
   export default function Finance(props){
+
+    const signout=()=>{
+        ReactDOM.render(<LoginForm></LoginForm>,document.getElementById("root"))
+      }
 
 /**
  * As nothing is required beacuse this rendor is in read mode
@@ -36,13 +41,10 @@ let doOpen=false;
                         </div>
                         <div class="dropdown rounded">
                         <button 
-                       
-                        class="btn btn-primary pull-right" style={{margin:"5px"}} data-title="Signout" data-toggle="modal" data-target="#ssignout"><span class="fa fa-sign-out"></span>Signout</button>
-
+                        class="btn btn-primary pull-right" style={{margin:"5px"}} data-title="Signout" data-toggle="modal" data-target="#ssignout" onClick={signout}><span class="fa fa-sign-out"></span>Signout</button>
                           </div>
                             <div >
                           <EmployeeMealDetails  />
- 
                           </div>
                     </div>
                 </div>
