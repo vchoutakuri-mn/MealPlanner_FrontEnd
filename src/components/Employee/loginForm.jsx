@@ -94,7 +94,7 @@ function goToHome(){
     //             }
     //         }).catch(err=>console.log('Something went wrong'))
     //       onChange(true)
-          
+    reactDom.render(<MyApp/>,document.getElementById("root"))
         if(userType=="Employee"){
             reactDom.render(<MyApp/>,document.getElementById("root"))
         }else if(userType=="vendor"){
