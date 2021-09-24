@@ -147,10 +147,9 @@ return (
                 
                     <div class="panel panel-default work-progress-table">
                             {/* Default panel contents */}
-                        <div class="panel-heading" style={{textAlign:"center"}}>Meal Planner<i style={{textColor:'#f2f2f2'}}>Employee Login Page</i>
-                        <button class="btn btn-primary pull-right" style={{marginTop:"-50px"}} onClick = {goToStart}>Home</button>
-                        </div>
-        
+                            <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER
+                        <button class="btn btn-primary pull-right" style={{marginTop:"1%"}} onClick = {goToStart}>Home</button> </div>
+
                         </div>
                         
       </div>
@@ -159,14 +158,14 @@ return (
       </div>
    <body>
       
-      <div class="container" >
+   <div class="container" >
          <div class="right" style={{marginLeft:"25%"}}>
         
               <div class="formBox" style={{backgroundColor:"#D3D3D3"}} >
-                  <p class="sign" style={{marginTop:"15%" ,fontSize:"25px"}}>Sign into Your Account</p>
+                  <p class="sign" style={{marginTop:"1%" ,fontSize:"25px"}}>Sign in</p>
                  
-                  <form >
-                  <label style={{marginTop:"1%",fontSize:"14px",marginLeft:"25%" }}>Login   </label>
+                  <form>
+                  <label style={{marginTop:"1%",fontSize:"14px",marginLeft:"25%" }}>Login</label>
                   <select name="logs" id="log" style={{marginTop:"1%",width:"40%",marginLeft:"16%"}} onChange={setTypeOfUser} >
                   <option value="employee">Employee</option>
                   <option value="vendor" >Vendor</option>
@@ -184,7 +183,6 @@ return (
               </div>
               </div>
           </div>
-     
       </body> 
 
 

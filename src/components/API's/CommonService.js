@@ -60,3 +60,9 @@ export const LOGIN="http://localhost:8083/userCred/login";
 //Signup url
 export const SIGNUP="http://localhost:8083/userCred/signup";
 
+
+//
+//request:token or employee id
+//Expected:true or false
+export const MEAL_SUBSCRIPTION='';
+

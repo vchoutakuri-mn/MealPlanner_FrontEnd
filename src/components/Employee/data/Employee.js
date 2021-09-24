@@ -1,17 +1,16 @@
 import axios  from "axios";
-import { LOGIN,SIGNUP} from "../../API's/CommonService";
+import { LOGIN,SIGNUP,MEAL_SUBSCRIPTION} from "../../API's/CommonService";
 
 // const USERS_REST_API_URL="https://api.github.com/users";
-const USERS_REST_API_URL="http://localhost:8080/employee/getAll";
-const SUBMIT_REST_API_URL="http://localhost:8080/employee//employees/"
+
 
 class Employee {
     getUsers(){
-        return axios.get(USERS_REST_API_URL);
+        return axios.get();
     }
 
     submitStatus(id){
-        return axios.put(SUBMIT_REST_API_URL+id);
+        return axios.put();
     }
     checkValidation(userId,password){
         return axios.post(LOGIN,null, { params: { user: userId ,password:password } })
@@ -26,6 +25,14 @@ class Employee {
                 userEmail:userEmail,
                 mealSubscribed:mealSubscribed
             })
+    }
+    checkMealSubscription(){
+        
+        axios.get(MEAL_SUBSCRIPTION).then(response=>{
+                return response.data
+        }).catch(err=>{
+            return false
+        })
     }
 }
 export default new Employee();
