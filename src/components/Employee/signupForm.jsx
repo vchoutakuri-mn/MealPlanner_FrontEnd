@@ -72,56 +72,40 @@ function setUserType(e){
 }
 
 function goToHome(){
-  var userType=userType;
-  var userId=document.getElementById("userId").value;
-  var userName=document.getElementById("userName").value;
-  var userEMail=document.getElementById("userEmail").value;
+  // var e = document.getElementById("log");
+  // var signUser = e.options[e.selectedIndex].text;
+  var id = document.getElementById("usersid");
+  var mail = document.getElementById("userEmail")
 
-  //var mealSubscribed=document.getElementById("mealSubscribed").value;
-
-  var mealSubscribed=false;
-  var userPassword = document.getElementById("password").value
-  var confirmPassword = document.getElementById("confirmPassword").value
+  var p1 = document.getElementById("password").value
+  var p2 = document.getElementById("confirmPassword").value
   
   var lowerCaseLetters = /[a-z]/g;
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
-
-    if( userPassword.length >= 8  &&
-      userPassword.match(lowerCaseLetters) != null && 
-      userPassword.match(upperCaseLetters) !=null && 
-      userPassword.match(numbers) != null  &&
-      userPassword==confirmPassword
+    reactDom.render(<MyApp/>,document.getElementById("root"))
+    if( p1.length >= 8  &&
+       p1.match(lowerCaseLetters) != null && 
+       p1.match(upperCaseLetters) !=null && 
+       p1.match(numbers) != null  &&
+       p1==p2
     )
        {
         reactDom.render(<MyApp/>,document.getElementById("root"))
+        // Employee.signupform(signUser,id,mail,p1).then(Response=>{
+        //   if(Response.STATUS_CODE==200){
+        //               //go to next page
+                      //reactDom.render(<MyApp/>,document.getElementById("root"))
+        //           }else{
+        //               //Reload component or input fields make empty
+        //           }
+        //       }).catch(err=>console.log('Something went wrong'))
     }
     else{
         alert("Invalid username or password!")
         console.log("in else")
     }
-    var token=''
-    console.log("New User details")
-    console.log(userType,userId,userPassword,userName,userEMail,mealSubscribed)
-    Employee.createAccount(userType,userId,userPassword,userName,userEMail,mealSubscribed).then(Response=>{
-      if(Response.STATUS_CODE==200 && Response.data!=''){
-                  //go to next page
-                   token=Response.data;
-                 
-              }else{
-                console.log('details wrong')
-                  //Reload component or input fields make empty
-              }
-          }).catch(err=>console.log('Something went wrong'))
-         
-          if(userType=="Employee"){
-              reactDom.render(<MyApp token={token}/>,document.getElementById("root"))
-          }else if(userType=="vendor"){
-              reactDom.render(<Vender token={token}/>,document.getElementById("root"))
-          }else{
-              reactDom.render(<Finance token={token}/>,document.getElementById("root"))
-          }
-        }
+  }
 
 
 
@@ -184,7 +168,7 @@ function goToStart(){
                         <option value="opel">Financier</option>
                         </select><br></br>
                         <p>UserId</p>
-                        <input type="text" id="userId"  name="name" placeholder="Your Id" required/>
+                        <input type="text" id="usersId"  name="name" placeholder="Your Id" required/>
 
                         <p>User Name</p>
                         <input type="text" id="userName"  name="name" placeholder="Your Name" required/>
@@ -193,7 +177,7 @@ function goToStart(){
                         <input type="text" id ="userEmail" name="email" placeholder="Enter your Mail ID" required/>
 
                         <p>Create Password</p>
-                        <input type="Password" id="password" name="password" id="pswd1" placeholder="Create a Strong Password" required />
+                        <input type="Password" id="password" name="password"  placeholder="Create a Strong Password" required />
                         <p>Confirm Password</p>
                         <input type="Password" id="confirmPassword" placeholder="Re-enter your Password" required />
                         <span id = "message2" style={{color:"red",fontSize: "10px"}}> </span> 

@@ -17,6 +17,7 @@ var datesArray;
 var dates = []
 var typeOfMeal;
 var sub = false;
+var enable = false;
 
 export default function MyApp() {
   const [value, onChange] = useState(false);
@@ -104,7 +105,10 @@ function getDetails(e){
 
 function subscribed(e){
   //var type = document.getElementById("veg").value
-  
+  console.log("clicked veg/nonveg")
+  enable = true
+  console.log("enable set to true",enable)
+  goToSubs();
   typeOfMeal = e.target.id
   console.log("typeOfMeal....",typeOfMeal)
   //console.log(e.target.id)
@@ -131,10 +135,16 @@ function subscribed(e){
 }
 
 function finalSubsciption(){
-  console.log("in finalsubscription")
-  alert("subscribed for "+typeOfMeal+" successfully")
+  closeForm1();
+  //alert("subscribed for "+typeOfMeal+" successfully")
   sub = true
-  //alert(typeOfMeal)
+  document.getElementById("subinheader").disabled=true;
+  toast.success(
+    "subscribed for "+typeOfMeal+" successfully",
+     {autoClose:2000,
+     position: toast.POSITION.TOP_CENTER}
+     )
+     
 }
 
 
@@ -179,15 +189,25 @@ var getDaysArray = function(start, end) {
 };
 
 function goToDel(e){
-console.log("onclickkkkk")
-document.getElementById(e.target.id)
-console.log(e.target.parentNode.parentNode)
-e.target.parentNode.parentNode.parentNode.style.display="none"
-}
+  console.log("onclickkkkk")
+  document.getElementById(e.target.id)
+  console.log(e.target.parentNode.parentNode)
+  
+  var i = e.target.parentNode.parentNode.parentNode.rowIndex;
+    document.getElementById("mealsTable").deleteRow(i);
+  //e.target.parentNode.parentNode.parentNode.style.display="none"
+  console.log("value of i",i)
+  }
 
 function goToSubs(){
-  console.log("entering into subscibe")
-  
+  console.log("clicked on subscribe")
+  console.log("checking enable",enable)
+  if(enable==false){
+    document.getElementById("proceedtosub").disabled = true;
+  }
+  if(enable==true){
+    document.getElementById("proceedtosub").disabled = false;
+  }
   document.getElementById("sub").style.display = "block";
   
   //this.handleModal();
@@ -224,6 +244,8 @@ tomorrow.setDate(tomorrow.getDate() + 1)
     <>
       <div>
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <link href="StyleSheet.css" rel="stylesheet" type="text/css" media="only screen" />
+        <link href="MobileStyleSheet.css" rel="stylesheet" type="text/css" media="only screen and (max-device-width: 480px) , only screen and (-webkit-min-device-pixel-ratio: 2) , screen and (-webkit-device-pixel-ratio:1.5)" />
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"/>
@@ -233,7 +255,7 @@ tomorrow.setDate(tomorrow.getDate() + 1)
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <div class="panel panel-default work-progress-table">
         {/* Default panel contents */}
-       <div class="panel-heading" style={{textAlign:"center"}}>Meal Planer<i style={{textColor:'#f2f2f2'}}>Employee's page</i>
+        <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER
        <meta charset="utf-8"/>
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
@@ -242,11 +264,11 @@ tomorrow.setDate(tomorrow.getDate() + 1)
       </div>
        
         <footer class="col-md-12 text-right">
-        <button onClick={goToStart}  class ="btn btn-primary pull-right " style={{marginTop:"-50px",marginRight:"24.3%"}} >Home</button>    
-        <button onClick={goToEmphist}  class ="btn btn-primary pull-right" style={{marginTop:"-50px",marginRight:"18%"}} >History</button> 
-        <button onClick={goToNotify}  class ="btn btn-primary pull-right" style={{marginTop:"-50px",marginRight:"8.8%"}} >Notifications</button>   
-        <button onClick={goToSubs}  class ="btn btn-primary pull-right" style={{marginTop:"-50px",marginRight:"1%"}} >Subscribe</button>   
-        
+        <button onClick={goToEmphist}  class ="btn btn-primary pull-right" style={{marginTop:"-50px",marginRight:"27%"}} ><i class="fa fa-history">  History</i></button> 
+        <button onClick={goToNotify}  class ="btn btn-primary pull-right" style={{marginTop:"-50px",marginRight:"17%"}} ><i class="fa fa-bell">  Notifications</i></button>   
+        <button onClick={goToSubs} id="subinheader" class ="btn btn-primary pull-right" style={{marginTop:"-50px",marginRight:"8.4%"}} ><i class="fa fa-envelope">  Subscribe</i></button>   
+        <button onClick={goToStart}  class ="btn btn-primary pull-right " style={{marginTop:"-50px",marginRight:"0.8%"}} ><i class="fa fa-sign-out">  Signout</i></button> 
+
        {/* <div class="container">
   <button type="button" class="btn btn-primary pull-right" data-toggle="modal" onClick={goToModal}>subscribe...</button>
 
@@ -274,7 +296,7 @@ tomorrow.setDate(tomorrow.getDate() + 1)
 
 
         <div class="form-popup" id="sub" style={{position:"fixed",top:"13%",left:"90%",marginLeft: "-300px" }}>
-        <form  class="form-container" style={{width: "400px" ,textAlign:"left"}} >
+        <form  class="form-container" style={{width: "400px" ,textAlign:"left", backgroundColor:"#f0f5fc"}} >
         <p>The minimum meal price for vegetarian is Rs.800/-</p>
           <p>The minimum meal price for non-vegetarian is Rs.1400/-</p>
            <p>Please select the meal type : </p>
@@ -291,7 +313,7 @@ tomorrow.setDate(tomorrow.getDate() + 1)
            <p>
              *This subscription is valid for 1 year
            </p>
-    <button type="button" class="btn btn-primary" onClick={finalSubsciption}>Proceed to subscribe</button>
+    <button type="button" id="proceedtosub" class="btn btn-primary" onClick={finalSubsciption}>Proceed to subscribe</button>
     <button type="button" class="btn btn-primary" onClick={closeForm1}>Close</button>
   </form>
 </div> 
@@ -321,17 +343,17 @@ tomorrow.setDate(tomorrow.getDate() + 1)
 </div>
         <div style={{marginLeft:"450px" , marginRight:"auto"}}>
          </div>
-          <h4 style={{textAlign:"center" , marginTop:"20px"}}>Please select date range from the calendar : </h4>
+          <p style={{textAlign:"center" , marginTop:"20px"}}>Please select date range from the calendar : </p>
           <div  style={{alignItems: "center", justifyContent: "center" , minHeight: "100vh" , display: "flex",
   flexDirection: "column" , marginTop:"-150px" , marginLeft:"30%"}}>
     
    <Calendar selectRange  onChange={onChangeDate} value={date}  minDate={tomorrow}  id = "demo1"/>
     {console.log(date)}  
     {/* {date.toString()}   */}
-    <button onClick={goToTable}  class ="btn btn-primary pull-right " style={{marginLeft:"1px" ,marginTop:"5px"}} >Submit</button>
+    <button onClick={goToTable}  class ="btn btn-primary pull-right " style={{marginLeft:"1px" ,marginTop:"5px"}} >Select Dates</button>
   </div>
           
-  <table class="table"  id="mealsTable"  style={{border:"1px" ,  marginTop:"-120px", marginLeft:"1%", display:TABLE_HIDE}} >
+  <table class="table"  id="mealsTable"  style={{  marginTop:"-120px", marginLeft:"1%", display:TABLE_HIDE}} >
     <thead>
       <tr >
         <th style={{marginLeft:"100px"}}>Date</th>
