@@ -68,60 +68,71 @@ function goToLogin(){
 const [showDialog,setShowDialog]=useState(false);
 
 function setUserType(e){
-  userType=e.target.value;
+  changeUserType(e.target.value);
 }
 
 function goToHome(){
+  
+  var useuse = document.getElementById("userType").value;
+  console.log("use use",useuse)
   var userType=userType;
   var userId=document.getElementById("userId").value;
   var userName=document.getElementById("userName").value;
   var userEMail=document.getElementById("userEmail").value;
-
+  var userPassword = document.getElementById("password").value
+  var confirmPassword = document.getElementById("confirmPassword").value
   //var mealSubscribed=document.getElementById("mealSubscribed").value;
 
   var mealSubscribed=false;
-  var userPassword = document.getElementById("password").value
-  var confirmPassword = document.getElementById("confirmPassword").value
+  
+  
   
   var lowerCaseLetters = /[a-z]/g;
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
+    
 
-    if( userPassword.length >= 8  &&
-      userPassword.match(lowerCaseLetters) != null && 
-      userPassword.match(upperCaseLetters) !=null && 
-      userPassword.match(numbers) != null  &&
-      userPassword==confirmPassword
-    )
-       {
-        reactDom.render(<MyApp/>,document.getElementById("root"))
-    }
-    else{
-        alert("Invalid username or password!")
-        console.log("in else")
-    }
-    var token=''
-    console.log("New User details")
-    console.log(userType,userId,userPassword,userName,userEMail,mealSubscribed)
-    Employee.createAccount(userType,userId,userPassword,userName,userEMail,mealSubscribed).then(Response=>{
-      if(Response.STATUS_CODE==200 && Response.data!=''){
+      if( userPassword.length >= 8  &&
+       userPassword.match(lowerCaseLetters) != null && 
+     userPassword.match(upperCaseLetters) !=null && 
+   userPassword.match(numbers) != null  &&
+     userPassword==confirmPassword
+      )
+    
+    
+     var token=''
+     //console.log("New User details")
+     //console.log(userType,userId,userPassword,userName,userEMail,mealSubscribed)
+     Employee.createAccount(userType,userId,userPassword,userName,userEMail,mealSubscribed).then(Response=>{
+       console.log(Response.status)
+       
+     
+     //reactDom.render(<MyApp />,document.getElementById("root"))
+      if(Response.status==200 && Response.data!=''){
                   //go to next page
+                  //console.log("response success")
+                  console.log("usertype",useuse)
+              
                    token=Response.data;
-                 
+                  console.log('Token generated')
+                  console.log(token)
               }else{
                 console.log('details wrong')
                   //Reload component or input fields make empty
               }
           }).catch(err=>console.log('Something went wrong'))
-         
-          if(userType=="Employee"){
-              reactDom.render(<MyApp token={token}/>,document.getElementById("root"))
-          }else if(userType=="vendor"){
-              reactDom.render(<Vender token={token}/>,document.getElementById("root"))
-          }else{
-              reactDom.render(<Finance token={token}/>,document.getElementById("root"))
-          }
+    if(useuse=="Employee"){
+      reactDom.render(<MyApp />,document.getElementById("root"))
+  }else if(useuse=="vendor"){
+      reactDom.render(<Vender />,document.getElementById("root"))
+  }else{
+    
+      reactDom.render(<Finance />,document.getElementById("root"))
+  }
+          
         }
+        
+    
 
 
 
@@ -179,9 +190,9 @@ function goToStart(){
                     <form  style={{marginTop:"-35px"}}>
                         <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px" }}>SignUp</p>
                         <select name="cars" id="userType" style={{marginTop:"-10px",width:"40%",marginLeft:"6px" }} onChange={setUserType} >
-                        <option value="volvo">Employee</option>
-                        <option value="saab" >Vendor</option>
-                        <option value="opel">Financier</option>
+                        <option value="Employee">Employee</option>
+                        <option value="Vendor" >Vendor</option>
+                        <option value="Financier">Financier</option>
                         </select><br></br>
                         <p>UserId</p>
                         <input type="text" id="userId"  name="name" placeholder="Your Id" required/>
@@ -193,11 +204,11 @@ function goToStart(){
                         <input type="text" id ="userEmail" name="email" placeholder="Enter your Mail ID" required/>
 
                         <p>Create Password</p>
-                        <input type="Password" id="password" name="password" id="pswd1" placeholder="Create a Strong Password" required />
+                        <input type="Password" id="password" name="password" placeholder="Create a Strong Password" required />
                         <p>Confirm Password</p>
                         <input type="Password" id="confirmPassword" placeholder="Re-enter your Password" required />
                         <span id = "message2" style={{color:"red",fontSize: "10px"}}> </span> 
-                        <button class="btn btn-primary" onClick={goToHome}>create an account</button>
+                        <button class="btn btn-primary" onClick={goToHome} >create an account..</button>
                          
 
                         {/* <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px" }}>Subscribe</p>

@@ -63,15 +63,14 @@ function goToHome(){
     var strUser = e.options[e.selectedIndex].text;
     console.log("struser",strUser)
    
-    var empid = document.getElementById("empid").value;
-    var empasswd = document.getElementById("empasswd").value;
+    var empid = document.getElementById("userId").value;
+    var empasswd = document.getElementById("password").value;
     if(empid == null || empasswd == null){
         console.log("null entered")
         alert("please enter userid and password")
         
     }
-    console.log(empid)
-    console.log(empasswd)
+   
     var lowerCaseLetters = /[a-z]/g;
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
@@ -79,20 +78,21 @@ function goToHome(){
     var token=''
     //This is a comment 
     
-    if(empid.match(numbers) != null && 
-       empasswd.length >= 8  &&
-       empasswd.match(lowerCaseLetters) != null && 
-       empasswd.match(upperCaseLetters) !=null && 
-       empasswd.match(numbers) != null 
-    )
+    // if(empid.match(numbers) != null && 
+    //    empasswd.length >= 8  &&
+    //    empasswd.match(lowerCaseLetters) != null && 
+    //    //empasswd.match(upperCaseLetters) !=null && 
+    //   // empasswd.match(numbers) != null 
+    // )
     {
-        console.log("Registered user details")
-        console.log(userType,empid,empasswd)
-    Employee.checkValidation(userType,empid,empasswd).then(Response=>{
+        console.log("Registered user details",userType)
+        console.log("User:",empid,empasswd)
+        Employee.checkValidation(empid,empasswd).then(Response=>{
         if(Response.status==200 && Response.data!=''){
                     //go to next page
-                    console.log("token generated")
+                    
                     token=Response.data;
+                    console.log("token generated",token)
                    
                    
                 }else{
@@ -173,9 +173,9 @@ return (
                   <option value="financier">Financier</option>
                   </select><br></br>
                       <label style={{fontSize:"14px",marginLeft:"25%"}}>Employee ID  </label>
-                      <input type="text" name="name" placeholder="Your Id" required="" id = "empid" style={{width: "40%",marginLeft:"32px"}}/>
+                      <input type="text" name="name" placeholder="Your Id" required="" id = "userId" style={{width: "40%",marginLeft:"32px"}}/>
                       <label style={{fontSize:"14px",marginLeft:"25%"}}>Password  </label>
-                      <input type="Password" name="password" placeholder="Enter your Password" required="" id = "empasswd" style={{width: "40%", marginLeft:"50px"}}/>
+                      <input type="Password" name="password" placeholder="Enter your Password" required="" id = "password" style={{width: "40%", marginLeft:"50px"}}/>
                       <button class="btn btn-primary" type="submit" style={{marginLeft:"55%" ,marginTop:"10px"}} value="Sign In" onClick= {goToHome}>Sign in</button><br></br>
                       <h5 style={{marginTop:"30px" , marginLeft:"40%"}}>Don't have an account? </h5>
                       <a onClick={goTOSignUp} style={{marginLeft:"55%",marginTop:"5%"}} class="tag" >Create Account</a>
