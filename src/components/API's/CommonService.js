@@ -53,5 +53,5 @@ export const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/employee/blogPag
 
 
 //Login URL
-export const LOGIN="http://localhost:8081/hello";
+export const LOGIN="http://localhost:8080/hello";
 

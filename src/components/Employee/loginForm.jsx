@@ -8,14 +8,15 @@ import  SignupForm  from "./signupForm";
 import ReactCalendar from "./emp-home";
 import App from "./Emp_history";
 import MyApp from "./Emp_home_new";
-
+import Employee from "./data/Employee";
 import Start from "./home";
 import Vender from "../Vender";
 import Finance from "../FinanaceTeam/finance";
 
 export default function LoginForm(props) {
     const [value, onChange] = useState(false);
-    const [userType,setUser]=useState('Employee');
+    var [userType,setUser]=useState('Employee');
+    const [token,deleteToken]=useState('');
 //   const { switchToSignup  } = useContext(AccountContext);
 
 //   const [userID, setUserID] = useState('');
@@ -67,7 +68,7 @@ function goToHome(){
     if(empid == null || empasswd == null){
         console.log("null entered")
         alert("please enter userid and password")
-        reactDom.render(<MyApp/>,document.getElementById("root"))
+        
     }
     console.log(empid)
     console.log(empasswd)
@@ -75,7 +76,7 @@ function goToHome(){
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
 
-
+    var token=''
     //This is a comment 
     
     if(empid.match(numbers) != null && 
@@ -85,22 +86,29 @@ function goToHome(){
        empasswd.match(numbers) != null 
     )
     {
-    // Employee.checkValidation(strUser,empid,empasswd).then(Response=>{
-    //     if(Response.STATUS_CODE==200){
-    //                 //go to next page
-    //                 reactDom.render(<MyApp/>,document.getElementById("root"))
-    //             }else{
-    //                 //Reload component or input fields make empty
-    //             }
-    //         }).catch(err=>console.log('Something went wrong'))
-    //       onChange(true)
+        console.log("Registered user details")
+        console.log(userType,empid,empasswd)
+    Employee.checkValidation(userType,empid,empasswd).then(Response=>{
+        if(Response.status==200 && Response.data!=''){
+                    //go to next page
+                    console.log("token generated")
+                    token=Response.data;
+                   
+                   
+                }else{
+                    //Reload component or input fields make empty
+                    console.log("Details are wrong")
+                   // reactDom.render(<MyApp/>,document.getElementById("root"))
+                }
+            }).catch(err=>console.log('Something went wrong'))
+          onChange(true)
           
-        if(userType=="Employee"){
-            reactDom.render(<MyApp/>,document.getElementById("root"))
+          if(userType=="Employee"){
+            reactDom.render(<MyApp token={token}/>,document.getElementById("root"))
         }else if(userType=="vendor"){
-            reactDom.render(<Vender/>,document.getElementById("root"))
+            reactDom.render(<Vender token={token}/>,document.getElementById("root"))
         }else{
-            reactDom.render(<Finance/>,document.getElementById("root"))
+            reactDom.render(<Finance token={token}/>,document.getElementById("root"))
         }
        
        
@@ -165,7 +173,7 @@ return (
                   <option value="financier">Financier</option>
                   </select><br></br>
                       <label style={{fontSize:"14px",marginLeft:"25%"}}>Employee ID  </label>
-                      <input type="text" name="name" placeholder="Your Name" required="" id = "empid" style={{width: "40%",marginLeft:"32px"}}/>
+                      <input type="text" name="name" placeholder="Your Id" required="" id = "empid" style={{width: "40%",marginLeft:"32px"}}/>
                       <label style={{fontSize:"14px",marginLeft:"25%"}}>Password  </label>
                       <input type="Password" name="password" placeholder="Enter your Password" required="" id = "empasswd" style={{width: "40%", marginLeft:"50px"}}/>
                       <button class="btn btn-primary" type="submit" style={{marginLeft:"55%" ,marginTop:"10px"}} value="Sign In" onClick= {goToHome}>Sign in</button><br></br>
