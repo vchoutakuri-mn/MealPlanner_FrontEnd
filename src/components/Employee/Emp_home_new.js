@@ -7,6 +7,7 @@ import Hist from './Emp_history';
 import './css/empHomecss.css'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Employee from './data/Employee';
 
 
 toast.configure();
@@ -202,10 +203,10 @@ function goToDel(e){
 function goToSubs(){
   console.log("clicked on subscribe")
   console.log("checking enable",enable)
-  if(enable==false){
+  if(Employee.checkMealSubscription()==false){
     document.getElementById("proceedtosub").disabled = true;
   }
-  if(enable==true){
+  else{
     document.getElementById("proceedtosub").disabled = false;
   }
   document.getElementById("sub").style.display = "block";
