@@ -88,28 +88,32 @@ function goToHome(){
         console.log("Registered user details",userType)
         console.log("User:",empid,empasswd)
         Employee.checkValidation(empid,empasswd).then(Response=>{
+            console.log("In login",Response.status)
         if(Response.status==200 && Response.data!=''){
-                    //go to next page
-                    
+                  
                     token=Response.data;
                     console.log("token generated",token)
-                   
+                    
                    
                 }else{
                     //Reload component or input fields make empty
                     console.log("Details are wrong")
                    // reactDom.render(<MyApp/>,document.getElementById("root"))
                 }
-            }).catch(err=>console.log('Something went wrong'))
+            }).catch(err=>console.log('Something went wrong')).finally(()=>{
+                
+                    if(userType=="Employee"){
+                        reactDom.render(<MyApp token={token}/>,document.getElementById("root"))
+                    }else if(userType=="vendor"){
+                        reactDom.render(<Vender token={token}/>,document.getElementById("root"))
+                    }else{
+                        reactDom.render(<Finance token={token}/>,document.getElementById("root"))
+                    }}
+            );
+            
           onChange(true)
           
-          if(userType=="Employee"){
-            reactDom.render(<MyApp token={token}/>,document.getElementById("root"))
-        }else if(userType=="vendor"){
-            reactDom.render(<Vender token={token}/>,document.getElementById("root"))
-        }else{
-            reactDom.render(<Finance token={token}/>,document.getElementById("root"))
-        }
+         
        
        
     
@@ -175,7 +179,7 @@ return (
                       <input type="text" name="name" placeholder="Your Id" required="" id = "userId" style={{width: "40%",marginLeft:"32px"}}/>
                       <label style={{fontSize:"14px",marginLeft:"25%"}}>Password  </label>
                       <input type="Password" name="password" placeholder="Enter your Password" required="" id = "password" style={{width: "40%", marginLeft:"50px"}}/>
-                      <button class="btn btn-primary" type="submit" style={{marginLeft:"55%" ,marginTop:"10px"}} value="Sign In" onClick= {goToHome}>Sign in</button><br></br>
+                      <a class="btn btn-primary" type="submit" style={{marginLeft:"55%" ,marginTop:"10px"}} value="Sign In" onClick= {goToHome}>Sign in</a><br></br>
                       <h5 style={{marginTop:"30px" , marginLeft:"40%"}}>Don't have an account? </h5>
                       <a onClick={goTOSignUp} style={{marginLeft:"55%",marginTop:"5%"}} class="tag" >Create Account</a>
                       
@@ -189,7 +193,6 @@ return (
       </div>
       </div>
       
-      {value?<MyApp></MyApp>:<></>}
       
       </>
 );

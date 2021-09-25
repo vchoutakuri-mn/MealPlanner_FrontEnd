@@ -16,14 +16,14 @@ class Employee {
         return axios.post(LOGIN,null, { params: { user: userId ,password:password } })
     }
     createAccount(userType,userId,password,userName,userEmail,mealSubscribed){
+        console.log("Type of user",userType);
         return axios.post(SIGNUP,
             {
-                user:userType,
-                userId:userId,
-                password:password,
-                userName:userName,
-                userEmail:userEmail,
-                mealSubscribed:mealSubscribed
+                id:userId,
+                name:userName,
+                email:userEmail,
+                role:userType,
+                pass:password
             })
     }
     checkMealSubscription(){

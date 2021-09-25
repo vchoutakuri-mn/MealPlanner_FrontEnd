@@ -1,10 +1,15 @@
 import { indigo } from '@material-ui/core/colors';
+import { Refresh } from '@material-ui/icons';
 import React, { useState } from 'react'
+import { InvalidUser } from './SendNotificationConfirm';
 import './css/App.css'
 import Employee from './data/Employee';
+import { GET_TOKEN } from './data/Storage';
 import Footer from './footer';
 import SimpleDialog from './SendNotificationConfirm'
-
+import MyApp from '../Employee/Emp_home_new';
+import reactDom from 'react-dom';
+import Start from '../Employee/home';
 
 var SelectedEmployees = []
 var Users = [];
@@ -25,7 +30,9 @@ export default class EmployeeMealDetails extends React.Component {
             searchBy:'Employee ID',
             pageSize:DEFAULT_PAGE_SIZE,
             pageNo:1,
-            totalNoOfRecords:0
+            totalNoOfRecords:0,
+            reload:false,
+            sessionTimeOut:false
         }
         this.setEmployes = this.setEmployes.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -55,22 +62,32 @@ export default class EmployeeMealDetails extends React.Component {
     };
     checkList(){
         //data is stores in totalNoOfRecords variable
-        console.log(this.state.totalNoOfRecords)
+        //console.log(this.state.totalNoOfRecords)
     }
 
     getData(pageNo,pageSize){
+        
         Employee.getUsers(pageNo,pageSize).then((Response) => {
-            Response.data.content.map(
-                user => {
-                    user['noOfDays'] = Math.floor(Math.random() * 30)
-                    user['noOfDaysInPercentage'] = Math.floor(Math.random() * 100)
-                    this.state.ShowUsers.push(user.id)
-                    ShowUsers.push(user.id)
-                }
-            )
-            this.setState({ users: Response.data.content })
-            Users=this.state.users;
+            //console.log(Response.status);
+            //if(Response.status==403)//console.log("Login expired ")
+
+            // Response.data.map(
+            //     // user => {
+            //     //     user['noOfDays'] = Math.floor(Math.random() * 30)
+            //     //     user['noOfDaysInPercentage'] = Math.floor(Math.random() * 100)
+            //     //     this.state.ShowUsers.push(user.id)
+            //     //     ShowUsers.push(user.id)
+            //     // }
+            // )
             
+            this.setState({ users: Response.data })
+            Users=this.state.users;
+        
+            
+        }).catch(err=>{
+            //console.log("Something went wrong")
+            console.log("Session time out")
+            this.setState({sessionTimeOut:true})
         });
     }
     //Returns the length of the data that is coming from the api
@@ -80,6 +97,9 @@ export default class EmployeeMealDetails extends React.Component {
            checkList()
         })
       
+    }
+    reload(){
+        this.getData(1,1);
     }
     setShowUsers() {
 
@@ -120,7 +140,7 @@ o
     raiseNotification(e) {
     }
     uncheck() {
-        console.log("Unchecking")
+        //console.log("Unchecking")
     }
     /**
      * 
@@ -147,7 +167,7 @@ o
         } else {
             SelectedEmployees.splice(SelectedEmployees.indexOf(IDs), 1)
         }
-        console.log("Selected Employees", SelectedEmployees)
+        //console.log("Selected Employees", SelectedEmployees)
     }
     /**
      * Search the employees based on employeeID
@@ -163,7 +183,7 @@ o
      * implemented
      */
     bond(user){
-        console.log("garbage function delete now",user,)
+        //console.log("garbage function delete now",user,)
     }
 
     /**
@@ -172,7 +192,7 @@ o
      */
     search() {
         let searchData = document.getElementById('searchData').value
-        console.log('value..',searchData,this.state.users)
+        //console.log('value..',searchData,this.state.users)
         if(searchData==''||searchData==undefined){
             this.state.users=Users
             this.setState({ShowUsers:[0]})
@@ -182,21 +202,21 @@ o
         switch(this.state.searchBy){
             case "Employee ID":
                 for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(searchData!='' && String(Users[userNumber].id).includes(searchData)){
+                    if(searchData!='' && String(Users[userNumber].empID).includes(searchData)){
                         this.state.users.push(Users[userNumber])
                     }
                 }
                 break;
             case "Employee name":
                 for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(Users[userNumber].employeeName.toUpperCase().includes(searchData.toUpperCase())){
+                    if(Users[userNumber].empName.toUpperCase().includes(searchData.toUpperCase())){
                         this.state.users.push(Users[userNumber])
                     }
                 }
                 break;
             case "Employee email":
                 for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(Users[userNumber].email.toUpperCase().includes(searchData.toUpperCase())){
+                    if(Users[userNumber].empEmail.toUpperCase().includes(searchData.toUpperCase())){
                         this.state.users.push(Users[userNumber])
                     }
                 }
@@ -210,18 +230,18 @@ o
                     }
                     break;
             default:
-                console.log("In default")
+                //console.log("In default")
                 this.state.users=Users
                 break;
         }
         this.setState({ShowUsers:[0]})
-        console.log("...",this.state.users,searchData)
+        
     }
 
 
     selectSearchType(e){
         this.setState({searchBy:e.target.value})
-        console.log(this.state.searchBy)
+       
     }
 
     
@@ -258,9 +278,12 @@ selectRowsPerPage(pageSize){
     this.state.pageSize=pageSize;
     this.getData(this.state.pageNo,pageSize);
 }
+goToHome(){
+    reactDom.render(<Start/>,document.getElementById('root'))
+}
 
     render() {
-        //console.log("This is in body page")
+        ////console.log("This is in body page")
         return (
             <>
             
@@ -279,6 +302,7 @@ selectRowsPerPage(pageSize){
                                 <option value="Number of days skipped">Number of days skipped</option>
                             </select>
                         <button type="submit" onClick={this.search} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button>
+                        <button type="submit" onClick={this.search} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout" onCLick={this.reload}><i class="fa fa-refresh"></i></button>
                     </div>
 
 
@@ -299,9 +323,9 @@ selectRowsPerPage(pageSize){
                                 this.state.users.map(
                                     user =>
                                         <tr>
-                                            <td>{user.id}</td>
-                                            <td>{user.employeeName}</td>
-                                            <td>{user.email}</td>
+                                            <td>{user.empID}</td>
+                                            <td>{user.empName}</td>
+                                            <td>{user.empEmail}</td>
                                             <td>
                                                 <div class="progress">
                                                     <div style={{ width: user.noOfDaysInPercentage + "%" }} aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" class="red progress-bar">
@@ -331,7 +355,9 @@ selectRowsPerPage(pageSize){
                 
                 <Footer selectRowsPerPage={this.selectRowsPerPage} rowsPerPage={10} pageNo={this.state.pageNo} noOfRecords={this.state.totalNoOfRecords} backward={this.backward} previousPage={this.previousPage} nextPage={this.nextPage} forward={this.forward} pageSize={this.state.pageSize}/>
                 <SimpleDialog open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} Users={Users} doSave={this.props.doSave} />
-                {/* <SendValidation  open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} uncheck={this.uncheck} /> */}
+                {//console.log("This session time out,",this.props.sessionTimeOut)}
+                <InvalidUser open={this.state.sessionTimeOut}  />
+                /* <SendValidation  open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} uncheck={this.uncheck} /> */}
             </>
         );
     }
@@ -344,7 +370,7 @@ selectRowsPerPage(pageSize){
  * Uncheck and change the notified text to submitted because these SelectedEmployees has sent a status
  */
 function uncheck(SelectedEmployees) {
-    //console.log("Unchecking",SelectedEmployees.length)
+    ////console.log("Unchecking",SelectedEmployees.length)
     if (SelectedEmployees.length != 0 && SelectedEmployees.length != undefined) {
         SelectedEmployees.forEach(employeeID => {
             let checkBox = document.getElementById(employeeID)
@@ -354,7 +380,7 @@ function uncheck(SelectedEmployees) {
             Employee.submitStatus(employeeID)
             
         });
-        console.log([new Date(),SelectedEmployees])
+        //console.log([new Date(),SelectedEmployees])
     }
 }
 
