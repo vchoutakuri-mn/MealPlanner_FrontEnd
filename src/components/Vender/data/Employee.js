@@ -1,14 +1,18 @@
 import axios  from "axios";
-
-
+import { USERS_REST_API_URL } from "../../API's/CommonService";
+import { GET_TOKEN } from "./Storage";
 // const USERS_REST_API_URL="https://api.github.com/users";
-const USERS_REST_API_URL="http://localhost:8080/employee/getAllPaging?pageNo=";
+
 const SUBMIT_REST_API_URL="http://localhost:8080/employee//employees/"
 const NUMBER_OF_RECORDS="http://localhost:8080/employee/numberOfRecord"
 
 class Employee {
     getUsers(pageNo,pageSize){
-        return axios.get(USERS_REST_API_URL+(pageNo-1)+"&pageSize="+pageSize);
+     
+        const config = {
+            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+        };
+        return axios.get(USERS_REST_API_URL,config);
     }
     getNoOfRecords(pageNo,pageSize){
         return axios.get(NUMBER_OF_RECORDS);
@@ -17,5 +21,6 @@ class Employee {
     submitStatus(id){
         return axios.put(SUBMIT_REST_API_URL+id);
     }
+   
 }
 export default new Employee();

@@ -87,10 +87,10 @@ let doOpen=false;
       setSubmitValidationEmployee(false);
     }
 
-    const goToFinance=()=>{
-      console.log("Going to finance page")
-      ReactDOM.render(<Finance/>,document.getElementById('root'))
-    }
+    // const goToFinance=()=>{
+    //   console.log("Going to finance page")
+    //   ReactDOM.render(<Finance/>,document.getElementById('root'))
+    // }
   
 const setMealPrice=()=>{
   setMealPriceClicked(true)
@@ -123,7 +123,7 @@ const closeMealPrice=()=>{
    
                         <button 
                         class="btn btn-primary pull-right" style={{margin:"5px"}} data-title="Signout" data-toggle="modal" data-target="#ssignout"><span class="fa fa-sign-out"></span>Signout</button>
-                        <button class="btn btn-primary pull-right" style={{margin:"5px"}} if="finance" data-title="Home" data-toggle="modal"  data-target="#home" onClick={goToFinance} ><span class="fa fa-money" ></span> Finance</button>
+
                         <button 
                         class="btn btn-primary pull-right" style={{margin:"5px",display:save}} data-title="save" data-toggle="modal" data-target="#ssignout"><span class="fa fa-save"></span>Save</button>
                         <button class="btn btn-primary pull-right" style={{margin:"5px",display:submitValidationEmployee}}  id="submitValidation" data-title="submitValidation" data-toggle="modal" onClick={handleClickOpen} data-target="#home" id="submitValidation" ><span class="fa fa-paper-plane"  ></span> Submit</button>

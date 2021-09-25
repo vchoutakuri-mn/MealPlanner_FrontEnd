@@ -10,6 +10,8 @@ import Start from "./home";
 import Demo from "./subscribe";
 import Vender from "../Vender";
 import Finance from "../FinanaceTeam/finance";
+
+var USERTYPE='employee';
 export default function SignupForm(props) {
 //   const { switchToSignin } = useContext(AccountContext);
     const [userType,changeUserType]=useState('employee');
@@ -68,14 +70,14 @@ function goToLogin(){
 const [showDialog,setShowDialog]=useState(false);
 
 function setUserType(e){
-  changeUserType(e.target.value);
+  USERTYPE=e.target.value;
 }
 
 function goToHome(){
   
   var useuse = document.getElementById("userType").value;
   console.log("use use",useuse)
-  var userType=userType;
+  var userType=USERTYPE;
   var userId=document.getElementById("userId").value;
   var userName=document.getElementById("userName").value;
   var userEMail=document.getElementById("userEmail").value;
@@ -124,7 +126,7 @@ function goToHome(){
     if(useuse=="Employee"){
       reactDom.render(<MyApp />,document.getElementById("root"))
   }else if(useuse=="vendor"){
-      reactDom.render(<Vender />,document.getElementById("root"))
+      reactDom.render(<Vender token={token}/>,document.getElementById("root"))
   }else{
     
       reactDom.render(<Finance />,document.getElementById("root"))

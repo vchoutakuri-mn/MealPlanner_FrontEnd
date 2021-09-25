@@ -1,10 +1,11 @@
 import React, {useReducer, useState} from 'react'
 import {DateRangeInput} from '@datepicker-react/styled'
 import './css/App.css'
-import { DownloadError } from './SendNotificationConfirm';
+import { DownloadError, InvalidUser } from './SendNotificationConfirm';
 import EmployeeMealDetails from './EmployeeMealDetails';
 import Footer from './footer'
 
+import MealDetails from './data/MealDetails';
 var firstTime=true;
 var DateArray=[]
 var TotalDates=[]
@@ -18,6 +19,14 @@ var REPORTDETAILS=[]
 var data=[]
 let startPage=1;
 let endPage=10;
+var weekdays = new Array(7);
+weekdays[0] = "Saturday";
+weekdays[1] = "Sunday";
+weekdays[2] = "Monday";
+weekdays[3] = "Tuesday";
+weekdays[4] = "Wednesday";
+weekdays[5] = "Thursday";
+weekdays[6] = "Friday";
 
 const initialState = {
   startDate: null,
@@ -43,10 +52,14 @@ export default function Report () {
   const [_, doResetDates] = useReducer((x) => x + 1, 0);
   let [rowsPerPage,setRowsPerPage]=useState('');
   const [openDownloadErrorDialog,setOpenDownloadErrorDialog]=useState(false)
+  let [START_DATE,setStartDate]=useState('');
+  let [END_DATE,setEndDate]=useState('');
+  let [data,setDate]=useState([]);
+  let [sessionTimeOut,setSessionTimeOut]=useState(false)
 
 
     function createRegularDateFormat(t, s) {
-      let a = [{month: 'numeric'},{day: 'numeric'},  {year: 'numeric'}];
+      let a = [{year: 'numeric'},{month: 'numeric'},{day: 'numeric'}];
       function format(m) {
          let f = new Intl.DateTimeFormat('en', m);
          return f.format(t);
@@ -57,16 +70,24 @@ export default function Report () {
 
   function start(startDate){
     
-    let date = createRegularDateFormat(startDate, '/');
+    let date = createRegularDateFormat(startDate, '-');
+    START_DATE=createRegularDateFormat(startDate, '-');
+    MealDetails.getMealDates(START_DATE,START_DATE+1).then(Response=>{
+      console.log("status code ",Response.status)
+      REPORTDETAILS=Response.data;
+    }).catch(err=>{
+      console.log("Something went wrong")
+      setSessionTimeOut(true)
+    });
       let dateObj=startDate
-      if(date!=null){
-      if(DateArray[0]==undefined ){
-        DateArray.push(date)
-      } else{
-        DateArray[0]=date
-      }
-      showTableData(DateArray)
-      }
+      // if(date!=null){
+      // if(DateArray[0]==undefined ){
+      //   DateArray.push(date)
+      // } else{
+      //   DateArray[0]=date
+      // }
+      // showTableData(DateArray)
+      // }
       
     return startDate
   }
@@ -75,17 +96,23 @@ export default function Report () {
 
   function end(endDate){
     //console.log("end date selected")
-    let date = createRegularDateFormat(endDate, '/');
-      if(date!=null){
+    let date = createRegularDateFormat(endDate, '-');
+    END_DATE=createRegularDateFormat(endDate, '-');
+    MealDetails.getMealDates(START_DATE,END_DATE).then(Response=>{
+      console.log("status code ",Response.status)
+      REPORTDETAILS=Response.data;
+    })
+   
+      // if(date!=null){
      
-      if(DateArray[1]==undefined ){
-              DateArray.push(date)
-            } else{
-              DateArray[1]=date
-            }
-      //console.log('s date',date)
-      showTableData(DateArray)
-      }
+      // if(DateArray[1]==undefined ){
+      //         DateArray.push(date)
+      //       } else{
+      //         DateArray[1]=date
+      //       }
+      // //console.log('s date',date)
+      // showTableData(DateArray)
+      // }
       return endDate  
   }
 
@@ -130,17 +157,17 @@ export default function Report () {
         data.push([(DAYLIST[meals+1]),DAYS[meals],veg,nonVeg,(nonVeg+veg)])
       }
       TABLEHIDE='block'
-      console.log('basic functions')
+     
       if(firstTime==true){
-      console.log('basic functions if block')
+
         if(data.length!=0){
           if(data.length<=10){
             rowsPerPage=data.length
           }else{
             rowsPerPage=10
           }
-          REPORTDETAILS=data.slice(0,rowsPerPage)
-          console.log(REPORTDETAILS.length)
+          //REPORTDETAILS=data.slice(0,rowsPerPage)
+   
           startPage=1;
           endPage=rowsPerPage;
         }
@@ -163,16 +190,16 @@ function selectRowsPerPage(){
   if(data.length!=0){
     if(10!=10){
       rowsPerPage=10
-      console.log(data.length,rowsPerPage,'dv')
+      //console.log(data.length,rowsPerPage,'dv')
     }else{
       rowsPerPage=document.getElementById("sortBy").value
     }
     REPORTDETAILS=data.slice(-data.length,rowsPerPage-data.length)
-    console.log(REPORTDETAILS,'complete date..',data)
+   // console.log(REPORTDETAILS,'complete date..',data)
     startPage=1;
     endPage=10; 
   }
-  console.log(rowsPerPage,'/././.')
+  //console.log(rowsPerPage,'/././.')
   doResetDates()
  
 }
@@ -246,7 +273,10 @@ function closeDownloadError(){
       <br/>
       <div style={{float:'left',marginTop:'5px'}}>
       <DateRangeInput class='dateRangeInput' 
-          onDatesChange={(data) =>dispatch({type: 'dateChange', payload: data})}
+          onDatesChange={(data) =>
+            {
+              dispatch({type: 'dateChange', payload: data})
+          }}
           onFocusChange={focusedInput => dispatch({type: 'focusChange', payload: focusedInput})}
           startDate={start(state.startDate)} // Date or null
           endDate={end(state.endDate)} // Date or null
@@ -273,24 +303,28 @@ function closeDownloadError(){
       </tr>
     </thead> 
         <tbody style={{height:"300px"}}>{console.log(REPORTDETAILS.length,'last lins')}
-                {
+        {(REPORTDETAILS.length!=0)?
+                (
                   REPORTDETAILS.map(
                     eachDay=>
                 <tr>
               
-                    <th scope="row">{eachDay[0]}</th>
+                    <th scope="row">{eachDay[0].slice(0,10)}</th>
+              
+                    <td>{weekdays[new Date(eachDay[0]).getDay()]}</td>
                     <td>{eachDay[1]}</td>
                     <td>{eachDay[2]}</td>
-                    <td>{eachDay[3]}</td>
-                    <td>{eachDay[4]}</td>
-                    <td><span class="label label-info">{eachDay[5]}</span></td>
+                    <td><span class="label label-info">{eachDay[3]}</span></td>
                 </tr>
-                    )
-                }
+                    ))
+                :<>
+                 <p style={{width:'100%',marginTop:'10%'}}>No data found</p>
+                </>}
             </tbody>
   </table>
   </div>
   <hr/>
+  <InvalidUser open={sessionTimeOut}  />
   <Footer selectRowsPerPage={selectRowsPerPage} rowsPerPage={rowsPerPage} startPage={startPage} data={data} backward={backward} previousPage={previousPage} nextPage={nextPage} forward={forward}/>
           </div>
         {/* <DownloadError open={openDownloadErrorDialog} closeWindow={closeDownloadError} /> */}

@@ -17,6 +17,8 @@ import { uncheck } from './EmployeeMealDetails';
 import {removeEmployees} from './EmployeeMealDetails'
 import {releaseEmployee} from './Header'
 import Employee from './data/Employee';
+import Start from '../Employee/home';
+import reactDom from 'react-dom';
 
 
 
@@ -228,5 +230,52 @@ function DownloadError(props){
 );
 }
 
-export { bindEmployee ,updateOpen ,SaveSubmit,DownloadError}
+
+
+function InvalidUser(props){
+  const classes = useStyles();
+  let { open } = props;
+ 
+  
+ function goToHome(){
+    reactDom.render(<Start/>,document.getElementById('root'))
+}
+  
+  const goBack=()=>{
+    goToHome()
+  }
+ 
+  //For confirmation whether the list of SelectedEmployees contains any ids or not
+ 
+  return (
+    <>
+    {console.log("Invalid user")}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  
+  <Dialog  aria-labelledby="simple-dialog-title" open={open}>
+      <DialogTitle id="simple-dialog-title"><h3 style={{textAlign: "center"}}>Session Time out </h3></DialogTitle>
+      <div style={{marginLeft:'15px'}}>
+        <span style={{marginLeft:'5px'}}>Please login again or refresh</span>
+      </div>
+         <div>
+           <br/>
+           <div>
+            <button onClick={goBack} 
+           style={{marginBottom:'5px',marginRight:'5px'}}
+           class="btn btn-primary pull-right"  
+            data-title="Back" data-toggle="modal" 
+            data-target="#validate" > Close</button>
+           </div>
+         </div>
+    </Dialog> 
+  </>
+);
+ 
+}
+
+
+
+export { bindEmployee ,updateOpen ,SaveSubmit,DownloadError,InvalidUser}
 
