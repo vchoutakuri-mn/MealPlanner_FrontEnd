@@ -1,5 +1,5 @@
 import React, { useContext ,useState } from "react";
-
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import reactDom from "react-dom";
 import './css/loginFormcss.css'
 //import { Datepicker } from "@datepicker-react/styled";
@@ -17,6 +17,7 @@ export default function LoginForm(props) {
     const [value, onChange] = useState(false);
     var [userType,setUser]=useState('Employee');
     const [token,deleteToken]=useState('');
+    var [empid,setEmpId] = useState();
 //   const { switchToSignup  } = useContext(AccountContext);
 
 //   const [userID, setUserID] = useState('');
@@ -49,6 +50,7 @@ function goTOSignUp(){
     reactDom.render(<SignupForm/>,document.getElementById("root"))
 }
 function goToStart(){
+    console.log("test working")
     reactDom.render(<Start/>,document.getElementById("root"))
 }
 
@@ -59,11 +61,14 @@ function setTypeOfUser(e){
 
 function goToHome(){
     //Filter the data
+    console.log("im in gotohome")
     var e = document.getElementById("log");
     var strUser = e.options[e.selectedIndex].text;
     console.log("struser",strUser)
    
-    var empid = document.getElementById("userId").value;
+    empid = document.getElementById("userId").value;
+
+
     var empasswd = document.getElementById("password").value;
     if(empid == null || empasswd == null){
         console.log("null entered")
@@ -78,12 +83,12 @@ function goToHome(){
     var token=''
     //This is a comment 
     
-    // if(empid.match(numbers) != null && 
-    //    empasswd.length >= 8  &&
-    //    empasswd.match(lowerCaseLetters) != null && 
-    //    //empasswd.match(upperCaseLetters) !=null && 
-    //   // empasswd.match(numbers) != null 
-    // )
+    if(empid.match(numbers) != null && 
+       empasswd.length >= 8  &&
+       empasswd.match(lowerCaseLetters) != null && 
+       empasswd.match(upperCaseLetters) !=null && 
+       empasswd.match(numbers) != null 
+    )
     {
         console.log("Registered user details",userType)
         console.log("User:",empid,empasswd)
@@ -103,8 +108,14 @@ function goToHome(){
             }).catch(err=>console.log('Something went wrong')).finally(()=>{
                 
                     if(userType=="Employee"){
-                        reactDom.render(<MyApp token={token}/>,document.getElementById("root"))
-                    }else if(userType=="vendor"){
+                        var meal_subscribed;
+                        Employee.checkMealSubscription(empid).then((Response)=>{
+                            console.log('typeof', Response.data[0]);
+                            meal_subscribed=Response.data
+                            reactDom.render(<MyApp empId={empid}  meal_subscribed={meal_subscribed} token={token}/>,document.getElementById("root"))
+ 
+                        })
+                   }else if(userType=="vendor"){
                         reactDom.render(<Vender token={token}/>,document.getElementById("root"))
                     }else{
                         reactDom.render(<Finance token={token}/>,document.getElementById("root"))
@@ -179,7 +190,9 @@ return (
                       <input type="text" name="name" placeholder="Your Id" required="" id = "userId" style={{width: "40%",marginLeft:"32px"}}/>
                       <label style={{fontSize:"14px",marginLeft:"25%"}}>Password  </label>
                       <input type="Password" name="password" placeholder="Enter your Password" required="" id = "password" style={{width: "40%", marginLeft:"50px"}}/>
-                      <a class="btn btn-primary" type="submit" style={{marginLeft:"55%" ,marginTop:"10px"}} value="Sign In" onClick= {goToHome}>Sign in</a><br></br>
+                      <a onClick= {goToHome} class="tag" style={{marginLeft:"50%",marginTop:"20%"}} >Sign in</a>
+                     
+                      <br></br>
                       <h5 style={{marginTop:"30px" , marginLeft:"40%"}}>Don't have an account? </h5>
                       <a onClick={goTOSignUp} style={{marginLeft:"55%",marginTop:"5%"}} class="tag" >Create Account</a>
                       

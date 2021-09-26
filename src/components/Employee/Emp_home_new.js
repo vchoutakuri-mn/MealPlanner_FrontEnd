@@ -1,4 +1,4 @@
-import React, { useState ,  useCallback} from 'react';
+import React, { useState ,  useCallback ,useReducer} from 'react';
 import Calendar from 'react-calendar';
 import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';
@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Employee from './data/Employee';
 
 
+
 toast.configure();
 
 var TABLE_HIDE='none';
@@ -17,14 +18,31 @@ var btn_hide = 'none';
 var datesArray;
 var dates = []
 var typeOfMeal;
-var sub = false;
+var subnv = false;
+var subveg = false;
 var enable = false;
-
-export default function MyApp() {
-  const [value, onChange] = useState(false);
-  var [dates2,setDates] = useState([])
+ 
 
   
+  
+export default function MyApp(props)  {
+  const {empId,meal_subscribed}=props;
+  const [value, onChange] = useState(false);
+  var [dates2,setDates] = useState([])
+  const [reload,doReload]=useReducer((x)=>x+1,0)
+  
+
+
+
+  // if(meal_subscribed){
+  //   document.getElementById("proceedtosub").disabled = true;
+  // }
+  // else{
+  //   document.getElementById("proceedtosub").disabled = false;
+  // }
+  // document.getElementById("sub").style.display = "block";
+
+
 function goToEmphist(){
   ReactDOM.render(<Hist/>,document.getElementById("root"))
 }
@@ -36,12 +54,20 @@ function goToStart(){
 
 
 function goToTable(){
-  if(sub == true){
+  if(subnv == true ){
+    console.log("entering into gototable and non veg ")
     document.getElementById('mealsTable').style.display='block';
     document.getElementById('btn1').style.display='block';
     setDates(datesArray)
     //console.log("type of dates ...",typeof datesArray)
   }
+
+  else if(subveg == true){
+    console.log("entering into gototable and veg section ")
+    document.getElementById('mealsTableveg').style.display='block';
+    document.getElementById('btn1').style.display='block';
+    setDates(datesArray)
+    }
   else{
     alert("Please subscribe! ")
   }
@@ -107,8 +133,9 @@ function getDetails(e){
 function subscribed(e){
   //var type = document.getElementById("veg").value
   console.log("clicked veg/nonveg")
+  
   enable = true
-  console.log("enable set to true",enable)
+  //console.log("enable set to true",enable)
   goToSubs();
   typeOfMeal = e.target.id
   console.log("typeOfMeal....",typeOfMeal)
@@ -131,6 +158,7 @@ function subscribed(e){
         document.getElementById('nonveg').disabled=false
   
       }
+      goToSubs();
     }
     
 }
@@ -138,7 +166,17 @@ function subscribed(e){
 function finalSubsciption(){
   closeForm1();
   //alert("subscribed for "+typeOfMeal+" successfully")
-  sub = true
+  if(typeOfMeal == 'nonveg' )
+    {
+      subnv = true
+      console.log("making subnv true")
+    }  
+  if(typeOfMeal == 'veg')
+  {
+    subveg = true
+    console.log("making subveg true")
+  }
+
   document.getElementById("subinheader").disabled=true;
   toast.success(
     "subscribed for "+typeOfMeal+" successfully",
@@ -158,7 +196,7 @@ function check(){
 function submitDetails(e){
  
   //window.location.href=window.location.href
-  //window.location.reload();
+  window.location.reload();
   //setTimeout(function(){window.location.reload();},10);
   //e.preventDefault();
   //document.location.reload();
@@ -190,42 +228,75 @@ var getDaysArray = function(start, end) {
 };
 
 function goToDel(e){
-  console.log("onclickkkkk")
+  console.log("onclickkkkk",e.target.parentNode.id)
   document.getElementById(e.target.id)
   console.log(e.target.parentNode.parentNode)
+  var a =e.target.parentNode.id
+  var getdate = a.slice(0,12)
+  var index = dates2.indexOf(getdate)
+  console.log("checking index",getdate,dates2[index])
+  for(var i =0; i < dates2.length; i++){
+    if (dates2[i] == getdate){
+      console.log("we got it",dates2[i])
+    }
+}
   
-  var i = e.target.parentNode.parentNode.parentNode.rowIndex;
-    document.getElementById("mealsTable").deleteRow(i);
-  //e.target.parentNode.parentNode.parentNode.style.display="none"
-  console.log("value of i",i)
-  }
+  console.log("deleted delete and index ",getdate,index,dates2)
 
+  dates2.splice(index,1)
+  console.log("dates after deleting ",dates2)
+  var i = e.target.parentNode.parentNode.parentNode.rowIndex;
+    //document.getElementById("mealsTable").deleteRow(i);
+  //e.target.parentNode.parentNode.parentNode.style.display="none"
+  console.log("datesarray ",dates2)
+  doReload();
+  }
+  
 function goToSubs(){
+  if(meal_subscribed[0]){
+    alert("subscribed")
+    return
+  }
   console.log("clicked on subscribe")
-  console.log("checking enable",enable)
-  if(Employee.checkMealSubscription()==false){
-    document.getElementById("proceedtosub").disabled = true;
+ // console.log("checking enable",meal_subscribed[0])
+ //console.log("this is data from ..",Employee.checkMealSubscription())
+//   Employee.checkMealSubscription(empId).then((Response)=>{
+//     console.log(typeof Response.data);
+//     meal_subscribed=Response.data
+//  })
+
+  if(enable){
+    document.getElementById("proceedtosub").disabled = false;
   }
   else{
-    document.getElementById("proceedtosub").disabled = false;
+    console.log("not subscribed and proceedtosub is not disabled")
+    document.getElementById("proceedtosub").disabled = true;
   }
   document.getElementById("sub").style.display = "block";
   
-  //this.handleModal();
-  //reactDom.render(<Demo/>,document.getElementById("root"))
+  // this.handleModal();
+  // reactDom.render(<Demo/>,document.getElementById("root"))
 }
 
-
+function closeFormprofile(){
+  document.getElementById("myprofile").style.display = "none";
+}
 
 function closeForm1() {
   document.getElementById("sub").style.display = "none";
 }
 
+function goToprofile(){
+  console.log("empid   ....",empId)
+  document.getElementById("myprofile").style.display = "block";
+}
+
+
 
 const [date , setDate] = useState(new Date()) 
 const onChangeDate = date => {
   setDate(date);
-  //console.log("ALL DATESSSS ",getDaysArray(date[0],date[1]))
+  console.log("ALL DATESSSS ",getDaysArray(date[0],date[1]))
   datesArray=getDaysArray(date[0],date[1])
   var newdate = date.toString()
   var arr1 = newdate.split(' ');
@@ -236,9 +307,23 @@ const onChangeDate = date => {
 }
 
 
+
 const today1 = new Date()
 const tomorrow = new Date(today1)
 tomorrow.setDate(tomorrow.getDate() + 1)
+
+
+// constructor(props){
+//   super(props);
+//   this.state={
+//      value:this.props.location.state,
+//   }
+// }
+
+
+function init(){
+  document.getElementById("subinheader").disabled=meal_subscribed
+}
 
 
   return (
@@ -263,13 +348,23 @@ tomorrow.setDate(tomorrow.getDate() + 1)
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
       </div>
+ 
        
         <footer class="col-md-12 text-right">
+        
         <button onClick={goToEmphist}  class ="btn btn-primary pull-right" style={{marginTop:"-50px",marginRight:"27%"}} ><i class="fa fa-history">  History</i></button> 
         <button onClick={goToNotify}  class ="btn btn-primary pull-right" style={{marginTop:"-50px",marginRight:"17%"}} ><i class="fa fa-bell">  Notifications</i></button>   
         <button onClick={goToSubs} id="subinheader" class ="btn btn-primary pull-right" style={{marginTop:"-50px",marginRight:"8.4%"}} ><i class="fa fa-envelope">  Subscribe</i></button>   
-        <button onClick={goToStart}  class ="btn btn-primary pull-right " style={{marginTop:"-50px",marginRight:"0.8%"}} ><i class="fa fa-sign-out">  Signout</i></button> 
-
+        
+        <button onClick={goToprofile}  class ="btn btn-primary pull-right " style={{marginTop:"-50px",marginRight:"1.4%"}} ><i class="fa fa-user"> Profile</i></button> 
+       
+        <div class="form-popup" id="myprofile" style={{position:"fixed",top:"13%",left:"90%",marginLeft: "-10px" }}>
+        <form  class="form-container" style={{textAlign:"left" }}>
+          <p>Welcome {empId} </p>
+           <a onClick={goToStart}  class ="btn btn-primary pull-right " style={{marginTop:"-8px",marginRight:"0.8%"}} ><i class="fa fa-sign-out"> Signout</i></a>  
+          <button type="button" id="myForm" class="btn btn-primary" onClick={closeFormprofile}><i class = "fa fa-close"> Close </i></button>
+        </form>
+      </div>
        {/* <div class="container">
   <button type="button" class="btn btn-primary pull-right" data-toggle="modal" onClick={goToModal}>subscribe...</button>
 
@@ -314,6 +409,7 @@ tomorrow.setDate(tomorrow.getDate() + 1)
            <p>
              *This subscription is valid for 1 year
            </p>
+           
     <button type="button" id="proceedtosub" class="btn btn-primary" onClick={finalSubsciption}>Proceed to subscribe</button>
     <button type="button" class="btn btn-primary" onClick={closeForm1}>Close</button>
   </form>
@@ -388,6 +484,39 @@ tomorrow.setDate(tomorrow.getDate() + 1)
     </tbody>
   </table>
   <br></br>
+  <table class="table"  id="mealsTableveg"  style={{  marginTop:"-120px", marginLeft:"1%", display:TABLE_HIDE}} >
+    <thead>
+      <tr >
+        <th style={{marginLeft:"100px"}}>Date</th>
+        {/* <th>Day</th> */}
+        {/* <th>Veg</th>
+        <th>Non-Veg</th> */}
+        <th>Cancel</th>
+      </tr>
+    </thead> 
+
+    <tbody>
+      {
+        dates2.map(eachDay=>
+          <tr >
+            <th style={{ padding: "10px 20px"}} scope="row" value={eachDay}><p id="datesFromCheckBox">{eachDay}</p></th>
+            {/* <th style={{ padding: "10px 50px"}}>
+             
+              <input type="checkbox" id={eachDay+'veg'} onChange={getDetails} />
+              
+            </th>
+            <th style={{ padding: "10px 50px"}}>
+            
+              <input type="checkbox" id={eachDay+'nonveg'} onChange={getDetails} />
+              
+            </th> */}
+            <th>
+              <span onClick={goToDel} id={eachDay+"delete"}><i class="fa fa-trash" style={{fontSize:"14px",color:"black"}} ></i></span>
+            </th>
+          </tr>)
+      }   
+    </tbody>
+  </table>
 <button id = "btn1" class="btn btn-primary" onClick={submitDetails} style={{marginLeft:"48%",marginTop:"-40px",display:btn_hide}} >Submit</button>
 </footer>
 </div>    

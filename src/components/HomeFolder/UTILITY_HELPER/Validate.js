@@ -1,4 +1,5 @@
 import axios  from "axios";
+import { MEAL_SUBSCRIPTION } from "../../API's/CommonService";
 
 
 // const USERS_REST_API_URL="https://api.github.com/users";
@@ -12,6 +13,10 @@ class Employee {
         return axios.get(USER_AUTHENTICATION+'strUser='+strUser+'userId='+emplpoyessId+'pass='+emppasswd);
     }
 
+
+    checkMealSubscription(){
+        return axios.get(MEAL_SUBSCRIPTION)
+}
     signupform(signUser,id,mail,p1){
         return axios({
             method: 'put',

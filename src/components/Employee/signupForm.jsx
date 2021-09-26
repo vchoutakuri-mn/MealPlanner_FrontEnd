@@ -173,10 +173,11 @@ function goToStart(){
                 
                     <div class="panel panel-default work-progress-table">
                             {/* Default panel contents */}
-                        <div class="panel-heading" style={{textAlign:"center"}}>Meal Planer<i style={{textColor:'#f2f2f2'}}>Employee Login Page</i>
-                        <button class="btn btn-primary pull-right" style={{marginTop:"-50px"}} onClick = {goToStart}>Home</button>
-                        </div>
-                        </div>
+                            <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER
+                        <button class="btn btn-primary pull-right" style={{marginTop:"1%"}} onClick = {goToStart}>Home</button>
+                         </div>
+                  </div>
+                        
                         
       </div>
       </div>
@@ -187,7 +188,7 @@ function goToStart(){
       
         <div class="container">
             <div class="right" style={{marginLeft:"25%",marginTop:"1%"}}>
-                <div class="formBox" style={{backgroundColor:"#D3D3D3"}}>
+                <div class="formBox" style={{backgroundColor:"#D3D3D3", height:"550px"}}>
                     <p class="sign" style={{marginTop:"-50px"}}>Create Account</p>
                     <form  style={{marginTop:"-35px"}}>
                         <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px" }}>SignUp</p>
