@@ -1,4 +1,3 @@
-
             // ---------------------Vendor API's------------------------//
 
 //For listing all the emplpoyees on vender's home page
@@ -64,7 +63,7 @@ export const SIGNUP="http://localhost:8083/userCred/signup";
 //
 //request:token or employee id
 //Expected:true or false
-export const MEAL_SUBSCRIPTION='';
+export const MEAL_SUBSCRIPTION='http://localhost:8080/employee/subscription';
 
 
 

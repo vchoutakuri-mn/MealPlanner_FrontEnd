@@ -26,13 +26,9 @@ class Employee {
                 pass:password
             })
     }
-    checkMealSubscription(){
-        
-        axios.get(MEAL_SUBSCRIPTION).then(response=>{
-                return response.data
-        }).catch(err=>{
-            return false
-        })
-    }
+    checkMealSubscription(empId){
+        console.log(MEAL_SUBSCRIPTION+'/'+empId)
+        return axios.get(MEAL_SUBSCRIPTION+'/'+empId);
+}
 }
 export default new Employee();
