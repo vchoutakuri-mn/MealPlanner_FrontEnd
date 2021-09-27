@@ -65,7 +65,6 @@ function goToStart(){
 
 
 
-
 function goToNotify(){
     document.getElementById("myFormNotif").style.display = "block";
 }
@@ -192,7 +191,7 @@ console.log("submiting")
   }).catch(err=>console.log("Caught err ",err))
  
   //window.location.href=window.location.href
-  //window.location.reload();
+  window.location.reload();
   //setTimeout(function(){window.location.reload();},10);
   //e.preventDefault();
   //document.location.reload();
@@ -289,7 +288,7 @@ function goToprofile(){
 const [date , setDate] = useState(new Date()) 
 const onChangeDate = date => {
   setDate(date);
-  //console.log("ALL DATESSSS ",getDaysArray(date[0],date[1]))
+  console.log("ALL DATESSSS ",getDaysArray(date[0],date[1]))
   datesArray=getDaysArray(date[0],date[1])
   var newdate = date.toString()
   var arr1 = newdate.split(' ');
