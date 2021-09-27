@@ -314,7 +314,6 @@ goToHome(){
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th >Meal taken in percentage</th>
-                                <th>No of days skipped</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -333,7 +332,7 @@ goToHome(){
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td><span class="label label-info">{user.noOfDays}</span></td>
+                                           
                                             <td>
 
                                                 <label class="switch">
