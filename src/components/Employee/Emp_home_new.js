@@ -75,12 +75,12 @@ function goToTable(){
 
 
 function goToNotify(){
-    document.getElementById("myForm").style.display = "block";
+    document.getElementById("myFormnotif").style.display = "block";
 }
 
 
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
+function closeFormNotif() {
+  document.getElementById("myFormnotif").style.display = "none";
 }
 
 
@@ -254,7 +254,11 @@ function goToDel(e){
   
 function goToSubs(){
   if(meal_subscribed[0]){
-    alert("subscribed")
+    toast.info(
+       'Meal subscribed',
+       {autoClose:2000}
+      )
+    //alert("subscribed")
     return
   }
   console.log("clicked on subscribe")
@@ -362,7 +366,7 @@ function init(){
         <form  class="form-container" style={{textAlign:"left" }}>
           <p>Welcome {empId} </p>
            <a onClick={goToStart}  class ="btn btn-primary pull-right " style={{marginTop:"-8px",marginRight:"0.8%"}} ><i class="fa fa-sign-out"> Signout</i></a>  
-          <button type="button" id="myForm" class="btn btn-primary" onClick={closeFormprofile}><i class = "fa fa-close"> Close </i></button>
+          <button type="button" class="btn btn-primary" onClick={closeFormprofile}><i class = "fa fa-close"> Close </i></button>
         </form>
       </div>
        {/* <div class="container">
@@ -429,13 +433,13 @@ function init(){
 
 {/* <button  data-toggle="popover" data-container="a" title="Popover Header" data-content="Some content inside the popover">Toggle popover</button> */}
 
-  <div class="form-popup" id="myForm" style={{position:"fixed",top:"13%",left:"90%",marginLeft: "-300px" }}>
+  <div class="form-popup" id="myFormnotif" style={{position:"fixed",top:"13%",left:"90%",marginLeft: "-300px" }}>
   <form  class="form-container" style={{textAlign:"left" }}>
     <h4>Employee Notifications</h4>
     <p>Meal subscribed, but not taken on aug 18 2021</p>
     <p>Meal subscribed, but not taken on aug 18 2021</p>
     <p>Meal subscribed, but not taken on aug 18 2021</p>
-    <button type="button" class="btn btn-primary" onClick={closeForm}>Close</button>
+    <button type="button" class="btn btn-primary" onClick={closeFormNotif}>Close</button>
   </form>
 </div>
         <div style={{marginLeft:"450px" , marginRight:"auto"}}>
