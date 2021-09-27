@@ -1,5 +1,6 @@
 import axios  from "axios";
 import { LOGIN,SIGNUP,MEAL_SUBSCRIPTION} from "../../API's/CommonService";
+import { GET_TOKEN } from "../../Vender/data/Storage";
 
 // const USERS_REST_API_URL="https://api.github.com/users";
 
@@ -26,13 +27,12 @@ class Employee {
                 pass:password
             })
     }
-    checkMealSubscription(){
-        
-        axios.get(MEAL_SUBSCRIPTION).then(response=>{
-                return response.data
-        }).catch(err=>{
-            return false
-        })
-    }
+    checkMealSubscription(empId){
+        const config = {
+            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+        };
+        console.log(MEAL_SUBSCRIPTION+'/'+empId)
+        return axios.get(MEAL_SUBSCRIPTION+'/'+empId,config);
+}
 }
 export default new Employee();

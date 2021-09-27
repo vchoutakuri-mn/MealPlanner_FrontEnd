@@ -82,7 +82,7 @@ export default class EmployeeMealDetails extends React.Component {
             
             this.setState({ users: Response.data })
             Users=this.state.users;
-        
+            console.log(Users)
             
         }).catch(err=>{
             //console.log("Something went wrong")
@@ -322,13 +322,13 @@ goToHome(){
                                 this.state.users.map(
                                     user =>
                                         <tr>
-                                            <td>{user.empID}</td>
-                                            <td>{user.empName}</td>
-                                            <td>{user.empEmail}</td>
+                                            <td>{user[0]}</td>
+                                            <td>{user[1]}</td>
+                                            <td>{user[2]}</td>
                                             <td>
                                                 <div class="progress">
                                                     <div style={{ width: user.noOfDaysInPercentage + "%" }} aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" class="red progress-bar">
-                                                        <span>{user.noOfDaysInPercentage}%</span>
+                                                        <span>{user[3]}%</span>
                                                     </div>
                                                 </div>
                                             </td>
@@ -336,7 +336,7 @@ goToHome(){
                                             <td>
 
                                                 <label class="switch">
-                                                    {(user.status == 'no') ?
+                                                    {('no' == 'no') ?
                                                         <>
                                                             <input type="checkbox" id={user.id} onClick={this.toggleClicked}/>
                                                             <span class="slider round"></span></> :

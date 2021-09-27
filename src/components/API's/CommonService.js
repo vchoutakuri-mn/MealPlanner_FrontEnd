@@ -1,11 +1,10 @@
-
             // ---------------------Vendor API's------------------------//
 
 //For listing all the emplpoyees on vender's home page
 //Request:pageNo:int and pageSize:int
 //Expected : List of json objects
 //Method type:
-export const USERS_REST_API_URL="http://localhost:8083/employee/list";
+export const USERS_REST_API_URL="http://localhost:8083/vendor/home/2021-09-24/2021-09-29";
 
 // For updating daily meal status of particular employee or list of employees
 // Request:list of empId
@@ -64,13 +63,17 @@ export const SIGNUP="http://localhost:8083/userCred/signup";
 //
 //request:token or employee id
 //Expected:true or false
-export const MEAL_SUBSCRIPTION='';
+export const MEAL_SUBSCRIPTION='http://localhost:8083/employee/getMealSubscriptionStatus';
 
 
 
+export const EMPLOYEE_SELECTED_MEAL_DATES="http://localhost:8083/employee/selectedDates"
 
+
+
+export const EMPLOYEE_UPDATED_MEAL_DATES="";
 
 
             //---------------------TOKEN-------------------//
-export var TOKEN='';
+export const TOKEN='';
 
