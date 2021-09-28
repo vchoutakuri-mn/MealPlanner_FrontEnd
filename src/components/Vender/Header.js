@@ -10,6 +10,8 @@ import {releasingEmployees ,isSelected } from './EmployeeMealDetails'
 import Report  from './Report';
 import Finance from '../FinanaceTeam/finance'
 import MealPrice from './MealPrice';
+import reactDom from 'react-dom';
+import Start from '../Employee/home';
 
 const notification=[];
 let  EmployeeList=[]
@@ -101,6 +103,10 @@ const closeMealPrice=()=>{
   setMealPriceClicked(false)
 }
 
+const signout=()=>{
+  console.log("Signout")
+reactDom.render(<Start/>,document.getElementById("root"))
+}
     return (
         <>
         <div >
@@ -122,7 +128,7 @@ const closeMealPrice=()=>{
                         <div class="dropdown rounded">
    
                         <button 
-                        class="btn btn-primary pull-right" style={{margin:"5px"}} data-title="Signout" data-toggle="modal" data-target="#ssignout"><span class="fa fa-sign-out"></span>Signout</button>
+                        class="btn btn-primary pull-right" style={{margin:"5px"}} data-title="Signout" data-toggle="modal" data-target="#ssignout"  onClick={signout}><span class="fa fa-sign-out"></span>Signout</button>
 
                         <button 
                         class="btn btn-primary pull-right" style={{margin:"5px",display:save}} data-title="save" data-toggle="modal" data-target="#ssignout"><span class="fa fa-save"></span>Save</button>

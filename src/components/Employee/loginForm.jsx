@@ -12,6 +12,7 @@ import Employee from "./data/Employee";
 import Start from "./home";
 import Vender from "../Vender";
 import Finance from "../FinanaceTeam/finance";
+import { SET_TOKEN } from "../Vender/data/Storage";
 
 export default function LoginForm(props) {
     const [value, onChange] = useState(false);
@@ -83,12 +84,12 @@ function goToHome(){
     var token=''
     //This is a comment 
     
-    if(empid.match(numbers) != null && 
-       empasswd.length >= 8  &&
-       empasswd.match(lowerCaseLetters) != null && 
-       empasswd.match(upperCaseLetters) !=null && 
-       empasswd.match(numbers) != null 
-    )
+    // if(empid.match(numbers) != null && 
+    //    empasswd.length >= 8  &&
+    //    empasswd.match(lowerCaseLetters) != null && 
+    //    empasswd.match(upperCaseLetters) !=null && 
+    //    empasswd.match(numbers) != null 
+    // )
     {
         console.log("Registered user details",userType)
         console.log("User:",empid,empasswd)
@@ -98,7 +99,7 @@ function goToHome(){
                   
                     token=Response.data;
                     console.log("token generated",token)
-                    
+                    SET_TOKEN(token)
                    
                 }else{
                     //Reload component or input fields make empty
@@ -108,12 +109,13 @@ function goToHome(){
             }).catch(err=>console.log('Something went wrong')).finally(()=>{
                 
                     if(userType=="Employee"){
-                        var meal_subscribed;
-                        Employee.checkMealSubscription(empid).then((Response)=>{
-                            console.log('typeof', Response.data[0]);
-                            meal_subscribed=Response.data
-                            reactDom.render(<MyApp empId={empid}  meal_subscribed={meal_subscribed} token={token}/>,document.getElementById("root"))
+                        var meal_subscribed=false;
+                        reactDom.render(<MyApp empId={empid}  meal_subscribed={meal_subscribed} token={token}/>,document.getElementById("root"))
  
+                        Employee.checkMealSubscription(empid).then((Response)=>{
+                            console.log('typeof', Response.data);
+                            meal_subscribed=Response.data
+    
                         })
                    }else if(userType=="vendor"){
                         reactDom.render(<Vender token={token}/>,document.getElementById("root"))
