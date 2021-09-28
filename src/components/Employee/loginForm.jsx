@@ -1,5 +1,5 @@
 import React, { useContext ,useState } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 import reactDom from "react-dom";
 import './css/loginFormcss.css'
 //import { Datepicker } from "@datepicker-react/styled";
@@ -60,7 +60,8 @@ function setTypeOfUser(e){
     
 }
 
-function goToHome(){
+function goToHome(e){
+    e.preventDefault();
     //Filter the data
     console.log("im in gotohome")
     var e = document.getElementById("log");
@@ -191,7 +192,7 @@ return (
                       <input type="text" name="name" placeholder="Your Id" required="" id = "userId" style={{width: "40%",marginLeft:"32px"}}/>
                       <label style={{fontSize:"14px",marginLeft:"25%"}}>Password  </label>
                       <input type="Password" name="password" placeholder="Enter your Password" required="" id = "password" style={{width: "40%", marginLeft:"50px"}}/>
-                      <a onClick= {goToHome} class="tag" style={{marginLeft:"50%",marginTop:"20%"}} >Sign in</a>
+                      <button onClick= {goToHome} class="tag" style={{marginLeft:"50%",marginTop:"20%"}} >Sign in</button>
                      
                       <br></br>
                       <h5 style={{marginTop:"30px" , marginLeft:"40%"}}>Don't have an account? </h5>

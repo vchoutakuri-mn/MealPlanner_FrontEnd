@@ -1,7 +1,7 @@
 import { indigo } from '@material-ui/core/colors';
 import { Refresh } from '@material-ui/icons';
 import React, { useState } from 'react'
-import { InvalidUser } from './SendNotificationConfirm';
+import { DownloadConfirm, InvalidUser } from './SendNotificationConfirm';
 import './css/App.css'
 import Employee from './data/Employee';
 import { GET_TOKEN } from './data/Storage';
@@ -282,6 +282,7 @@ goToHome(){
     reactDom.render(<Start/>,document.getElementById('root'))
 }
 
+
     render() {
         ////console.log("This is in body page")
         return (
@@ -327,7 +328,7 @@ goToHome(){
                                             <td>{user[2]}</td>
                                             <td>
                                                 <div class="progress">
-                                                    <div style={{ width: user.noOfDaysInPercentage + "%" }} aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" class="red progress-bar">
+                                                    <div style={{ width: user[3] + "%" }} aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" class="red progress-bar">
                                                         <span>{user[3]}%</span>
                                                     </div>
                                                 </div>
@@ -354,9 +355,9 @@ goToHome(){
                 
                 <Footer selectRowsPerPage={this.selectRowsPerPage} rowsPerPage={10} pageNo={this.state.pageNo} noOfRecords={this.state.totalNoOfRecords} backward={this.backward} previousPage={this.previousPage} nextPage={this.nextPage} forward={this.forward} pageSize={this.state.pageSize}/>
                 <SimpleDialog open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} Users={Users} doSave={this.props.doSave} />
-                {//console.log("This session time out,",this.props.sessionTimeOut)}
+
                 <InvalidUser open={this.state.sessionTimeOut}  />
-                /* <SendValidation  open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} uncheck={this.uncheck} /> */}
+
             </>
         );
     }
