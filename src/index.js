@@ -4,10 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Favicon from 'react-favicon';
+import WindowFocusHandler from './components/HomeFolder/FocusHandler';
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    <WindowFocusHandler/>
   </React.StrictMode>,
   document.getElementById('root')
 );

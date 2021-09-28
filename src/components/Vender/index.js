@@ -11,14 +11,15 @@ if(token!=""){
     return(
         <>
         <Header />
+     
         </>
     )
 }else{
     return (
         <>
         <div>
-            <h3>Your session has expired</h3>
-            <h3>Please login again</h3>
+            <h3>Something went wrong</h3>
+            <h3>Please try again</h3>
         </div>
         </>
     )

@@ -1,7 +1,7 @@
 import { indigo } from '@material-ui/core/colors';
 import { Refresh } from '@material-ui/icons';
 import React, { useState } from 'react'
-import { InvalidUser } from './SendNotificationConfirm';
+import { DownloadConfirm, InvalidUser } from './SendNotificationConfirm';
 import './css/App.css'
 import Employee from './data/Employee';
 import { GET_TOKEN } from './data/Storage';
@@ -82,7 +82,7 @@ export default class EmployeeMealDetails extends React.Component {
             
             this.setState({ users: Response.data })
             Users=this.state.users;
-        
+            console.log(Users)
             
         }).catch(err=>{
             //console.log("Something went wrong")
@@ -282,6 +282,7 @@ goToHome(){
     reactDom.render(<Start/>,document.getElementById('root'))
 }
 
+
     render() {
         ////console.log("This is in body page")
         return (
@@ -314,7 +315,6 @@ goToHome(){
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th >Meal taken in percentage</th>
-                                <th>No of days skipped</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -323,21 +323,21 @@ goToHome(){
                                 this.state.users.map(
                                     user =>
                                         <tr>
-                                            <td>{user.empID}</td>
-                                            <td>{user.empName}</td>
-                                            <td>{user.empEmail}</td>
+                                            <td>{user[0]}</td>
+                                            <td>{user[1]}</td>
+                                            <td>{user[2]}</td>
                                             <td>
                                                 <div class="progress">
-                                                    <div style={{ width: user.noOfDaysInPercentage + "%" }} aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" class="red progress-bar">
-                                                        <span>{user.noOfDaysInPercentage}%</span>
+                                                    <div style={{ width: user[3] + "%" }} aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" class="red progress-bar">
+                                                        <span>{user[3]}%</span>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td><span class="label label-info">{user.noOfDays}</span></td>
+                                           
                                             <td>
 
                                                 <label class="switch">
-                                                    {(user.status == 'no') ?
+                                                    {('no' == 'no') ?
                                                         <>
                                                             <input type="checkbox" id={user.id} onClick={this.toggleClicked}/>
                                                             <span class="slider round"></span></> :
@@ -355,9 +355,9 @@ goToHome(){
                 
                 <Footer selectRowsPerPage={this.selectRowsPerPage} rowsPerPage={10} pageNo={this.state.pageNo} noOfRecords={this.state.totalNoOfRecords} backward={this.backward} previousPage={this.previousPage} nextPage={this.nextPage} forward={this.forward} pageSize={this.state.pageSize}/>
                 <SimpleDialog open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} Users={Users} doSave={this.props.doSave} />
-                {//console.log("This session time out,",this.props.sessionTimeOut)}
+
                 <InvalidUser open={this.state.sessionTimeOut}  />
-                /* <SendValidation  open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} uncheck={this.uncheck} /> */}
+
             </>
         );
     }
