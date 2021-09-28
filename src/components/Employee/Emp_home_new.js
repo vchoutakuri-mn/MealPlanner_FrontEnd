@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Employee from './data/Employee';
 import { SET_TOKEN } from '../Vender/data/Storage';
 import MealDetails from './data/MealDetails';
+import WindowFocusHandler from '../HomeFolder/FocusHandler';
 
 
 var selectedDatesList=[
@@ -59,6 +60,8 @@ function goToEmphist(){
 
 
 function goToStart(){
+  localStorage.clear()
+  localStorage.setItem('validUser','false')
    ReactDOM.render(<Start/>,document.getElementById("root"))
 }
 
@@ -511,7 +514,7 @@ function cancelSingleMeal(e){
 </div> */}
 
 {/* <button  data-toggle="popover" data-container="a" title="Popover Header" data-content="Some content inside the popover">Toggle popover</button> */}
-
+<WindowFocusHandler/>
   <div class="form-popup" id="myFormNotif" style={{position:"fixed",top:"13%",left:"90%",marginLeft: "-300px" }}>
   <form  class="form-container" style={{textAlign:"left" }}>
     <h4>Employee Notifications</h4>

@@ -12,6 +12,7 @@ import Finance from '../FinanaceTeam/finance'
 import MealPrice from './MealPrice';
 import reactDom from 'react-dom';
 import Start from '../Employee/home';
+import FocusHandler from '../HomeFolder/FocusHandler';
 
 const notification=[];
 let  EmployeeList=[]
@@ -110,6 +111,9 @@ const downloadVendorReport=()=>{
 
 const signout=()=>{
   console.log("Signout")
+  localStorage.removeItem('token')
+   localStorage.removeItem('role')
+   localStorage.removeItem('validUser')
 reactDom.render(<Start/>,document.getElementById("root"))
 }
 
@@ -127,7 +131,7 @@ const closeDownloadReport=()=>{
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"/>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"/>
     {/*---- Include the above in your HEAD tag --------*/}
-
+    <FocusHandler/>
 <div class="container">
     <div class="row">
             <div class="col-md-12">

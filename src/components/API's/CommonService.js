@@ -77,3 +77,6 @@ export const EMPLOYEE_UPDATED_MEAL_DATES="";
             //---------------------TOKEN-------------------//
 export const TOKEN='';
 
+
+export const VALIDATE_TOKEN="http://localhost:8083/userCred/validate"
+

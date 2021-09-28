@@ -19,6 +19,8 @@ import {releaseEmployee} from './Header'
 import Employee from './data/Employee';
 import Start from '../Employee/home';
 import reactDom from 'react-dom';
+import LoginForm from '../Employee/loginForm';
+
 var weekdays = new Array(7);
 weekdays[0] = "Saturday";
 weekdays[1] = "Sunday";
@@ -301,7 +303,9 @@ function InvalidUser(props){
  
   
  function goToHome(){
-    reactDom.render(<Start/>,document.getElementById('root'))
+   console.log("Going to home page")
+   localStorage.clear()
+    reactDom.render(<LoginForm/>,document.getElementById('root'))
 }
   
   const goBack=()=>{
@@ -318,9 +322,9 @@ function InvalidUser(props){
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   
   <Dialog  aria-labelledby="simple-dialog-title" open={open}>
-      <DialogTitle id="simple-dialog-title"><h3 style={{textAlign: "center"}}>Session Time out </h3></DialogTitle>
+      <DialogTitle id="simple-dialog-title"><h3 style={{textAlign: "center"}}>Something went wrong</h3></DialogTitle>
       <div style={{marginLeft:'15px'}}>
-        <span style={{marginLeft:'5px'}}>Please login again or refresh</span>
+        <span style={{marginLeft:'5px'}}>Please close  tab</span>
       </div>
          <div>
            <br/>
