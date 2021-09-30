@@ -19,6 +19,16 @@ import {releaseEmployee} from './Header'
 import Employee from './data/Employee';
 import Start from '../Employee/home';
 import reactDom from 'react-dom';
+import LoginForm from '../Employee/loginForm';
+
+var weekdays = new Array(7);
+weekdays[0] = "Saturday";
+weekdays[1] = "Sunday";
+weekdays[2] = "Monday";
+weekdays[3] = "Tuesday";
+weekdays[4] = "Wednesday";
+weekdays[5] = "Thursday";
+weekdays[6] = "Friday";
 
 
 
@@ -47,9 +57,9 @@ export default function SimpleDialog(props) {
  
   const handleClose = () => {
     let date=new Date().toJSON().slice(0,10).replace(/-/g,'/');
-    console.log("SelectedEmployees Ids those who got notification")
+
     var data=JSON.parse('{"date":"'+date+'", "EmployeesIDs":'+JSON.stringify([SelectedEmployees])+'}');
-    console.log(data)
+   
     onClose()
     uncheck(SelectedEmployees)
     releaseEmployee();
@@ -130,7 +140,7 @@ export default function SimpleDialog(props) {
 function bindEmployee(EmployeeList,Employeees){
   EmployeesList=EmployeeList;
   EmployeesList.sort();
-  console.log("In bindEmployee",EmployeesList)
+
  return true;
 }
 
@@ -189,13 +199,40 @@ function SaveSubmit(props){
 }
 
 
-function DownloadError(props){
- const {open , closeWindow ,download}=props
+function DownloadConfirm(props){
+  let TABLE_HEAD=['Date','Day','Veg','Non-veg','Total_meals']
+ const {open , closeWindow ,error,report,startDate,endDate}=props
 
  function goBack(){
    closeWindow()
  }
- 
+ function download(){
+
+
+  var csvData=TABLE_HEAD[0];
+  //define the heading for each row of the data
+  for(let each=1;each<TABLE_HEAD.length;each=each+1){
+      csvData=csvData+','+TABLE_HEAD[each]
+  }
+  csvData=csvData+'\n'
+  let data=report;
+  data.forEach(function(row) {
+
+ csvData += row[0]+','+weekdays[new Date(row[0]).getDay()]+','+row[1]+','+ row[2]+','+row[3]+',';
+ csvData += "\n";
+});
+var hiddenElement = document.createElement('a');
+hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
+hiddenElement.target = '_blank';
+
+//provide the name for the CSV file to be downloaded
+hiddenElement.download = 'Meal Report '+startDate+" to "+endDate+'.csv';
+hiddenElement.click();
+closeWindow()
+ }
+ if(error!=0){
+
+
   return (
     <>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
@@ -203,9 +240,9 @@ function DownloadError(props){
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   
   <Dialog onClose={closeWindow} aria-labelledby="simple-dialog-title" open={open}>
-      <DialogTitle id="simple-dialog-title"><h3 style={{textAlign: "center"}}>Verify report</h3></DialogTitle>
+      <DialogTitle id="simple-dialog-title"><h3 style={{textAlign: "center"}}>Confirm download</h3></DialogTitle>
       <div style={{marginLeft:'15px'}}>
-        <span style={{marginLeft:'5px'}}>Please verify the report before you download  .</span>
+        <span style={{marginLeft:'5px'}}>The meal details between {startDate} and {endDate} are downloaded</span>
       </div>
          <div>
            <br/>
@@ -228,6 +265,34 @@ function DownloadError(props){
     </Dialog> 
   </>
 );
+  }
+  else{
+
+    return (
+      <>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    
+    <Dialog onClose={closeWindow} aria-labelledby="simple-dialog-title" open={open}>
+        <DialogTitle id="simple-dialog-title"><h3 style={{textAlign: "center"}}>Download Error<i class="fa fa-exclamation-triangle" style={{color:'red'}}></i></h3></DialogTitle>
+        <div style={{marginLeft:'15px'}}>
+          <span style={{marginLeft:'5px'}}>Please select the dates to download report</span>
+        </div>
+           <div>
+             <br/>
+             <div>
+              <button onClick={goBack} 
+             style={{marginBottom:'5px',marginRight:'5px'}}
+             class="btn btn-primary pull-right"  
+              data-title="Back" data-toggle="modal" 
+              data-target="#validate" > Back</button>
+             </div>
+           </div>
+      </Dialog> 
+    </>
+  );
+  }
 }
 
 
@@ -238,7 +303,9 @@ function InvalidUser(props){
  
   
  function goToHome(){
-    reactDom.render(<Start/>,document.getElementById('root'))
+   console.log("Going to home page")
+   localStorage.clear()
+    reactDom.render(<LoginForm/>,document.getElementById('root'))
 }
   
   const goBack=()=>{
@@ -249,15 +316,15 @@ function InvalidUser(props){
  
   return (
     <>
-    {console.log("Invalid user")}
+   
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   
   <Dialog  aria-labelledby="simple-dialog-title" open={open}>
-      <DialogTitle id="simple-dialog-title"><h3 style={{textAlign: "center"}}>Session Time out </h3></DialogTitle>
+      <DialogTitle id="simple-dialog-title"><h3 style={{textAlign: "center"}}>Server not reachable</h3></DialogTitle>
       <div style={{marginLeft:'15px'}}>
-        <span style={{marginLeft:'5px'}}>Please login again or refresh</span>
+        <span style={{marginLeft:'5px'}}>Please try again after sometime</span>
       </div>
          <div>
            <br/>
@@ -277,5 +344,5 @@ function InvalidUser(props){
 
 
 
-export { bindEmployee ,updateOpen ,SaveSubmit,DownloadError,InvalidUser}
+export { bindEmployee ,updateOpen ,SaveSubmit,DownloadConfirm,InvalidUser}
 

@@ -12,6 +12,11 @@ import LoginForm from "./loginForm";
 
 
 import Calendar from 'react-calendar';
+import ValidateToken from "../HomeFolder/UTILITY_HELPER/ValidateToken";
+import Vender from "../Vender";
+import MyApp from "./Emp_home_new";
+import Finance from "../FinanaceTeam/finance";
+import WindowFocusHandler from "../HomeFolder/FocusHandler";
 
 
 
@@ -19,8 +24,9 @@ import Calendar from 'react-calendar';
 
 
 export default function Start(props) {
- 
-  
+
+  var loginRequired=localStorage.getItem("validUser")
+  const {homeLoginButton,setHomeLoginButton}=useState('Login')
   function onClick(element) {
     document.getElementById("img01").src = element.src;
     document.getElementById("modal01").style.display = "block";
@@ -31,6 +37,7 @@ export default function Start(props) {
   function goToLogin(){
     //<Calendar selectRange onChange={onChange} value={date} />
     console.log('going to login page...')
+   
       reactDom.render(<LoginForm/>,document.getElementById("root"))
     }
     
@@ -69,10 +76,10 @@ export default function Start(props) {
   } )
 }
 
-
+{
     return (
       <>
-<div >
+      <div >
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"/>
@@ -81,7 +88,7 @@ export default function Start(props) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     {/*---- Include the above in your HEAD tag --------*/}
-
+    <WindowFocusHandler/>
 <div class="container">
     <div class="row">
             <div class="col-md-12">
@@ -89,8 +96,9 @@ export default function Start(props) {
                 
                     <div class="panel panel-default work-progress-table">
                             {/* Default panel contents */}
+                            {console.log(( localStorage.getItem('validUser')))}
                             <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER
-                        <button type="button" class="btn btn-primary pull-right" style={{marginTop:"1%"}} onClick={goToLogin}>Login</button>
+                        <button type="button" class="btn btn-primary pull-right" style={{marginTop:"1%"}} onClick={goToLogin}>{(localStorage.getItem('validUser')==undefined || localStorage.getItem('validUser').includes(false))?"Login":"My account"}</button>
                        {/* <button class="btn primary pull-right" style={{marginTop:"-50px" }} onClick = {goToStart}>Home</button> */}
                         </div>
                         <div class="dropdown rounded"></div>
@@ -215,11 +223,10 @@ export default function Start(props) {
   <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
   
 </footer> */}
-
-
-
-     
+ 
 </>
 
 );
+
+}
   }

@@ -8,14 +8,16 @@ const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/employee/page?"
 class MealDetails {
    
 
+    // getEmployeeMealDates(pageNo,pageSize){
+    //     console.log(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+pageNo+"&pageSize="+pageSize)
+    //     return axios.get(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+(pageNo-1)+"&pageSize="+pageSize);
+    // }
     getEmployeeMealDates(pageNo,pageSize){
         console.log(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+pageNo+"&pageSize="+pageSize)
         return axios.get(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+(pageNo-1)+"&pageSize="+pageSize);
     }
 
     getSelectedMealDates(empID){
-    
-      
         return axios.get(EMPLOYEE_SELECTED_MEAL_DATES+"/"+empID,{
             headers: 
             { Authorization: `Bearer ${GET_TOKEN()}` }
@@ -27,9 +29,10 @@ class MealDetails {
         var data=[]
         updatedDatesList.map(eachDay=>{
             data .push({
-                emp_id:empID,
-                meal_date:eachDay[0],
-                meal_type:eachDay[1]=='veg'?0:1,
+                empid:empID,
+                d:eachDay[0],
+                vid : 1,
+                mealType:eachDay[1]=='veg'?true:false,
                 subscribed:1
             })
         })
@@ -93,8 +96,13 @@ class MealDetails {
         //console.log("selected dates",dates2)
         console.log("data in submitmealdetails  ",data1)
         console.log("TOKEN",GET_TOKEN())
+        if(datespulsmealtype.length == data1.length){
         return axios.post(EMPLOYEE_SELECTED_MEAL_DATES,data1,{
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
     }
+    else{
+        alert("please select meal type")
+    }
+}
 }
 export default new MealDetails();

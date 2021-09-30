@@ -4,7 +4,7 @@
 //Request:pageNo:int and pageSize:int
 //Expected : List of json objects
 //Method type:
-export const USERS_REST_API_URL="http://localhost:8083/vendor/home/2021-09-24/2021-09-29";
+export const USERS_REST_API_URL="http://localhost:8080/vendor/home";
 
 // For updating daily meal status of particular employee or list of employees
 // Request:list of empId
@@ -21,7 +21,7 @@ export const NUMBER_OF_RECORDS="http://localhost:8080/employee/numberOfRecord"
 //Request :startDate and endDate
 //Expected:List of json objects
 //Method type:
-export const MEAL_DETAILS_BETWEEN_DATES='http://localhost:8083/vendor/report';
+export const MEAL_DETAILS_BETWEEN_DATES='http://localhost:8080/vendor/report';
 
 //For updating or changing the meal price in vendor's home page
 //Request:veg:$ and nonVeg:$
@@ -76,4 +76,7 @@ export const EMPLOYEE_UPDATED_MEAL_DATES="";
 
             //---------------------TOKEN-------------------//
 export const TOKEN='';
+
+
+export const VALIDATE_TOKEN="http://localhost:8083/userCred/validate"
 

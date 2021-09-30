@@ -1,7 +1,7 @@
 //import './css/App.css'
 import NavigationBar from './NavigationBar';
 import EmployeeMealDetails from './EmployeeMealDetails';
-import SimpleDialog, { SaveSubmit, updateOpen } from './SendNotificationConfirm'
+import SimpleDialog, { SaveSubmit, updateOpen,DownloadConfirm } from './SendNotificationConfirm'
 import  ReactDOM  from 'react-dom';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -12,6 +12,7 @@ import Finance from '../FinanaceTeam/finance'
 import MealPrice from './MealPrice';
 import reactDom from 'react-dom';
 import Start from '../Employee/home';
+import FocusHandler from '../HomeFolder/FocusHandler';
 
 const notification=[];
 let  EmployeeList=[]
@@ -29,6 +30,7 @@ let doOpen=false;
     const [homePage,setHomePage]=React.useState('none')
     const [veiwReport,setViewReport]=React.useState('block')
     const [isMealPriceClicked,setMealPriceClicked]=React.useState(false)
+    const [downloadReport,setDownloadReport]=React.useState(false)
   
 
     const handleClickOpen = () => {
@@ -103,10 +105,24 @@ const closeMealPrice=()=>{
   setMealPriceClicked(false)
 }
 
+const downloadVendorReport=()=>{
+  setDownloadReport(true)
+}
+
 const signout=()=>{
   console.log("Signout")
+  localStorage.removeItem('token')
+   localStorage.removeItem('role')
+   localStorage.removeItem('validUser')
 reactDom.render(<Start/>,document.getElementById("root"))
 }
+
+const closeDownloadReport=()=>{
+  setDownloadReport(false)
+}
+
+
+
     return (
         <>
         <div >
@@ -115,7 +131,7 @@ reactDom.render(<Start/>,document.getElementById("root"))
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"/>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"/>
     {/*---- Include the above in your HEAD tag --------*/}
-
+    <FocusHandler/>
 <div class="container">
     <div class="row">
             <div class="col-md-12">
@@ -124,9 +140,7 @@ reactDom.render(<Start/>,document.getElementById("root"))
                     <div class="panel panel-default work-progress-table">
                             {/* Default panel contents */}
                         <div class="panel-heading">Meal Planer<i style={{textColor:'#f2f2f2'}}>Vender's Page &  (vendor@gmail.com)</i>
-                        </div>
-                        <div class="dropdown rounded">
-   
+
                         <button 
                         class="btn btn-primary pull-right" style={{margin:"5px"}} data-title="Signout" data-toggle="modal" data-target="#ssignout"  onClick={signout}><span class="fa fa-sign-out"></span>Signout</button>
 
@@ -137,12 +151,15 @@ reactDom.render(<Start/>,document.getElementById("root"))
                         <button class="btn btn-primary pull-right" style={{margin:"5px",display:price}} id="setMealPrice" data-title="Home" data-toggle="modal"  data-target="#home" onClick={setMealPrice}><span class="fa fa-inr" ></span> Meal Price</button>
                         <button class="btn btn-primary pull-right" style={{margin:"5px" ,display:veiwReport}} id="viewReport" data-title="Validate" data-toggle="modal" data-target="#validate"  onClick={viewReport}><span class="fa fa-file"></span> View Report</button>
                         <button class="btn btn-primary pull-right" style={{margin:"5px",display:homePage}} id="home" data-title="Home" data-toggle="modal"  data-target="#home" onClick={basicHomePage}><span class="fa fa-fw fa-home" ></span> Home</button>
-
+                        <button class="btn btn-primary pull-right" style={{margin:"5px",display:homePage}} id="home" data-title="Home" data-toggle="modal"  data-target="#home" onClick={downloadVendorReport}><span class="fa fa-fw fa-download" ></span> Download Report </button>
+                        </div>
+                        <div class="dropdown rounded">
                           </div>
                           <div >
-                         {(home)? (<EmployeeMealDetails open={open} onClose={handleClose} doSave={saveSubmit} />):<Report/>}
+                         {(home)? (<EmployeeMealDetails open={open} onClose={handleClose} doSave={saveSubmit} />):<Report downloadReport={downloadReport} closeDownloadReport={closeDownloadReport}/>}
                          <MealPrice openMealPrice={isMealPriceClicked} closeMealPrice={closeMealPrice} veg={80} nonVeg={100}/>
                           <SaveSubmit doSave={saveSubmit} onSaveClose={onSaveClose}/>
+
                           </div>
                     </div>
                 </div>

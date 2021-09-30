@@ -11,15 +11,15 @@ import Employee from './data/Employee';
 import { SET_TOKEN } from '../Vender/data/Storage';
 import MealDetails from './data/MealDetails';
 
+toast.configure();
 
 var selectedDatesList=[
-  ["2021-09-26" ,'veg'],
-  ["2021-09-27",'veg'],
-  ["2021-09-28",'non-veg'],
-  ["2021-09-29",'veg'],
-  ["2021-09-30",'non-veg'],
+  ["2021-09-30" ,'veg'],
+  ["2021-10-01",'veg'],
+  ["2021-10-02",'non-veg'],
+  ["2021-10-03",'veg'],
+  ["2021-10-04",'non-veg'],
 ]
-toast.configure();
 
 var TABLE_HIDE='none';
 var btn_hide = 'none';
@@ -29,6 +29,8 @@ var typeOfMeal;
 var subnv = false;
 var subveg = false;
 var enable = false;
+var deleteddates = [];
+var datesmealtype2d = []
  
 
   
@@ -59,10 +61,18 @@ function goToEmphist(){
 
 
 function goToStart(){
+  localStorage.clear();
    ReactDOM.render(<Start/>,document.getElementById("root"))
 }
+var duplicate=[]
 
-
+function insertdatemealtype(duplicate){
+    for(var i=0;i<datespulsmealtype.length;i++){
+       datesmealtype2d[i][0] = duplicate.slice(0,10)
+       datesmealtype2d[i][1] = duplicate.slice(11,14)
+    }
+    console.log("datesmealtype2d",datesmealtype2d)
+  }
 
 
 
@@ -77,52 +87,57 @@ function closeFormNotif() {
 }
 
 var datespulsmealtype = []
+
 function getDetails(e){
-  // if(document.getElementById("nonveg").checked == true){
-  //   document.getElementById("veg").disabled = true;
-  //   console.log("checked")
-  // }
-  // if(document.getElementById(eachDay+"veg").checked == true){
-  //   document.getElementById(eachDay+"nonveg").disabled = true;
-  //   console.log("veg checked")
-  // }
   var n = e.target.id
-  // var v = document.getElementById("veg")
-  // var nv = document.getElementById("nonveg")
-  // console.log("n",n)
-  // if(v.checked){
-  //     nv.disabled=true;
-  //   }
-  console.log(e.target.id)
+  console.log("e.target",e.target)
   datespulsmealtype.push(n)
-  var date=e.target.id.slice(0,12)//sep 12 2021 veg
-  console.log("printing date in emp ",date)
-  var mealtype = e.target.id.slice(12,15)
-  //console.log(mealtype)
+  var date=e.target.id
+  date=e.target.id.slice(0,10)
+  console.log("datespulsmealtype",datespulsmealtype.length)
+  var mealtype = e.target.id.slice(10,)
+  console.log(mealtype)
   ////console.log(date+'nonveg'==e.target.id)
+ 
   if(e.target.id.includes('nonveg') ){
   if(e.target.checked){
+    console.log("in getdetails in nonveg")
     document.getElementById(date+'nonveg').disabled=false
-      document.getElementById(date+'veg').disabled=true
+    document.getElementById(date+'veg').disabled=true
     }else{
       document.getElementById(date+'veg').disabled=false
       document.getElementById(date+'nonveg').disabled=false
     }
 
   }else{
+    console.log("in getdetails in veg")
     if(e.target.checked){
+      console.log("veg checked")
+      //console.log(date,"printing dates..",date+'nonveg')
+      document.getElementById(date+'veg').disabled=false
       document.getElementById(date+'nonveg').disabled=true
-      document.getElementById(date+'veg').disabled=false
     }else{
-      document.getElementById(date+'veg').disabled=false
       document.getElementById(date+'nonveg').disabled=false
+      document.getElementById(date+'veg').disabled=false
 
     }
   }
+  
+  copydata(datesmealtype2d)
+  insertdatemealtype(duplicate);
+  console.log("datesmealtype2d",datesmealtype2d)
+  
 
   }
 
-
+function copydata(datespulsmealtype){
+   for(var i =0; i<datespulsmealtype.length ;i++){
+     console.log("in for loop")
+     console.log(datespulsmealtype[i])
+   //duplicate[i] = datespulsmealtype[i]
+ }
+ console.log(duplicate)
+}
 function subscribed(e){
   //var type = document.getElementById("veg").value
   //console.log("clicked veg/nonveg")
@@ -195,13 +210,25 @@ function App() {
     [setValue],
   );  
 }
-
+var smt ;
 var getDaysArray = function(start, end) {
   for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
-    //console.log("checking for days",dt.getDay())
+    //console.log("checking for days",dt.toString().slice(4,))
+    var datesfromcal = dt.toString().slice(4,15)
+    var mealtypedate = dt.toString().slice(4,15)
+    var modifieddt = createRegularDateFormat(datesfromcal)
     if(0==dt.getDay() ||6==dt.getDay())
-      continue
-    arr.push(new Date(dt));
+        continue
+    // for(var i =0;i<selectedDatesList.length;i++){
+    //   if(dt.getDate() == selectedDatesList[i]){
+    //     smt = selectedDatesList[i][1]
+    //     arr.push([new Date(dt),smt]);
+    //   }
+    //   else{
+     //   arr.push([new Date(dt),null])
+      //}
+   // }
+   arr.push(new Date(modifieddt))
   }
   return arr;
 };
@@ -264,6 +291,7 @@ function closeForm1() {
 
 function goToprofile(){
   //console.log("empid   ....",empId)
+  console.log("deleted dates array ",deleteddates)
   document.getElementById("myprofile").style.display = "block";
 }
 
@@ -274,12 +302,19 @@ const onChangeDate = date => {
   setDate(date);
   console.log("ALL DATESSSS ",getDaysArray(date[0],date[1]))
   datesArray=getDaysArray(date[0],date[1])
+  console.log("datesArray",datesArray)
   var newdate = date.toString()
   var arr1 = newdate.split(' ');
   for(let i = 0; i< datesArray.length;i++){
-      ////console.log("STRING CONVERSION",String(datesArray[i]).slice(4,16))
+     
+     // datesArray[i] = datesArray[i]
       datesArray[i] = String(datesArray[i]).slice(4,16)
   }
+ 
+  for(var i =0; i<datesArray.length;i++) {
+  datesArray[i] = createRegularDateFormat(datesArray[i])
+}
+console.log("STRING CONVERSION",datesArray)
 }
 
 
@@ -289,13 +324,23 @@ const tomorrow = new Date(today1)
 tomorrow.setDate(tomorrow.getDate() + 1)
 
 
-// constructor(props){
-//   super(props);
-//   this.state={
-//      value:this.props.location.state,
-//   }
-// }
-
+function createRegularDateFormat(arr1) {
+        var d
+      
+            d = new Date(arr1)
+            var day = d.getDate();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            var month = d.getMonth() + 1;
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var year = d.getFullYear();
+           return year + "-" + month + "-" + day
+            //console.log("string date in date format ",year + "-" + month + "-" + day)
+            //console.log("datespulsmealtype[i]",datespulsmealtype.replace(datespulsmealtype[i].slice(0,11),year + "-" + month + "-" + day))
+        }
 
 function init(){
   document.getElementById("subinheader").disabled=meal_subscribed
@@ -328,8 +373,8 @@ function goToTable(){
 
 
 
-function cancelMeal(){
-
+function cancelMeal(e){
+  console.log("this is in cancel meal")
   MealDetails.getEmployeeMealDates(empId).then(Response=>{
     console.log("Fetching the selected mealdates",Response.status);
     if(Response.status==200){
@@ -346,20 +391,36 @@ function cancelMeal(){
   document.getElementById('selectedMealDates').style.display='block'
   document.getElementById('mealsTable').style.display='none'
   setSelectedMealDatesHide('block')
+  
 }
 
 
 
 function submitDetails(e){
+    if(datesArray.length == datespulsmealtype.length){
     MealDetails.submitMealDetails(datespulsmealtype,empId).then(Response=>{
       console.log("Response code for updating the mealdates ",Response.status)
     }).catch(err=>console.log("Caught err ",err))
+    toast.success(
+       'submission successful',
+       {autoClose:2000}
+       )
+  }
+  else{
+    alert("please select meal type")
+  }
+  
   }
   
   
 
 function updateDetails(){
-  MealDetails.updateMealDetails(selectedDatesList,empId).then(Response=>{
+  //  for(var i =0; i< deleteddates.length;i++){
+  //    selectedDatesList[i] = deleteddates[i]
+  //  }
+   console.log("delete dates",deleteddates)
+   console.log("selectedDatesList",selectedDatesList)
+  MealDetails.updateMealDetails(deleteddates,empId).then(Response=>{
     console.log("Response code for updating the mealdates ",Response.status)
   }).catch(err=>console.log("Caught err ",err))
 }
@@ -368,11 +429,12 @@ function updateDetails(){
 function cancelSingleMeal(e){
   console.log("onclickkkkk",e.target.parentNode.id)
   document.getElementById(e.target.id)
-  //console.log(e.target.parentNode.parentNode)
+  console.log(e.target.parentNode.id)
   var a =e.target.parentNode.id
   var getdate = a.slice(0,10)
   console.log(getdate)
-  console.log("2021-09-26"==getdate,'///////////')
+  var canceledmealtype = a.slice(11,)
+  deleteddates.push([getdate,canceledmealtype])
   var index =-1
   for (var i=0;i<selectedDatesList.length;i=i+1){
     if(selectedDatesList[i][0]==getdate){
@@ -385,7 +447,7 @@ function cancelSingleMeal(e){
   selectedDatesList.splice(index,1)
 
   var i = e.target.parentNode.parentNode.parentNode.rowIndex;
-    
+  
   doReload();
   }
 
@@ -591,7 +653,7 @@ function cancelSingleMeal(e){
               
             </th>
             <th>
-              <span onClick={cancelSingleMeal} id={eachDay+"delete"}><i class="fa fa-trash" style={{fontSize:"14px",color:"black"}} ></i></span>
+              <span onClick={cancelSingleMeal} id={eachDay}><i class="fa fa-trash" style={{fontSize:"14px",color:"black"}} ></i></span>
             </th>
           </tr>)
       }   

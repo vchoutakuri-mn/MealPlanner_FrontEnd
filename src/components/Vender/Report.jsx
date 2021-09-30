@@ -1,7 +1,7 @@
 import React, {useReducer, useState} from 'react'
 import {DateRangeInput} from '@datepicker-react/styled'
 import './css/App.css'
-import { DownloadError, InvalidUser } from './SendNotificationConfirm';
+import { DownloadConfirm, DownloadError, InvalidUser } from './SendNotificationConfirm';
 import EmployeeMealDetails from './EmployeeMealDetails';
 import Footer from './footer'
 
@@ -45,10 +45,10 @@ function reducer(state, action) {
   }
 }
 
-export default function Report () {
-
+export default function Report (props) {
+  const {downloadReport,closeDownloadReport}=props
   const [state, dispatch] = useReducer(reducer, initialState)
-  const [doReset,startDoingReset]=useState([])
+  const [reload,doReload]=useState(false)
   const [_, doResetDates] = useReducer((x) => x + 1, 0);
   let [rowsPerPage,setRowsPerPage]=useState('');
   const [openDownloadErrorDialog,setOpenDownloadErrorDialog]=useState(false)
@@ -56,6 +56,7 @@ export default function Report () {
   let [END_DATE,setEndDate]=useState('');
   let [data,setDate]=useState([]);
   let [sessionTimeOut,setSessionTimeOut]=useState(false)
+  const [downloadError,raiseDownloadError]=useState(false)
 
 
     function createRegularDateFormat(t, s) {
@@ -72,13 +73,8 @@ export default function Report () {
     
     let date = createRegularDateFormat(startDate, '-');
     START_DATE=createRegularDateFormat(startDate, '-');
-    MealDetails.getMealDates(START_DATE,START_DATE+1).then(Response=>{
-      console.log("status code ",Response.status)
-      REPORTDETAILS=Response.data;
-    }).catch(err=>{
-      console.log("Something went wrong")
-      setSessionTimeOut(true)
-    });
+    
+    fetchData(START_DATE,START_DATE+1)
       let dateObj=startDate
       // if(date!=null){
       // if(DateArray[0]==undefined ){
@@ -92,16 +88,29 @@ export default function Report () {
     return startDate
   }
 
+function download(){
+if(REPORTDETAILS.length!=0){
+  raiseDownloadError(true)
+}
 
+}
+function fetchData(start,end){
+  MealDetails.getMealDates(start,end).then(Response=>{
+    console.log("status code ",Response.data)
+    REPORTDETAILS=Response.data;
+   
+  }).catch(err=>{
+    console.log("Something went wrong")
+    setSessionTimeOut(true)
+  })
+  
+}
 
   function end(endDate){
     //console.log("end date selected")
     let date = createRegularDateFormat(endDate, '-');
     END_DATE=createRegularDateFormat(endDate, '-');
-    MealDetails.getMealDates(START_DATE,END_DATE).then(Response=>{
-      console.log("status code ",Response.status)
-      REPORTDETAILS=Response.data;
-    })
+    fetchData(START_DATE,END_DATE)
    
       // if(date!=null){
      
@@ -190,12 +199,10 @@ function selectRowsPerPage(){
   if(data.length!=0){
     if(10!=10){
       rowsPerPage=10
-      //console.log(data.length,rowsPerPage,'dv')
     }else{
       rowsPerPage=document.getElementById("sortBy").value
     }
     REPORTDETAILS=data.slice(-data.length,rowsPerPage-data.length)
-   // console.log(REPORTDETAILS,'complete date..',data)
     startPage=1;
     endPage=10; 
   }
@@ -275,6 +282,8 @@ function closeDownloadError(){
       <DateRangeInput class='dateRangeInput' 
           onDatesChange={(data) =>
             {
+              console.log("on Date change")
+              fetchData(START_DATE,END_DATE)
               dispatch({type: 'dateChange', payload: data})
           }}
           onFocusChange={focusedInput => dispatch({type: 'focusChange', payload: focusedInput})}
@@ -283,7 +292,10 @@ function closeDownloadError(){
           focusedInput={state.focusedInput} // START_DATE, END_DATE or null
           />
       </div>
+      <button class="btn btn-primary pull-left" style={{margin:"5px"}} id="home" data-title="Home" onClick={()=>{doReload(!reload)}}><span class="fa fa-file" ></span> Get Details</button>
           <button class="btn btn-primary pull-left" style={{margin:"5px"}} id="home" data-title="Home" onClick={reset}><span class="fa fa-refresh" ></span> Reset</button>
+
+    
     </div>
     <br/>
     <br/>
@@ -302,13 +314,14 @@ function closeDownloadError(){
         <th>Total number of meals</th>
       </tr>
     </thead> 
-        <tbody style={{height:"300px"}}>{console.log(REPORTDETAILS.length,'last lins')}
+    <DownloadConfirm open={downloadReport} error={REPORTDETAILS.length} closeWindow={closeDownloadReport} report={REPORTDETAILS} startDate={START_DATE} endDate={END_DATE}/>
+        <tbody style={{height:"300px"}}>{console.log(REPORTDETAILS,'last lins')}
+
         {(REPORTDETAILS.length!=0)?
                 (
                   REPORTDETAILS.map(
                     eachDay=>
                 <tr>
-              
                     <th scope="row">{eachDay[0].slice(0,10)}</th>
               
                     <td>{weekdays[new Date(eachDay[0]).getDay()]}</td>
@@ -325,6 +338,7 @@ function closeDownloadError(){
   </div>
   <hr/>
   <InvalidUser open={sessionTimeOut}  />
+
   <Footer selectRowsPerPage={selectRowsPerPage} rowsPerPage={rowsPerPage} startPage={startPage} data={data} backward={backward} previousPage={previousPage} nextPage={nextPage} forward={forward}/>
           </div>
         {/* <DownloadError open={openDownloadErrorDialog} closeWindow={closeDownloadError} /> */}

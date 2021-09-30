@@ -1,5 +1,5 @@
 import React, { useContext ,useState } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 import reactDom from "react-dom";
 import './css/loginFormcss.css'
 //import { Datepicker } from "@datepicker-react/styled";
@@ -12,7 +12,8 @@ import Employee from "./data/Employee";
 import Start from "./home";
 import Vender from "../Vender";
 import Finance from "../FinanaceTeam/finance";
-import { SET_TOKEN } from "../Vender/data/Storage";
+import { GET_TOKEN, SET_TOKEN } from "../Vender/data/Storage";
+import { TOKEN } from "../API's/CommonService";
 
 export default function LoginForm(props) {
     const [value, onChange] = useState(false);
@@ -60,7 +61,8 @@ function setTypeOfUser(e){
     
 }
 
-function goToHome(){
+function goToHome(e){
+    e.preventDefault();
     //Filter the data
     console.log("im in gotohome")
     var e = document.getElementById("log");
@@ -97,9 +99,28 @@ function goToHome(){
             console.log("In login",Response.status)
         if(Response.status==200 && Response.data!=''){
                   
-                    token=Response.data;
+                    token=Response.data.slice(7);
                     console.log("token generated",token)
-                    SET_TOKEN(token)
+                    
+                    SET_TOKEN(token,GET_TOKEN)
+                    localStorage.setItem('role',userType)
+                   localStorage.setItem('validUser',true)
+                    localStorage.setItem('token',GET_TOKEN());
+                    
+                    if(userType=="Employee"){
+                        var meal_subscribed;
+                        reactDom.render(<MyApp empId={empid}  meal_subscribed={false} token={token}/>,document.getElementById("root"))
+                        Employee.checkMealSubscription(empid).then((Response)=>{
+                            console.log('typeof', Response.data);
+                            meal_subscribed=Response.data
+                            
+ 
+                        })
+                   }else if(userType=="vendor"){
+                        reactDom.render(<Vender token={token}/>,document.getElementById("root"))
+                    }else{
+                        reactDom.render(<Finance token={token}/>,document.getElementById("root"))
+                    }
                    
                 }else{
                     //Reload component or input fields make empty
@@ -107,21 +128,7 @@ function goToHome(){
                    // reactDom.render(<MyApp/>,document.getElementById("root"))
                 }
             }).catch(err=>console.log('Something went wrong')).finally(()=>{
-                
-                    if(userType=="Employee"){
-                        var meal_subscribed=false;
-                        reactDom.render(<MyApp empId={empid}  meal_subscribed={meal_subscribed} token={token}/>,document.getElementById("root"))
- 
-                        Employee.checkMealSubscription(empid).then((Response)=>{
-                            console.log('typeof', Response.data);
-                            meal_subscribed=Response.data
-    
-                        })
-                   }else if(userType=="vendor"){
-                        reactDom.render(<Vender token={token}/>,document.getElementById("root"))
-                    }else{
-                        reactDom.render(<Finance token={token}/>,document.getElementById("root"))
-                    }}
+            }
             );
             
           onChange(true)
@@ -145,7 +152,37 @@ function goToHome(){
   //onChange(true)
   //reactDom.render(<MyApp/>,document.getElementById("root"))
   }
-  
+  if(localStorage.getItem('validUser')!=undefined && localStorage.getItem('validUser').includes(true)){
+    SET_TOKEN(localStorage.getItem('token'))
+     //TOKEN=localStorage.getItem('token')
+    if(localStorage.getItem('role')!=undefined && localStorage.getItem('role').includes("vendor")){
+      return (
+        <>
+        <Vender />
+        </>
+      )
+    }else if(localStorage.getItem('role')!=undefined && localStorage.getItem('role').includes("Employee")){
+      return(
+        <>
+        <MyApp />
+        </>
+      )
+    }else if(localStorage.getItem('role')!=undefined && localStorage.getItem('role').includes("financier")){
+      return(
+        <>
+        <Finance />
+        </>
+      )
+    }else{
+    <>
+    <div>
+      <p>not found</p>
+    </div>
+    </>
+    }
+}else{
+
+
 
 return (
  
@@ -168,7 +205,6 @@ return (
                         <button class="btn btn-primary pull-right" style={{marginTop:"1%"}} onClick = {goToStart}>Home</button> </div>
 
                         </div>
-                        
       </div>
       </div>
       
@@ -192,7 +228,7 @@ return (
                       <input type="text" name="name" placeholder="Your Id" required="" id = "userId" style={{width: "40%",marginLeft:"32px"}}/>
                       <label style={{fontSize:"14px",marginLeft:"25%"}}>Password  </label>
                       <input type="Password" name="password" placeholder="Enter your Password" required="" id = "password" style={{width: "40%", marginLeft:"50px"}}/>
-                      <a onClick= {goToHome} class="tag" style={{marginLeft:"50%",marginTop:"20%"}} >Sign in</a>
+                      <button onClick= {goToHome} class="btn btn-primary" style={{marginLeft:"50%",marginTop:"2%"}} >Sign in</button>
                      
                       <br></br>
                       <h5 style={{marginTop:"30px" , marginLeft:"40%"}}>Don't have an account? </h5>
@@ -213,7 +249,7 @@ return (
 );
 }
 
-
+}
 
 
 
