@@ -89,22 +89,24 @@ export default function Start(props) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     {/*---- Include the above in your HEAD tag --------*/}
     <WindowFocusHandler/>
-<div class="container">
+<div class="container" style={{width:"100%"}}>
     <div class="row">
             <div class="col-md-12">
                 <div class="widget blank no-padding">
                 
-                    <div class="panel panel-default work-progress-table">
+                    <div class="panel panel-default work-progress-table" >
                             {/* Default panel contents */}
                             {console.log(( localStorage.getItem('validUser')))}
-                            <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER
-                        <button type="button" class="btn btn-primary pull-right" style={{marginTop:"1%"}} onClick={goToLogin}>{(localStorage.getItem('validUser')==undefined || localStorage.getItem('validUser').includes(false))?"Login":"My account"}</button>
+                            <div class="panel-heading" style={{textAlign:"center", fontSize:"30px",width:"100%"}}>MEAL PLANNER
+                            <div>
+                            <button type="button" class="btn btn-primary pull-right" style={{marginTop:"1%"}} onClick={goToLogin}>{(localStorage.getItem('validUser')==undefined || localStorage.getItem('validUser').includes(false))?"Login":"My account"}</button>
+                            </div>
                        {/* <button class="btn primary pull-right" style={{marginTop:"-50px" }} onClick = {goToStart}>Home</button> */}
                         </div>
                         <div class="dropdown rounded"></div>
                         </div>
-      </div>
-      </div>
+                  </div>
+              </div>
       
       </div>
 

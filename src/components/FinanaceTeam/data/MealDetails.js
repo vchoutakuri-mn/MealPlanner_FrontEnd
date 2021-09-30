@@ -11,5 +11,9 @@ class MealDetails {
         console.log(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+pageNo+"&pageSize="+pageSize)
         return axios.get(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+(pageNo-1)+"&pageSize="+pageSize);
     }
+
+    updateMealDetails(selectedMealDates){
+        return axios.post("")
+    }
 }
 export default new MealDetails();

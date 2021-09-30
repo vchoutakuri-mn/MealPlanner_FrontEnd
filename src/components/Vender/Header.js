@@ -5,7 +5,7 @@ import SimpleDialog, { SaveSubmit, updateOpen,DownloadConfirm } from './SendNoti
 import  ReactDOM  from 'react-dom';
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import '../Employee/css/loginFormcss.css'
 import {releasingEmployees ,isSelected } from './EmployeeMealDetails'
 import Report  from './Report';
 import Finance from '../FinanaceTeam/finance'
@@ -132,14 +132,14 @@ const closeDownloadReport=()=>{
         <script src="//code.jquery.com/jquery-1.11.1.min.js"/>
     {/*---- Include the above in your HEAD tag --------*/}
     <FocusHandler/>
-<div class="container">
+<div class="container"style={{width:"100%"}}>
     <div class="row">
             <div class="col-md-12">
                 <div class="widget blank no-padding">
                 
                     <div class="panel panel-default work-progress-table">
                             {/* Default panel contents */}
-                        <div class="panel-heading">Meal Planer<i style={{textColor:'#f2f2f2'}}>Vender's Page &  (vendor@gmail.com)</i>
+                        <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER<i style={{textColor:'#f2f2f2'}}>Vender's Page &  (vendor@gmail.com)</i>
 
                         <button 
                         class="btn btn-primary pull-right" style={{margin:"5px"}} data-title="Signout" data-toggle="modal" data-target="#ssignout"  onClick={signout}><span class="fa fa-sign-out"></span>Signout</button>
