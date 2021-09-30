@@ -77,14 +77,15 @@ let doOpen=false;
                 
                     <div class="panel panel-default work-progress-table">
                             {/* Default panel contents */}
-                            <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER<i>Finanace Page &  (financeteam@gmail.com)</i>
-                        </div>
-                        <div class="dropdown rounded">
+                            <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER
+                            <div >
                         <button 
                        
                         class="btn btn-primary pull-right" style={{margin:"5px"}} data-title="Signout" data-toggle="modal" data-target="#ssignout" onClick={signout}><span class="fa fa-sign-out"></span>Signout</button>
 
                           </div>
+                        </div>
+                        
                             <div >
                           <EmployeeMealDetails  />
                         

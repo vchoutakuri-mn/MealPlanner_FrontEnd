@@ -14,11 +14,12 @@ import WindowFocusHandler from '../HomeFolder/FocusHandler';
 
 
 var selectedDatesList = [
-  ["2021-09-26", 'veg'],
-  ["2021-09-27", 'veg'],
-  ["2021-09-28", 'non-veg'],
-  ["2021-09-29", 'veg'],
-  ["2021-09-30", 'non-veg'],
+  
+  ["2021-9-30", 'non-veg'],
+  ["2021-10-3", 'veg'],
+  ["2021-10-5", 'non-veg'],
+  ["2021-10-6", 'veg'],
+
 ]
 toast.configure();
 
@@ -294,14 +295,23 @@ export default function MyApp(props) {
     console.log("ALL DATESSSS ", getDaysArray(date[0], date[1]))
     datesArray = getDaysArray(date[0], date[1])
     var newdate = date.toString()
+    var tempDatesArray=[]
     var arr1 = newdate.split(' ');
     for (let i = 0; i < datesArray.length; i++) {
-      ////console.log("STRING CONVERSION",String(datesArray[i]).slice(4,16))
-      datesArray[i] = String(datesArray[i]).slice(4, 16)
+      console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
+      tempDatesArray.push([ createRegularDateFormat(datesArray[i],'-')])
     }
+    datesArray=tempDatesArray
   }
 
-
+  function createRegularDateFormat(t, s) {
+    let a = [{ year: 'numeric' }, { month: 'numeric' }, { day: 'numeric' }];
+    function format(m) {
+      let f = new Intl.DateTimeFormat('en', m);
+      return f.format(t);
+    }
+    return a.map(format).join(s);
+  }
 
   const today1 = new Date()
   const tomorrow = new Date(today1)
@@ -322,6 +332,28 @@ export default function MyApp(props) {
 
 
   function goToTable() {
+
+    console.log(selectedDatesList,'///../',datesArray)
+    var currentSelectedDatesList=datesArray
+    for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
+      for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
+        console.log(selectedDatesList[previouslySelectedDate][0],currentSelectedDatesList[currentSelectedDate][0])
+
+          if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
+              if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
+                currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
+              }else{
+                currentSelectedDatesList[currentSelectedDate].push(selectedDatesList[previouslySelectedDate][1])
+              }
+          }
+      }
+  }
+    
+   
+console.log(currentSelectedDatesList)
+
+    console.log(currentSelectedDatesList)
+    
     document.getElementById('mealsTable').style.display = 'block'
     document.getElementById('selectedMealDates').style.display = 'none'
     document.getElementById('btn2').style.display = 'none'
@@ -329,7 +361,7 @@ export default function MyApp(props) {
       console.log("entering into gototable and non veg ")
       document.getElementById('mealsTable').style.display = 'block';
       document.getElementById('btn1').style.display = 'block';
-      setDates(datesArray)
+      setDates(currentSelectedDatesList)
       //console.log("type of dates ...",typeof datesArray)
     }
 
@@ -337,12 +369,15 @@ export default function MyApp(props) {
       console.log("entering into gototable and veg section ")
       document.getElementById('mealsTableveg').style.display = 'block';
       document.getElementById('btn1').style.display = 'block';
-      setDates(datesArray)
+      setDates(currentSelectedDatesList)
     }
     else {
       alert("Please subscribe! ")
     }
     document.getElementById('btn1').style.display = 'block';
+
+      setDates(currentSelectedDatesList)
+      console.log(selectedDatesList,'...',datesArray)
   }
 
 
@@ -353,7 +388,7 @@ export default function MyApp(props) {
       console.log("Fetching the selected mealdates", Response.status);
       if (Response.status == 200) {
         console.log(Response.data);
-        selectedDatesList = Response.data;
+        //selectedDatesList = Response.data;
       }
     }).catch(err => console.log("Caught error ", err)).finally()
     //meal_date,meal_type
@@ -574,15 +609,15 @@ export default function MyApp(props) {
               {
                 dates2.map(eachDay =>
                   <tr >
-                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay}><p id="datesFromCheckBox">{eachDay}</p></th>
+                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
-                      <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} />
+                      <input type="checkbox" id={eachDay[0] + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?false:true)} />
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>
 
-                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} />
+                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?true:false)} />
 
                     </th>
                     <th>
