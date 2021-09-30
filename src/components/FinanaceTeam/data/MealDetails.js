@@ -1,4 +1,6 @@
 import axios  from "axios";
+import { GET_TOKEN } from "../../Vender/data/Storage";
+import { MEAL_DETAILS_BETWEEN_DATES } from "../../API's/CommonService";
 
 
 
@@ -14,6 +16,11 @@ class MealDetails {
 
     updateMealDetails(selectedMealDates){
         return axios.post("")
+    }
+    getMealDates(START_DATE,END_DATE){
+        return axios.get(MEAL_DETAILS_BETWEEN_DATES+"/"+START_DATE+"/"+END_DATE,{
+            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+        });
     }
 }
 export default new MealDetails();
