@@ -80,6 +80,7 @@ export default function SimpleDialog(props) {
  if(SelectedEmployees.length==0 || SelectedEmployees.length==undefined){
   return (
     <>
+    {console.log(SelectedEmployees,'submitting')}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
       

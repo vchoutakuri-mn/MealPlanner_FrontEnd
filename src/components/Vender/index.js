@@ -1,28 +1,17 @@
 
 import  Header from './Header';
 
-import { SET_TOKEN } from './data/Storage';
+import { GET_TOKEN, SET_TOKEN } from './data/Storage';
+import InternalServerError from '../HomeFolder/ErrorHandler/InternalServerError';
 
 export default function Vender(props){
-const {token}=props
+const token=GET_TOKEN()
 console.log("Going to vedor", token)
-if(token!=""){
+if(token!="" && token!=undefined){
     SET_TOKEN(token)
-    return(
-        <>
-        <Header />
-     
-        </>
-    )
+    return(<Header />)
 }else{
-    return (
-        <>
-        <div>
-            <h3>Something went wrong</h3>
-            <h3>Please try again</h3>
-        </div>
-        </>
-    )
+    return (<InternalServerError/>)
 }
     
 }

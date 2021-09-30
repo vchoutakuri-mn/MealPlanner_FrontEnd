@@ -48,6 +48,7 @@ export default class EmployeeMealDetails extends React.Component {
         this.nextPage=this.nextPage.bind(this);
         this.selectRowsPerPage=this.selectRowsPerPage.bind(this);
         this.checkList=this.checkList.bind(this)
+        this.reload=this.reload.bind(this)
     }
     /**
      * Get the data from an api and store in the state vairable 'users'
@@ -167,7 +168,7 @@ o
         } else {
             SelectedEmployees.splice(SelectedEmployees.indexOf(IDs), 1)
         }
-        //console.log("Selected Employees", SelectedEmployees)
+        console.log("Selected Employees", SelectedEmployees)
     }
     /**
      * Search the employees based on employeeID
@@ -303,7 +304,7 @@ goToHome(){
                                 <option value="Number of days skipped">Number of days skipped</option>
                             </select>
                         <button type="submit" onClick={this.search} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button>
-                        <button type="submit" onClick={this.search} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout" onCLick={this.reload}><i class="fa fa-refresh"></i></button>
+                        <button type="submit" onClick={this.reload} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout" ><i class="fa fa-refresh"></i></button>
                     </div>
 
 
@@ -339,7 +340,7 @@ goToHome(){
                                                 <label class="switch">
                                                     {('no' == 'no') ?
                                                         <>
-                                                            <input type="checkbox" id={user.id} onClick={this.toggleClicked}/>
+                                                            <input type="checkbox" id={user[0]} onClick={this.toggleClicked}/>
                                                             <span class="slider round"></span></> :
                                                         <><span>Submitted</span></>
                                                     }
