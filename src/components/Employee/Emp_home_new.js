@@ -13,7 +13,8 @@ import MealDetails from './data/MealDetails';
 
 toast.configure();
 
-var prevoiusdatesforcancel=[
+var prevoiusdatesforcancel =
+[
   ["2021-10-01" ,'veg'],
   ["2021-10-04",'non-veg'],
   ["2021-10-06",'non-veg'],
@@ -21,29 +22,13 @@ var prevoiusdatesforcancel=[
   
 ]
 
-var selectedDatesList=[
-  ["2021-09-30" ,'veg'],
-  ["2021-10-01",'veg'],
-  ["2021-10-04",'non-veg'],
-  ["2021-10-05",'veg'],
-  ["2021-10-06",'non-veg'],
-]
-//to remove finaldateslist and directly pass this to map
-var currentSelectedDatesList=[                               
-  ["2021-10-01"],
-  ["2021-10-04"],
-  ["2021-10-05"],
-  ["2021-10-06"],
-  ["2021-10-07"]
-]
+var selectedDatesList = [
+  
+  ["2021-9-30", 'non-veg'],
+  ["2021-10-3", 'veg'],
+  ["2021-10-5", 'non-veg'],
+  ["2021-10-6", 'veg'],
 
-var finalDatesList=[
-  ["2021-09-30" ,'veg'],
-  ["2021-10-01",'veg'],
-  ["2021-10-04",'non-veg'],
-  ["2021-10-05",'veg'],
-  ["2021-10-06",'non-veg'],
-  ["2021-10-07",null]
 ]
 
 var TABLE_HIDE = 'none';
@@ -87,36 +72,23 @@ export default function MyApp(props) {
 
   function comparedisp(datesmealtype2d){
     
-    // for(var i = 0; i< selectedDatesList.length; i++){
-    //   for(var j=0 ; j< datesmealtype2d.length; j++){
-    //   if(datesmealtype2d[j][0] == selectedDatesList[i][0]){
-    //     datesmealtype2d[j][1] = selectedDatesList[i][1] 
-    //     if(datesmealtype2d[j][1] == 'veg')
-    //     console.log(datesmealtype2d[j][0]+"veg")
-    //     document.getElementById(datesmealtype2d[j][0]+"veg").checked = true
-    //   }
-    //   else if(datesmealtype2d[j][1] == 'non-veg'){
-    //     console.log(datesmealtype2d[j][0]+"nonveg")
-    //     document.getElementById(datesmealtype2d[j][0]+"nonveg").checked = true
-    //   }
-    //   else{
-    //     datesmealtype2d[j][1] = null
-    //   }
-   // }
-   var selectedDatesList=selectedDatesList
-   var currentSelectedDatesList=datesArray
-   console.log("datesmealtype2d,selectedDatesList start",datesArray)
-   for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
-    for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
-        if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
-            console.log(selectedDatesList[previouslySelectedDate][0],currentSelectedDatesList[currentSelectedDate][0])
-            if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
-              currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
-            }else{
-              currentSelectedDatesList[currentSelectedDate].push(selectedDatesList[previouslySelectedDate][1])
-            }
-        }
-    }
+    for(var i = 0; i< selectedDatesList.length; i++){
+      for(var j=0 ; j< datesmealtype2d.length; j++){
+      if(datesmealtype2d[j][0] == selectedDatesList[i][0]){
+        datesmealtype2d[j][1] = selectedDatesList[i][1] 
+        if(datesmealtype2d[j][1] == 'veg')
+        console.log(datesmealtype2d[j][0]+"veg")
+        document.getElementById(datesmealtype2d[j][0]+"veg").checked = true
+      }
+      else if(datesmealtype2d[j][1] == 'non-veg'){
+        console.log(datesmealtype2d[j][0]+"nonveg")
+        document.getElementById(datesmealtype2d[j][0]+"nonveg").checked = true
+      }
+      else{
+        datesmealtype2d[j][1] = null
+      }
+   }
+   
 }
 
   }
@@ -368,23 +340,28 @@ function goToprofile(){
 const [date , setDate] = useState(new Date()) 
 const onChangeDate = date => {
   setDate(date);
-  console.log("ALL DATESSSS ",getDaysArray(date[0],date[1]))
-  datesArray=getDaysArray(date[0],date[1])
-  console.log("datesArray",datesArray)
+  console.log("ALL DATESSSS ", getDaysArray(date[0], date[1]))
+  datesArray = getDaysArray(date[0], date[1])
   var newdate = date.toString()
+  var tempDatesArray=[]
   var arr1 = newdate.split(' ');
-  for(let i = 0; i< datesArray.length;i++){
-     
-     // datesArray[i] = datesArray[i]
-      datesArray[i] = String(datesArray[i]).slice(4,16)
+  for (let i = 0; i < datesArray.length; i++) {
+    console.log("vikas",datesArray)
+    console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
+    tempDatesArray.push([ createRegularDateFormat(datesArray[i],'-')])
   }
- 
-  for(var i =0; i<datesArray.length;i++) {
-  datesArray[i] = createRegularDateFormat(datesArray[i])
-}
-console.log("STRING CONVERSION",datesArray)
+  datesArray=tempDatesArray
 }
 
+
+function createRegularDateFormat(t, s) {
+  let a = [{ year: 'numeric' }, { month: 'numeric' }, { day: 'numeric' }];
+  function format(m) {
+    let f = new Intl.DateTimeFormat('en', m);
+    return f.format(t);
+  }
+  return a.map(format).join(s);
+}
 
 
   const today1 = new Date()
@@ -392,23 +369,7 @@ console.log("STRING CONVERSION",datesArray)
   tomorrow.setDate(tomorrow.getDate() + 1)
 
 
-function createRegularDateFormat(arr1) {
-        var d
-      
-            d = new Date(arr1)
-            var day = d.getDate();
-            if (day < 10) {
-                day = "0" + day;
-            }
-            var month = d.getMonth() + 1;
-            if (month < 10) {
-                month = "0" + month;
-            }
-            var year = d.getFullYear();
-           return year + "-" + month + "-" + day
-            //console.log("string date in date format ",year + "-" + month + "-" + day)
-            //console.log("datespulsmealtype[i]",datespulsmealtype.replace(datespulsmealtype[i].slice(0,11),year + "-" + month + "-" + day))
-        }
+
 
   function init() {
     document.getElementById("subinheader").disabled = meal_subscribed
@@ -416,6 +377,28 @@ function createRegularDateFormat(arr1) {
 
 
   function goToTable() {
+
+    console.log(selectedDatesList,'///../',datesArray)
+    var currentSelectedDatesList=datesArray
+    for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
+      for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
+        console.log(selectedDatesList[previouslySelectedDate][0],currentSelectedDatesList[currentSelectedDate][0])
+
+          if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
+              if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
+                currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
+              }else{
+                currentSelectedDatesList[currentSelectedDate].push(selectedDatesList[previouslySelectedDate][1])
+              }
+          }
+      }
+  }
+    
+   
+console.log(currentSelectedDatesList)
+
+    console.log(currentSelectedDatesList)
+    
     document.getElementById('mealsTable').style.display = 'block'
     document.getElementById('selectedMealDates').style.display = 'none'
     document.getElementById('btn2').style.display = 'none'
@@ -423,7 +406,7 @@ function createRegularDateFormat(arr1) {
       console.log("entering into gototable and non veg ")
       document.getElementById('mealsTable').style.display = 'block';
       document.getElementById('btn1').style.display = 'block';
-      setDates(datesArray)
+      setDates(currentSelectedDatesList)
       //console.log("type of dates ...",typeof datesArray)
     }
 
@@ -431,12 +414,15 @@ function createRegularDateFormat(arr1) {
       console.log("entering into gototable and veg section ")
       document.getElementById('mealsTableveg').style.display = 'block';
       document.getElementById('btn1').style.display = 'block';
-      setDates(datesArray)
+      setDates(currentSelectedDatesList)
     }
     else {
       alert("Please subscribe! ")
     }
     document.getElementById('btn1').style.display = 'block';
+
+      setDates(currentSelectedDatesList)
+      console.log(selectedDatesList,'...',datesArray)
   }
 
 
@@ -647,15 +633,15 @@ function cancelSingleMeal(e){
               {
                 dates2.map(eachDay =>
                   <tr >
-                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay}><p id="datesFromCheckBox">{eachDay}</p></th>
+                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
-                      <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} />
+                      <input type="checkbox" id={eachDay[0] + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?false:true)} />
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>
 
-                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} />
+                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?true:false)} />
 
                     </th>
                     <th>

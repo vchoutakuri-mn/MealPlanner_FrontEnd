@@ -53,6 +53,47 @@ export default function LoginForm(props) {
         // }).catch(err=>console.log('error'))
         // console.log("Going to signup")
         reactDom.render(<SignupForm />, document.getElementById("root"))
+
+
+       var selectedDatesList=[
+        ["2021-09-30" ,'veg'],
+        ["2021-10-01",'veg'],
+        ["2021-10-04",'non-veg'],
+        ["2021-10-05",'veg'],
+        ["2021-10-06",'non-veg'],
+      ]
+      
+      var currentSelectedDatesList=[
+        ["2021-09-30"],
+        ["2021-10-01"],
+        ["2021-10-04"],
+        ["2021-10-05"],
+        ["2021-10-06"],
+        ["2021-10-07"]
+      ]
+console.log(currentSelectedDatesList[0][0])
+      for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
+          for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
+              if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
+                  console.log(selectedDatesList[previouslySelectedDate][0],currentSelectedDatesList[currentSelectedDate][0])
+                  if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
+                    currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
+                  }else{
+                    currentSelectedDatesList[currentSelectedDate].push(selectedDatesList[previouslySelectedDate][1])
+                  }
+              }
+          }
+      }
+      console.log(currentSelectedDatesList[5][1])
+      
+      var finalDatesList=[
+        ["2021-09-30" ,'veg'],
+        ["2021-10-01",'veg'],
+        ["2021-10-04",'non-veg'],
+        ["2021-10-05",'veg'],
+        ["2021-10-06",'non-veg'],
+        ["2021-10-07",'veg']
+      ]
     }
     function goToStart() {
         console.log("test working")
