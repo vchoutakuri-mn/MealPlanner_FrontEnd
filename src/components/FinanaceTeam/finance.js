@@ -70,14 +70,14 @@ let doOpen=false;
         <script src="//code.jquery.com/jquery-1.11.1.min.js"/>
     {/*---- Include the above in your HEAD tag --------*/}
    
-<div class="container">
+<div class="container" style={{width:"100%"}}>
     <div class="row">
             <div class="col-md-12">
                 <div class="widget blank no-padding">
                 
                     <div class="panel panel-default work-progress-table">
                             {/* Default panel contents */}
-                        <div class="panel-heading" style={{testAlign:'center'}}>Meal Planer<i>Finanace Page &  (financeteam@gmail.com)</i>
+                            <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER<i>Finanace Page &  (financeteam@gmail.com)</i>
                         </div>
                         <div class="dropdown rounded">
                         <button 
