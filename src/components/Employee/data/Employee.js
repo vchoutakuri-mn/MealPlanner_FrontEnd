@@ -27,12 +27,12 @@ class Employee {
                 pass:password
             })
     }
-    checkMealSubscription(empId){
+    checkMealSubscription(){
         const config = {
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }
         };
-        console.log(MEAL_SUBSCRIPTION+'/'+empId)
-        return axios.get(MEAL_SUBSCRIPTION+'/'+empId,config);
+        console.log(MEAL_SUBSCRIPTION)
+        return axios.get(MEAL_SUBSCRIPTION,config);
 }
 }
 export default new Employee();

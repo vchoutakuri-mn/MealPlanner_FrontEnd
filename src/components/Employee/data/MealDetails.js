@@ -1,13 +1,12 @@
 import axios  from "axios";
-import { EMPLOYEE_SELECTED_MEAL_DATES,EMPLOYEE_UPDATED_MEAL_DATES, TOKEN } from "../../API's/CommonService";
+import { EMPLOYEE_SELECTED_MEAL_DATES,EMPLOYEE_UPDATED_MEAL_DATES, TOKEN, MEAL_SUBSCRIPTION } from "../../API's/CommonService";
 import { GET_TOKEN } from "../../Vender/data/Storage";
 import moment from 'moment';
+
 
 const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/employee/page?"
 
 class MealDetails {
-   
-
     // getEmployeeMealDates(pageNo,pageSize){
     //     console.log(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+pageNo+"&pageSize="+pageSize)
     //     return axios.get(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+(pageNo-1)+"&pageSize="+pageSize);
@@ -23,6 +22,14 @@ class MealDetails {
             { Authorization: `Bearer ${GET_TOKEN()}` }
         });
     }
+    
+    // checkMealSubscription(){
+    //     return axios.get(MEAL_SUBSCRIPTION, {
+    //         headers: 
+    //         { Authorization: `Bearer ${GET_TOKEN()}` }
+    //     });
+        
+    // }
 
 
     updateMealDetails(updatedDatesList,empID){
@@ -62,7 +69,7 @@ class MealDetails {
         }
      
      
-    submitMealDetails(datespulsmealtype,empID){
+    submitMealDetails(datespulsmealtype){
         //console.log(this.createRegularDateFormat(new Date(),'-'))
         console.log("datespulsmealtype",datespulsmealtype)
         var data1=[]
@@ -76,33 +83,29 @@ class MealDetails {
         console.log(datespulsmealtype.length)
         for(var i = 0 ; i < datespulsmealtype.length; i++){
          
-            arr1[i] = datespulsmealtype[i].slice(0,11)
+            arr1[i] = datespulsmealtype[i].slice(0,10)
             arr2[i] = moment(arr1[i], "MM-DD-YYYY");
-            arr3[i] = datespulsmealtype[i].slice(12,)
+            arr3[i] = datespulsmealtype[i].slice(10,)
         }
       console.log("arr1",arr1)
       console.log("arr2",arr2)
       console.log("arr3",arr3)
         datespulsmealtype.map(eachDay=>{
             data1 .push({
-                empid:parseInt(empID),
-                d:this.createRegularDateFormat(eachDay.slice(0,11)),
+                //empid:parseInt(empID),
+                d:this.createRegularDateFormat(eachDay.slice(0,10)),
                 vid:1,
                 subscribed:true,
-                mealType:eachDay.slice(12,).includes('nonveg')?true:false
+                mealType:eachDay.slice(10,).includes('nonveg')?true:false
            
             })
         })
         //console.log("selected dates",dates2)
         console.log("data in submitmealdetails  ",data1)
         console.log("TOKEN",GET_TOKEN())
-        if(datespulsmealtype.length == data1.length){
+        
         return axios.post(EMPLOYEE_SELECTED_MEAL_DATES,data1,{
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
-    }
-    else{
-        alert("please select meal type")
-    }
 }
 }
 export default new MealDetails();

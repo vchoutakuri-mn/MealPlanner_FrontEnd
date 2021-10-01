@@ -49,7 +49,9 @@ var duplicate = []
 
 
 export default function MyApp(props) {
-  const { empId, meal_subscribed, token } = props;
+  var meal_subscribed
+  const { empId, token } = props;
+  //const { empId, meal_subscribed, token } = props;
   const [value, onChange] = useState(false);
   var [dates2, setDates] = useState([])
   const [reload, doReload] = useReducer((x) => x + 1, 0)
@@ -70,45 +72,45 @@ export default function MyApp(props) {
     ReactDOM.render(<Start />, document.getElementById("root"))
   }
 
-  function comparedisp(datesmealtype2d){
+//   function comparedisp(datesmealtype2d){
     
-    for(var i = 0; i< selectedDatesList.length; i++){
-      for(var j=0 ; j< datesmealtype2d.length; j++){
-      if(datesmealtype2d[j][0] == selectedDatesList[i][0]){
-        datesmealtype2d[j][1] = selectedDatesList[i][1] 
-        if(datesmealtype2d[j][1] == 'veg')
-        console.log(datesmealtype2d[j][0]+"veg")
-        document.getElementById(datesmealtype2d[j][0]+"veg").checked = true
-      }
-      else if(datesmealtype2d[j][1] == 'non-veg'){
-        console.log(datesmealtype2d[j][0]+"nonveg")
-        document.getElementById(datesmealtype2d[j][0]+"nonveg").checked = true
-      }
-      else{
-        datesmealtype2d[j][1] = null
-      }
-   }
+//     for(var i = 0; i< selectedDatesList.length; i++){
+//       for(var j=0 ; j< datesmealtype2d.length; j++){
+//       if(datesmealtype2d[j][0] == selectedDatesList[i][0]){
+//         datesmealtype2d[j][1] = selectedDatesList[i][1] 
+//         if(datesmealtype2d[j][1] == 'veg')
+//         console.log(datesmealtype2d[j][0]+"veg")
+//         document.getElementById(datesmealtype2d[j][0]+"veg").checked = true
+//       }
+//       else if(datesmealtype2d[j][1] == 'non-veg'){
+//         console.log(datesmealtype2d[j][0]+"nonveg")
+//         document.getElementById(datesmealtype2d[j][0]+"nonveg").checked = true
+//       }
+//       else{
+//         datesmealtype2d[j][1] = null
+//       }
+//    }
    
-}
+// }
 
-  }
+//   }
   
   
 
-function insertdatemealtype(duplicate,comparedisp){
-  console.log("duplicate insertdatemealtype",typeof duplicate)
-    for(var i=0;i<duplicate.length;i++){
-      console.log("duplicate[i]", duplicate[i].slice(0,10))
-       datesmealtype2d.push([duplicate[i].slice(0,10),duplicate[i].slice(10,)])
-       //console.log("datesmealtype2d[i][0]",datesmealtype2d)
-       //datesmealtype2d[i][0] = duplicate[i].slice(0,10)
-      // datesmealtype2d[i][1] = duplicate[i].slice(11,14)
+// function insertdatemealtype(duplicate,comparedisp){
+//   console.log("duplicate insertdatemealtype",typeof duplicate)
+//     for(var i=0;i<duplicate.length;i++){
+//       console.log("duplicate[i]", duplicate[i].slice(0,10))
+//        datesmealtype2d.push([duplicate[i].slice(0,10),duplicate[i].slice(10,)])
+//        //console.log("datesmealtype2d[i][0]",datesmealtype2d)
+//        //datesmealtype2d[i][0] = duplicate[i].slice(0,10)
+//       // datesmealtype2d[i][1] = duplicate[i].slice(11,14)
        
-    }
-    console.log("datesmealtype2d",datesmealtype2d)
-    console.log("datesmealtype2d,selectedDatesList start",datesmealtype2d,selectedDatesList)
-    comparedisp(datesmealtype2d)
-  }
+//     }
+//     console.log("datesmealtype2d",datesmealtype2d)
+//     console.log("datesmealtype2d,selectedDatesList start",datesmealtype2d,selectedDatesList)
+//     comparedisp(datesmealtype2d)
+//   }
 
 
   function goToNotify() {
@@ -127,10 +129,10 @@ function getDetails(e){
   datespulsmealtype.push(n)
   var date=e.target.id
   date=e.target.id.slice(0,10)
-  console.log("datespulsmealtype",datespulsmealtype.length)
+  console.log("datespulsmealtype",date)
   var mealtype = e.target.id.slice(10,)
   console.log(mealtype)
-  ////console.log(date+'nonveg'==e.target.id)
+  //console.log(date+'nonveg'==e.target.id)
  
   if(e.target.id.includes('nonveg') ){
   if(e.target.checked){
@@ -155,29 +157,29 @@ function getDetails(e){
 
       }
     }
-  console.log("duplicate,118",duplicate,datespulsmealtype)
-  copydata(datespulsmealtype,insertdatemealtype)
-  console.log("duplicate 120",duplicate)
+  // console.log("duplicate,118",duplicate,datespulsmealtype)
+  // copydata(datespulsmealtype,insertdatemealtype)
+  // console.log("duplicate 120",duplicate)
   //insertdatemealtype(duplicate);
   //comparedisp(datesmealtype2d)
   }
 
-function copydata(datespulsmealtype,insertdatemealtype){
-  //API call.then(
-    console.log(datespulsmealtype)
-    duplicate = datespulsmealtype
+// function copydata(datespulsmealtype,insertdatemealtype){
+//   //API call.then(
+//     console.log(datespulsmealtype)
+//     duplicate = datespulsmealtype
    
- // )
-  insertdatemealtype(duplicate,comparedisp)
+//  // )
+//   insertdatemealtype(duplicate,comparedisp)
 
     
-  //  for(var i =0; i<datespulsmealtype.length ;i++){
-  //    console.log("in for loop")
-  //    console.log(datespulsmealtype[i])
-  //  //duplicate[i] = datespulsmealtype[i]
+//   //  for(var i =0; i<datespulsmealtype.length ;i++){
+//   //    console.log("in for loop")
+//   //    console.log(datespulsmealtype[i])
+//   //  //duplicate[i] = datespulsmealtype[i]
+// // }
+//  console.log(duplicate)
 // }
- console.log(duplicate)
-}
 
 
 function subscribed(e){
@@ -250,27 +252,37 @@ function App() {
 
 
 var smt ;
-var getDaysArray = function(start, end) {
-  for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
-    //console.log("checking for days",dt.toString().slice(4,))
-    var datesfromcal = dt.toString().slice(4,15)
-    var mealtypedate = dt.toString().slice(4,15)
-    var modifieddt = createRegularDateFormat(datesfromcal)
-    if(0==dt.getDay() ||6==dt.getDay())
-        continue
-    // for(var i =0;i<selectedDatesList.length;i++){
-    //   if(dt.getDate() == selectedDatesList[i]){
-    //     smt = selectedDatesList[i][1]
-    //     arr.push([new Date(dt),smt]);
-    //   }
-    //   else{
-     //   arr.push([new Date(dt),null])
-      //}
-   // }
-   arr.push(new Date(modifieddt))
+// var getDaysArray = function(start, end) {
+//   for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
+//     //console.log("checking for days",dt.toString().slice(4,))
+//     var datesfromcal = dt.toString().slice(4,15)
+//     var mealtypedate = dt.toString().slice(4,15)
+//     var modifieddt = createRegularDateFormat(datesfromcal)
+//     if(0==dt.getDay() ||6==dt.getDay())
+//         continue
+//     // for(var i =0;i<selectedDatesList.length;i++){
+//     //   if(dt.getDate() == selectedDatesList[i]){
+//     //     smt = selectedDatesList[i][1]
+//     //     arr.push([new Date(dt),smt]);
+//     //   }
+//     //   else{
+//      //   arr.push([new Date(dt),null])
+//       //}
+//    // }
+//    arr.push(new Date(modifieddt))
+//   }
+//   return arr;
+// };
+var getDaysArray = function (start, end) {
+  for (var arr = [], dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
+    //console.log("checking for days",dt.getDay())
+    if (0 == dt.getDay() || 6 == dt.getDay())
+      continue
+    arr.push(new Date(dt));
   }
   return arr;
 };
+
 
 
   function goToDel(e) {
@@ -296,17 +308,17 @@ var getDaysArray = function(start, end) {
   }
 
   function goToSubs() {
-    if (meal_subscribed) {
-      alert("subscribed")
-      return
-    }
-    //console.log("clicked on subscribe")
-    // //console.log("checking enable",meal_subscribed[0])
-    ////console.log("this is data from ..",Employee.checkMealSubscription())
-    //   Employee.checkMealSubscription(empId).then((Response)=>{
-    //     //console.log(typeof Response.data);
-    //     meal_subscribed=Response.data
-    //  })
+    
+      Employee.checkMealSubscription().then((Response)=>{
+        console.log(Response.data);
+        meal_subscribed=Response.data
+        console.log("meal_subscribed",meal_subscribed[0][0])
+     })
+     if (meal_subscribed[0][0] == true) {
+         alert("subscribed")
+         //fade button
+         return
+       }
 
     if (enable) {
       document.getElementById("proceedtosub").disabled = false;
@@ -336,7 +348,6 @@ function goToprofile(){
 }
 
 
-
 const [date , setDate] = useState(new Date()) 
 const onChangeDate = date => {
   setDate(date);
@@ -345,8 +356,8 @@ const onChangeDate = date => {
   var newdate = date.toString()
   var tempDatesArray=[]
   var arr1 = newdate.split(' ');
+  console.log("vikas",datesArray)
   for (let i = 0; i < datesArray.length; i++) {
-    console.log("vikas",datesArray)
     console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
     tempDatesArray.push([ createRegularDateFormat(datesArray[i],'-')])
   }
@@ -494,11 +505,8 @@ function cancelSingleMeal(e){
     }
     index=-1
   }
- 
-
     var index = dates2.indexOf(prevoiusdatesforcancel)
-
-  prevoiusdatesforcancel.splice(index,1)
+    prevoiusdatesforcancel.splice(index,1)
   var i = e.target.parentNode.parentNode.parentNode.rowIndex;
   
   doReload();
@@ -541,7 +549,7 @@ function cancelSingleMeal(e){
             <button onClick={goToEmphist} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-history">  History</i></button>
 
 
-              <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe</i></button>
+              <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe..</i></button>
 
       
 
@@ -636,7 +644,7 @@ function cancelSingleMeal(e){
                     <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
-                      <input type="checkbox" id={eachDay[0] + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?false:true)} />
+                      <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?false:true)} />
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>

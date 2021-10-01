@@ -63,15 +63,15 @@ export const SIGNUP="http://localhost:8080/userCred/signup";
 //
 //request:token or employee id
 //Expected:true or false
-export const MEAL_SUBSCRIPTION='http://localhost:8080/employee/getMealSubscriptionStatus';
+export const MEAL_SUBSCRIPTION='http://localhost:8080/employee/subscribe';
 
 
 
-export const EMPLOYEE_SELECTED_MEAL_DATES="http://localhost:8080/mealCalender/add"
+export const EMPLOYEE_SELECTED_MEAL_DATES="http://localhost:8080/mealCalender/selectMeals"
 
 
 
-export const EMPLOYEE_UPDATED_MEAL_DATES="";
+export const EMPLOYEE_UPDATED_MEAL_DATES="http://localhost:8080/mealCalender/cancelMeal";
 
 
             //---------------------TOKEN-------------------//
