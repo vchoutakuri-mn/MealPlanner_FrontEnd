@@ -12,7 +12,7 @@ class Employee {
         const config = {
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }
         };
-        return axios.get(USERS_REST_API_URL,config);
+        return axios.get(USERS_REST_API_URL+"/"+pageNo+"/"+pageSize,config);
     }
     getNoOfRecords(pageNo,pageSize){
         return axios.get(NUMBER_OF_RECORDS);

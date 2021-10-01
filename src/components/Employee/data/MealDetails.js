@@ -6,7 +6,6 @@ import { GET_TOKEN } from "../../Vender/data/Storage";
 const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/employee/page?"
 
 class MealDetails {
-   
 
     getEmployeeMealDates(pageNo,pageSize){
         console.log(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+pageNo+"&pageSize="+pageSize)
