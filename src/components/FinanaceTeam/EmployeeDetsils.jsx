@@ -59,6 +59,8 @@ export default function EmployeeDesils(props) {
   let [sessionTimeOut, setSessionTimeOut] = useState(false)
   const [downloadError, raiseDownloadError] = useState(false)
   const [searchBy,setSearchBy]=useState("Employee id")
+  const [pageNo,setPageNo]= useState(1)
+  const [pageSIze,setPageSIze]=useState(10)
 
 
   function createRegularDateFormat(t, s) {
@@ -76,7 +78,7 @@ export default function EmployeeDesils(props) {
     let date = createRegularDateFormat(startDate, '-');
     START_DATE = createRegularDateFormat(startDate, '-');
 
-    fetchData(START_DATE, START_DATE + 1)
+    fetchData(START_DATE, START_DATE + 1,pageNo,pageSIze)
     let dateObj = startDate
     // if(date!=null){
     // if(DateArray[0]==undefined ){
@@ -94,24 +96,24 @@ export default function EmployeeDesils(props) {
     closeDownloadReport(true)
 
   }
-  function fetchData(start, end) {
-    MealDetails.getMealDates(start, end).then(Response => {
+  function fetchData(start, end,pageNo,pageSIze) {
+    MealDetails.getMealDates(start, end,pageNo,pageSIze).then(Response => {
       console.log("status code ", Response.data)
       REPORTDETAILS = Response.data;
 
     }).catch(err => {
       console.log("Something went wrong",err)
       //setSessionTimeOut(true)
-      reactDom.render(<ForbiddenError/>,document.getElementById("root"))
+     // reactDom.render(<ForbiddenError/>,document.getElementById("root"))
     })
 
   }
 
   function end(endDate) {
-    //console.log("end date selected")
+    ////console.log("end date selected")
     let date = createRegularDateFormat(endDate, '-');
     END_DATE = createRegularDateFormat(endDate, '-');
-    fetchData(START_DATE, END_DATE)
+    fetchData(START_DATE, END_DATE,pageNo,pageSIze)
 
     // if(date!=null){
 
@@ -120,7 +122,7 @@ export default function EmployeeDesils(props) {
     //       } else{
     //         DateArray[1]=date
     //       }
-    // //console.log('s date',date)
+    // ////console.log('s date',date)
     // showTableData(DateArray)
     // }
     return endDate
@@ -148,11 +150,11 @@ export default function EmployeeDesils(props) {
       DAYLIST = getDaysArray(new Date(DateArray[start]), new Date(DateArray[end]))
 
       var DAYS = DAYLIST.map(day => day.toString().split(' ')[0])
-      //console.log("=====>"+DAYLIST)
+      ////console.log("=====>"+DAYLIST)
       DAYLIST = DAYLIST.map((v) =>
         v.toISOString().slice(0, 10))
 
-      //console.log("/..",DAYLIST)
+      ////console.log("/..",DAYLIST)
       data = []
       let veg = 0
       let nonVeg = veg
@@ -181,7 +183,7 @@ export default function EmployeeDesils(props) {
           endPage = rowsPerPage;
         }
       } else {
-        console.log('basic functions else block')
+        //console.log('basic functions else block')
       }
     }
   }
@@ -206,7 +208,7 @@ export default function EmployeeDesils(props) {
       startPage = 1;
       endPage = 10;
     }
-    //console.log(rowsPerPage,'/././.')
+    ////console.log(rowsPerPage,'/././.')
     doResetDates()
 
   }
@@ -247,7 +249,7 @@ export default function EmployeeDesils(props) {
       }
 
       REPORTDETAILS = data.slice(presentRowsPerPage - data.length, presentRowsPerPage + rowsPerPage - data.length)
-      console.log(REPORTDETAILS.length + "./", presentRowsPerPage - data.length, presentRowsPerPage + rowsPerPage - data.length)
+      //console.log(REPORTDETAILS.length + "./", presentRowsPerPage - data.length, presentRowsPerPage + rowsPerPage - data.length)
       startPage = endPage;
       endPage = rowsPerPage;
     }
@@ -280,7 +282,7 @@ export default function EmployeeDesils(props) {
   }
   return (
     <>
-      {console.log('html is loading', REPORTDETAILS.length)}
+      {console.log('html is loading', REPORTDETAILS)}
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       <div id='reportPage'>
 
@@ -289,7 +291,7 @@ export default function EmployeeDesils(props) {
           <DateRangeInput class='dateRangeInput'
             onDatesChange={(data) => {
               console.log("on Date change")
-              fetchData(START_DATE, END_DATE)
+              fetchData(START_DATE, END_DATE,pageNo,pageSIze)
               dispatch({ type: 'dateChange', payload: data })
             }}
             onFocusChange={focusedInput => dispatch({ type: 'focusChange', payload: focusedInput })}
@@ -325,12 +327,12 @@ export default function EmployeeDesils(props) {
           <table class="table" id="mealsTable"  >
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Day</th>
+                <th>Employee Id</th>
+               
                 <th>Employee Name</th>
                 <th>Email</th>
                 <th>Total number of meals</th>
-                <th>Total amount of money</th>
+                <th>Total  money</th>
               </tr>
             </thead>
             <DownloadConfirm open={downloadReport} error={REPORTDETAILS.length} closeWindow={closeDownload} report={REPORTDETAILS} startDate={START_DATE} endDate={END_DATE} />
@@ -341,13 +343,13 @@ export default function EmployeeDesils(props) {
                   REPORTDETAILS.map(
                     eachDay =>
                       <tr>
-                        <th scope="row">{eachDay[0].slice(0, 10)}</th>
+                        <th scope="row">{eachDay[0]}</th>
 
-                        <td>{weekdays[new Date(eachDay[0]).getDay()]}</td>
+                      
                         <td>{eachDay[1]}</td>
                         <td>{eachDay[2]}</td>
                         <td>{eachDay[3]}</td>
-                        <td><span class="label label-info">Rs {eachDay[3]}</span></td>
+                        <td><span class="label label-info">Rs {eachDay[4]}</span></td>
                       </tr>
                   ))
                 : <>

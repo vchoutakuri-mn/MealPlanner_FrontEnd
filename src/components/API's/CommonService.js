@@ -4,13 +4,16 @@
 //Request:pageNo:int and pageSize:int
 //Expected : List of json objects
 //Method type:
-export const USERS_REST_API_URL="http://localhost:8083/vendor/home/2021-09-24/2021-09-29";
+export const USERS_REST_API_URL="http://localhost:8083/vendor/home";
+
 
 // For updating daily meal status of particular employee or list of employees
-// Request:list of empId
+// Request:list of empId 
 //Expected:'sucess' message on sucessful updation . 'failed' message on unsucessful updation
-//Method type:
-export const SUBMIT_REST_API_URL="http://localhost:8080/employee//employees/"
+//Method type:put
+export const SUBMIT_REST_API_URL="http://localhost:8083/vendor/updateMealStatus/"
+
+
 
 // Return the number of employees of particular vendor id
 //Expected :number
@@ -18,9 +21,9 @@ export const SUBMIT_REST_API_URL="http://localhost:8080/employee//employees/"
 export const NUMBER_OF_RECORDS="http://localhost:8080/employee/numberOfRecord"
 
 //In vendor's report page , need an API which return the list which have a details like total number of meals
-//Request :startDate and endDate
+//Request :startDate and endDate as path variable
 //Expected:List of json objects
-//Method type:
+//Method type:get
 export const MEAL_DETAILS_BETWEEN_DATES='http://localhost:8083/vendor/report';
 
 //For updating or changing the meal price in vendor's home page
@@ -40,11 +43,14 @@ export const MEAL_PRICE='';
 //Method type:
 export const DATES_WITH_MEAL_DETAILS="http://localhost:8080/employee/getAll";
 
-//
-//Request:
-//Expected:
-//Method type:
-export const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/employee/blogPageable?size="
+
+
+//For listing all the emplpoyees total meals and price on financer's home page between two dates
+//Request:startdate and enddate,pageno,pagesize
+//Expected:List of json objects
+//Method type:get
+export const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8083/mealCalender/home/financer";
+
 
 
             //-------------------------------Employee API's------------------------//

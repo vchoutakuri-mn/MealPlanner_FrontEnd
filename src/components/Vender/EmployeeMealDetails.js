@@ -10,6 +10,7 @@ import SimpleDialog from './SendNotificationConfirm'
 import MyApp from '../Employee/Emp_home_new';
 import reactDom from 'react-dom';
 import Start from '../Employee/home';
+import MealDetails from './data/MealDetails';
 
 var SelectedEmployees = []
 var Users = [];
@@ -67,7 +68,7 @@ export default class EmployeeMealDetails extends React.Component {
     }
 
     getData(pageNo,pageSize){
-        
+       
         Employee.getUsers(pageNo,pageSize).then((Response) => {
             //console.log(Response.status);
             //if(Response.status==403)//console.log("Login expired ")
@@ -249,7 +250,7 @@ o
   backward(){
     if(this.state.pageNo-2>0){
       this.state.pageNo=this.state.pageNo-2
-      this.getData(this.state.pageNo,this.state.selectedRows); 
+      this.getData(this.state.pageNo,this.state.pageSize); 
     }
 }
 
@@ -315,7 +316,7 @@ goToHome(){
                                 <th >Employee ID</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th >Meal taken in percentage</th>
+
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -327,22 +328,17 @@ goToHome(){
                                             <td>{user[0]}</td>
                                             <td>{user[1]}</td>
                                             <td>{user[2]}</td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div style={{ width: user[3] + "%" }} aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" class="red progress-bar">
-                                                        <span>{user[3]}%</span>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                            
                                            
                                             <td>
 
                                                 <label class="switch">
-                                                    {('no' == 'no') ?
-                                                        <>
-                                                            <input type="checkbox" id={user[0]} onClick={this.toggleClicked}/>
-                                                            <span class="slider round"></span></> :
-                                                        <><span>Submitted</span></>
+                                                    {(user[3]=='true'|| user[3]==true) ?
+                                                      <><span>Submitted</span></>
+                                                      :
+                                                      <>
+                                                      <input type="checkbox" id={user[0]} onClick={this.toggleClicked}/>
+                                                      <span class="slider round"></span></> 
                                                     }
                                                 </label>
                                             </td>
