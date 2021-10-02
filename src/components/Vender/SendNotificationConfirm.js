@@ -332,9 +332,9 @@ function InvalidUser(props) {
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
       <Dialog aria-labelledby="simple-dialog-title" open={open}>
-        <DialogTitle id="simple-dialog-title"><h3 style={{ textAlign: "center" }}>Something went wrong</h3></DialogTitle>
+        <DialogTitle id="simple-dialog-title"><h3 style={{ textAlign: "center" }}>Internal server error</h3></DialogTitle>
         <div style={{ marginLeft: '15px' }}>
-          <span style={{ marginLeft: '5px' }}>Please close  tab</span>
+          <span style={{ marginLeft: '5px' }}>Please try after some time</span>
         </div>
         <div>
           <br />
