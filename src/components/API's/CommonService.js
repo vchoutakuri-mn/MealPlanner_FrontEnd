@@ -24,7 +24,7 @@ export const NUMBER_OF_RECORDS="http://localhost:8080/employee/numberOfRecord"
 //Request :startDate and endDate as path variable
 //Expected:List of json objects
 //Method type:get
-export const MEAL_DETAILS_BETWEEN_DATES='http://localhost:8083/vendor/report';
+export const MEAL_DETAILS_BETWEEN_DATES='http://localhost:8083/vendor/report/';
 
 //For updating or changing the meal price in vendor's home page
 //Request:veg:$ and nonVeg:$

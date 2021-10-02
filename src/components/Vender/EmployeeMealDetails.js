@@ -101,7 +101,8 @@ export default class EmployeeMealDetails extends React.Component {
       
     }
     reload(){
-        this.getData(1,1);
+        document.getElementById('searchData').value=
+        this.getData(1,5);
     }
     setShowUsers() {
 
@@ -203,22 +204,26 @@ o
         this.state.users=[]
         switch(this.state.searchBy){
             case "Employee ID":
+               
                 for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(searchData!='' && String(Users[userNumber].empID).includes(searchData)){
+                    console.log("In employee",searchData,Users[userNumber][0])
+                    if(searchData!='' && String(Users[userNumber][0]).includes(searchData)){
+                        console.log('ds c')
                         this.state.users.push(Users[userNumber])
                     }
                 }
+                console.log("In " ,this.state.users,Users)
                 break;
             case "Employee name":
                 for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(Users[userNumber].empName.toUpperCase().includes(searchData.toUpperCase())){
+                    if(Users[userNumber][1].toUpperCase().includes(searchData.toUpperCase())){
                         this.state.users.push(Users[userNumber])
                     }
                 }
                 break;
             case "Employee email":
                 for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(Users[userNumber].empEmail.toUpperCase().includes(searchData.toUpperCase())){
+                    if(Users[userNumber][2].toUpperCase().includes(searchData.toUpperCase())){
                         this.state.users.push(Users[userNumber])
                     }
                 }
@@ -226,16 +231,17 @@ o
 
                 case "Number of days skipped":
                     for(let userNumber=0;userNumber<Users.length;userNumber++){
-                        if(searchData!='' && String(Users[userNumber].noOfDays).includes(searchData)){
+                        if(searchData!='' && String(Users[userNumber][3]).includes(searchData)){
                             this.state.users.push(Users[userNumber])
                         }
                     }
                     break;
             default:
-                //console.log("In default")
+                console.log("In default")
                 this.state.users=Users
                 break;
         }
+       
         this.setState({ShowUsers:[0]})
         
     }
@@ -344,7 +350,7 @@ goToHome(){
                                             </td>
                                         </tr>
                                 ):
-                                <p style={{width:'100%',marginTop:'10%'}}>No data found</p>
+                                <p style={{textAlign:'center',marginTop:'10%'}}>No data found</p>
                             }
                         </tbody>
                     </table>
