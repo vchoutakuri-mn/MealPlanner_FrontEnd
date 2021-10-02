@@ -10,7 +10,7 @@ export const USERS_REST_API_URL="http://localhost:8080/vendor/home";
 // Request:list of empId 
 //Expected:'sucess' message on sucessful updation . 'failed' message on unsucessful updation
 //Method type:put
-export const SUBMIT_REST_API_URL="http://localhost:8083/vendor/updateMealStatus/"
+export const SUBMIT_REST_API_URL="http://localhost:8080/vendor/updateMealStatus/"
 
 
 

@@ -58,9 +58,11 @@ export default function EmployeeDesils(props) {
   let [data, setDate] = useState([]);
   let [sessionTimeOut, setSessionTimeOut] = useState(false)
   const [downloadError, raiseDownloadError] = useState(false)
-  const [searchBy,setSearchBy]=useState("Employee id")
+  let [searchBy,setSearchBy]=useState("Employee id")
   const [pageNo,setPageNo]= useState(1)
   const [pageSIze,setPageSIze]=useState(10)
+  let [Users,setUsers]=useState([])
+
 
 
   function createRegularDateFormat(t, s) {
@@ -100,9 +102,10 @@ export default function EmployeeDesils(props) {
     MealDetails.getMealDates(start, end,pageNo,pageSIze).then(Response => {
       console.log("status code ", Response.data)
       REPORTDETAILS = Response.data;
-
+      Users= Response.data
+      console.log("Something ",Users)
     }).catch(err => {
-      console.log("Something went wrong",err)
+      console.log("Something went wrong",err.Response)
       //setSessionTimeOut(true)
      // reactDom.render(<ForbiddenError/>,document.getElementById("root"))
     })
@@ -223,10 +226,54 @@ export default function EmployeeDesils(props) {
   }
 
   function search() {
-    // let searchData = document.getElementById('searchData').value
+    let searchData = document.getElementById('searchData').value
+    searchBy=document.getElementById('searchBy').value
+    if(searchData==''||searchData==undefined){
+      REPORTDETAILS=Users
+        doResetDates()
+        return;
+    }
+    console.log("Searching...")
+    REPORTDETAILS=[]
+    switch(searchBy){
+        case "Employee ID":
+          console.error("Searching...Employee with ID",Users)
+            for(let userNumber=0;userNumber<Users.length;userNumber++){
+                console.log("In employee",searchData,Users[userNumber][0])
+                if(searchData!='' && String(Users[userNumber][0]).includes(searchData)){
+                    console.log('ds c')
+                    REPORTDETAILS.push(Users[userNumber])
+                }
+            }
+            console.log("In " ,Users)
+            break;
+        case "Employee name":
+          console.log("Searching...Employee with name")
+            for(let userNumber=0;userNumber<Users.length;userNumber++){
+                if(Users[userNumber][1].toUpperCase().includes(searchData.toUpperCase())){
+                  REPORTDETAILS.push(Users[userNumber])
+                }
+            }
+            break;
+        case "Employee email":
+            for(let userNumber=0;userNumber<Users.length;userNumber++){
+                if(Users[userNumber][2].toUpperCase().includes(searchData.toUpperCase())){
+                  REPORTDETAILS.push(Users[userNumber])
+                }
+            }
+            break;
 
+            
+        default:
+            console.log("In default")
+            REPORTDETAILS=Users
+            break;
+    }
+   
+    doResetDates()
+    
+}
 
-  }
 
 
   function backward() {
@@ -307,12 +354,12 @@ export default function EmployeeDesils(props) {
         <button type="submit" onClick={download} class="btn btn-primary pull-right" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-download"></i> Download Report</button>
              
              <button type="submit" onClick={search} class="btn btn-primary pull-right" style={{marginLeft:'5px' ,height:"30px", marginTop:'5px'}} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button>
-             <select name="cars" id="cars" onChange={search} class="btn btn-primary pull-right" style={{ float: 'left', marginTop: '5px', marginLeft: '5px' }} onClick={selectSearchType}>
+             <select name="cars" id="searchBy" onChange={search} class="btn btn-primary pull-right" style={{ float: 'left', marginTop: '5px', marginLeft: '5px' }} onClick={selectSearchType}>
                                 <option value="Employee ID">Search by</option>
                                 <option value="Employee ID">EmployeeID</option>
                                 <option value="Employee name">Employee name</option>
                                 <option value="Employee email">Employee email</option>
-                                <option value="Total Money">Total Money</option>
+                              
                             </select>
                             <input type="text" class="pull-right"id="searchData" style={{float:'left' , marginTop:'5px'}} name="search" placeholder={searchBy} onKeyUp={search}/>
 
@@ -353,7 +400,7 @@ export default function EmployeeDesils(props) {
                       </tr>
                   ))
                 : <>
-                  <p style={{ width: '100%', marginTop: '10%' }}>No data found</p>
+                  <p style={{ textAlign:'center' ,marginTop:'10%'}}>No data found</p>
                 </>}
             </tbody>
           </table>

@@ -280,12 +280,14 @@ var getDaysArray = function (start, end) {
         console.log(Response.data);
         meal_subscribed=Response.data
         console.log("meal_subscribed",meal_subscribed[0][0])
+        console.log("meal_subscribed",meal_subscribed[0][0])
+        if (meal_subscribed[0][0] == true) {
+            alert("subscribed")
+            //fade button
+            return
+          }
      })
-     if (meal_subscribed[0][0] == true) {
-         alert("subscribed")
-         //fade button
-         return
-       }
+    
 
     if (enable) {
       document.getElementById("proceedtosub").disabled = false;
