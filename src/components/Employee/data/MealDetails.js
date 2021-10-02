@@ -28,11 +28,11 @@ class MealDetails {
     // }
 
 
-    updateMealDetails(updatedDatesList,empID){
+    updateMealDetails(updatedDatesList){
         var data=[]
         updatedDatesList.map(eachDay=>{
             data .push({
-                empid:empID,
+            
                 d:eachDay[0],
                 vid : 1,
                 mealType:eachDay[1]=='veg'?true:false,
@@ -40,7 +40,7 @@ class MealDetails {
             })
         })
         console.log(data)
-        return axios.post(EMPLOYEE_UPDATED_MEAL_DATES+'/'+empID,data,{
+        return axios.post(EMPLOYEE_UPDATED_MEAL_DATES+'/'+data,{
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }
         })
     }

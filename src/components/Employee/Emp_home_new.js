@@ -128,9 +128,9 @@ function getDetails(e){
   console.log("e.target",e.target)
   datespulsmealtype.push(n)
   var date=e.target.id
-  date=e.target.id.slice(0,10)
+  date=e.target.id.slice(0,9)
   console.log("datespulsmealtype",date)
-  var mealtype = e.target.id.slice(10,)
+  var mealtype = e.target.id.slice(9,)
   console.log(mealtype)
   //console.log(date+'nonveg'==e.target.id)
  
@@ -240,39 +240,6 @@ function subscribed(e){
   }
 
 
-function App() {
-  const [value, setValue] = useState();
-  const onChange = useCallback(
-    (value) => {
-      setValue(value);
-    },
-    [setValue],
-  );  
-}
-
-
-var smt ;
-// var getDaysArray = function(start, end) {
-//   for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
-//     //console.log("checking for days",dt.toString().slice(4,))
-//     var datesfromcal = dt.toString().slice(4,15)
-//     var mealtypedate = dt.toString().slice(4,15)
-//     var modifieddt = createRegularDateFormat(datesfromcal)
-//     if(0==dt.getDay() ||6==dt.getDay())
-//         continue
-//     // for(var i =0;i<selectedDatesList.length;i++){
-//     //   if(dt.getDate() == selectedDatesList[i]){
-//     //     smt = selectedDatesList[i][1]
-//     //     arr.push([new Date(dt),smt]);
-//     //   }
-//     //   else{
-//      //   arr.push([new Date(dt),null])
-//       //}
-//    // }
-//    arr.push(new Date(modifieddt))
-//   }
-//   return arr;
-// };
 var getDaysArray = function (start, end) {
   for (var arr = [], dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
     //console.log("checking for days",dt.getDay())
@@ -356,7 +323,6 @@ const onChangeDate = date => {
   var newdate = date.toString()
   var tempDatesArray=[]
   var arr1 = newdate.split(' ');
-  console.log("vikas",datesArray)
   for (let i = 0; i < datesArray.length; i++) {
     console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
     tempDatesArray.push([ createRegularDateFormat(datesArray[i],'-')])
@@ -507,7 +473,7 @@ function cancelSingleMeal(e){
   }
     var index = dates2.indexOf(prevoiusdatesforcancel)
     prevoiusdatesforcancel.splice(index,1)
-  var i = e.target.parentNode.parentNode.parentNode.rowIndex;
+ // var i = e.target.parentNode.parentNode.parentNode.rowIndex;
   
   doReload();
   }
@@ -689,7 +655,7 @@ prevoiusdatesforcancel.map(eachDay =>
 
                     </th>
                     <th>
-                      <span onClick={cancelSingleMeal} id={eachDay + "delete"}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
+                      <span onClick={cancelSingleMeal} id={eachDay}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
                     </th>
                   </tr>)
               }
