@@ -73,7 +73,8 @@ function setUserType(e){
   USERTYPE=e.target.value;
 }
 
-function goToHome(){
+function goToHome(e){
+  e.preventDefault()
   
   var useuse = document.getElementById("userType").value;
   console.log("use use",useuse)
@@ -97,9 +98,12 @@ function goToHome(){
       if( userPassword.length >= 8  &&
        userPassword.match(lowerCaseLetters) != null && 
      userPassword.match(upperCaseLetters) !=null && 
-   userPassword.match(numbers) != null  &&
-     userPassword==confirmPassword
+   userPassword.match(numbers) != null  
+     //userPassword.includes(confirmPassword)
       )
+      {
+
+     
     
     
      var token=''
@@ -110,7 +114,7 @@ function goToHome(){
        
      
      //reactDom.render(<MyApp />,document.getElementById("root"))
-      if(Response.status==200 && Response.data!=''){
+      if(Response.status==200 ){
                   //go to next page
                   //console.log("response success")
                   console.log("usertype",useuse)
@@ -118,21 +122,20 @@ function goToHome(){
                    token=Response.data;
                   console.log('Token generated')
                   console.log(token)
+                 
+                    reactDom.render(<LoginForm />,document.getElementById("root"))
+               
               }else{
                 console.log('details wrong')
                   //Reload component or input fields make empty
               }
           }).catch(err=>console.log('Something went wrong'))
-    if(useuse=="Employee"){
-      reactDom.render(<MyApp />,document.getElementById("root"))
-  }else if(useuse=="vendor"){
-      reactDom.render(<Vender token={token}/>,document.getElementById("root"))
-  }else{
-    
-      reactDom.render(<Finance />,document.getElementById("root"))
-  }
+  
           
+        }else{
+          alert("Please provide proper password")
         }
+      }
         
     
 
@@ -193,9 +196,9 @@ function goToStart(){
                     <form  style={{marginTop:"-35px"}}>
                         <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px" }}>SignUp</p>
                         <select name="cars" id="userType" style={{marginTop:"-10px",width:"40%",marginLeft:"6px" }} onChange={setUserType} >
-                        <option value="Employee">Employee</option>
-                        <option value="Vendor" >Vendor</option>
-                        <option value="Financier">Financier</option>
+                        <option value="employee">Employee</option>
+                        <option value="vendor" >Vendor</option>
+                        <option value="financer">Financer</option>
                         </select><br></br>
                         <p>UserId</p>
                         <input type="text" id="userId"  name="name" placeholder="Your Id" required/>

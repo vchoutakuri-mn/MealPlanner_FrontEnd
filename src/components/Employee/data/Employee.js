@@ -24,7 +24,9 @@ class Employee {
                 name:userName,
                 email:userEmail,
                 role:userType,
-                pass:password
+                pass:password,
+                meal_subscribed:0,
+                meal_plan_type:0
             })
     }
     checkMealSubscription(){

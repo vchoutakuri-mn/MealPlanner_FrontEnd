@@ -55,8 +55,10 @@ export default function Report(props) {
   let [START_DATE, setStartDate] = useState('');
   let [END_DATE, setEndDate] = useState('');
   let [data, setDate] = useState([]);
-  let [sessionTimeOut, setSessionTimeOut] = useState(false)
-  const [downloadError, raiseDownloadError] = useState(false)
+  let [sessionTimeOut, setSessionTimeOut] = useState(false);
+  const [downloadError, raiseDownloadError] = useState(false);
+  const [pageNo,setPageNo]=useState(1);
+  const [pageSize,setPageSize]=useState(5);
 
 
   function createRegularDateFormat(t, s) {
@@ -74,7 +76,7 @@ export default function Report(props) {
     let date = createRegularDateFormat(startDate, '-');
     START_DATE = createRegularDateFormat(startDate, '-');
 
-    fetchData(START_DATE, START_DATE + 1)
+    fetchData(START_DATE, START_DATE + 1,pageNo,pageSize)
     let dateObj = startDate
     // if(date!=null){
     // if(DateArray[0]==undefined ){
@@ -94,14 +96,14 @@ export default function Report(props) {
     }
 
   }
-  function fetchData(start, end) {
-    MealDetails.getMealDates(start, end).then(Response => {
+  function fetchData(start, end,pageNo,pageSize) {
+    MealDetails.getMealDates(start, end,pageNo,pageSize).then(Response => {
       console.log("status code ", Response.data)
       REPORTDETAILS = Response.data;
 
     }).catch(err => {
       console.log("Something went wrong")
-      setSessionTimeOut(true)
+      //setSessionTimeOut(true)
     })
 
   }
@@ -110,7 +112,7 @@ export default function Report(props) {
     //console.log("end date selected")
     let date = createRegularDateFormat(endDate, '-');
     END_DATE = createRegularDateFormat(endDate, '-');
-    fetchData(START_DATE, END_DATE)
+    fetchData(START_DATE, END_DATE,pageNo,pageSize)
 
     // if(date!=null){
 
@@ -281,7 +283,7 @@ export default function Report(props) {
           <DateRangeInput class='dateRangeInput'
             onDatesChange={(data) => {
               console.log("on Date change")
-              fetchData(START_DATE, END_DATE)
+              fetchData(START_DATE, END_DATE,pageNo,pageSize)
               dispatch({ type: 'dateChange', payload: data })
             }}
             onFocusChange={focusedInput => dispatch({ type: 'focusChange', payload: focusedInput })}
