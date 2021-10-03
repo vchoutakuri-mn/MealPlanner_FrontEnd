@@ -84,7 +84,7 @@ export const EMPLOYEE_UPDATED_MEAL_DATES="http://localhost:8080/mealCalender/can
 //request:List<date,mealtype,vendorid,subscribed>
 //Expected:delete cancelled meals/dates
 //method type:delete
-export const EMPLOYEE_CANCEL_MEAL_DATES="http://localhost:8080/mealCalender/cancelMeal/"
+export const EMPLOYEE_CANCEL_MEAL_DATES="http://localhost:8080/mealCalender/cancelMeal"
 
 
 
