@@ -1,5 +1,5 @@
 import axios  from "axios";
-import { EMPLOYEE_SELECTED_MEAL_DATES,EMPLOYEE_UPDATED_MEAL_DATES, TOKEN, MEAL_SUBSCRIPTION } from "../../API's/CommonService";
+import { EMPLOYEE_SELECTED_MEAL_DATES,EMPLOYEE_UPDATED_MEAL_DATES, TOKEN, MEAL_SUBSCRIPTION,EMPLOYEE_HISTORY } from "../../API's/CommonService";
 import { GET_TOKEN } from "../../Vender/data/Storage";
 import moment from 'moment';
 
@@ -12,12 +12,12 @@ class MealDetails {
         return axios.get(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+(pageNo-1)+"&pageSize="+pageSize);
     }
 
-    getSelectedMealDates(empID){
-        return axios.get(EMPLOYEE_SELECTED_MEAL_DATES+"/"+empID,{
-            headers: 
-            { Authorization: `Bearer ${GET_TOKEN()}` }
-        });
-    }
+    // getSelectedMealDates(empID){
+    //     return axios.get(EMPLOYEE_SELECTED_MEAL_DATES+"/"+empID,{
+    //         headers: 
+    //         { Authorization: `Bearer ${GET_TOKEN()}` }
+    //     });
+    // }
     
     // checkMealSubscription(){
     //     return axios.get(MEAL_SUBSCRIPTION, {
@@ -27,6 +27,12 @@ class MealDetails {
         
     // }
 
+
+    getMealDates(start, end){
+        return axios.get(EMPLOYEE_HISTORY, {
+                headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+            });
+    }
 
     updateMealDetails(updatedDatesList){
         var data=[]

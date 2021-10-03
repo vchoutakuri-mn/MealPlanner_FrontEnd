@@ -43,8 +43,7 @@ var deleteddates = [];
 var datespulsmealtype = []
 var datesmealtype2d = []
 var duplicate = []
- 
-
+var empHistData 
 
 
 
@@ -128,9 +127,9 @@ function getDetails(e){
   console.log("e.target",e.target)
   datespulsmealtype.push(n)
   var date=e.target.id
-  date=e.target.id.slice(0,9)
+  date=e.target.id.slice(0,10)
   console.log("datespulsmealtype",date)
-  var mealtype = e.target.id.slice(9,)
+  var mealtype = e.target.id.slice(10,)
   console.log(mealtype)
   //console.log(date+'nonveg'==e.target.id)
  
@@ -274,12 +273,29 @@ var getDaysArray = function (start, end) {
     doReload();
   }
 
+  function createRegularDateFormat(arr1) {
+    var d
+  
+        d = new Date(arr1)
+        var day = d.getDate();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        var month = d.getMonth() + 1;
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var year = d.getFullYear();
+       return year + "-" + month + "-" + day
+        //console.log("string date in date format ",year + "-" + month + "-" + day)
+        //console.log("datespulsmealtype[i]",datespulsmealtype.replace(datespulsmealtype[i].slice(0,11),year + "-" + month + "-" + day))
+    }
+
   function goToSubs() {
     
       Employee.checkMealSubscription().then((Response)=>{
         console.log(Response.data);
         meal_subscribed=Response.data
-        console.log("meal_subscribed",meal_subscribed[0][0])
         console.log("meal_subscribed",meal_subscribed[0][0])
         if (meal_subscribed[0][0] == true) {
             alert("subscribed")
@@ -326,21 +342,22 @@ const onChangeDate = date => {
   var tempDatesArray=[]
   var arr1 = newdate.split(' ');
   for (let i = 0; i < datesArray.length; i++) {
-    console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
-    tempDatesArray.push([ createRegularDateFormat(datesArray[i],'-')])
+    console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i]))
+   // console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
+    tempDatesArray.push([ createRegularDateFormat(datesArray[i])])
   }
   datesArray=tempDatesArray
 }
 
 
-function createRegularDateFormat(t, s) {
-  let a = [{ year: 'numeric' }, { month: 'numeric' }, { day: 'numeric' }];
-  function format(m) {
-    let f = new Intl.DateTimeFormat('en', m);
-    return f.format(t);
-  }
-  return a.map(format).join(s);
-}
+// function createRegularDateFormat(t, s) {
+//   let a = [{ year: 'numeric' }, { month: 'numeric' }, { day: 'numeric' }];
+//   function format(m) {
+//     let f = new Intl.DateTimeFormat('en', m);
+//     return f.format(t);
+//   }
+//   return a.map(format).join(s);
+// }
 
 
   const today1 = new Date()
@@ -362,7 +379,6 @@ function createRegularDateFormat(t, s) {
     for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
       for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
         console.log(selectedDatesList[previouslySelectedDate][0],currentSelectedDatesList[currentSelectedDate][0])
-
           if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
               if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
                 currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
@@ -488,6 +504,18 @@ function cancelSingleMeal(e){
   }
 
 
+  function empHistory(start, end) {
+    MealDetails.getMealDates(start, end).then(Response => {
+      console.log("status code ", Response.data)
+      empHistData = Response.data;
+      console.log(empHistData)
+    }).catch(err => {
+      console.log("Something went wrong in empHist")
+    })
+
+  }
+
+
   return (
     <>
       <div>
@@ -514,7 +542,7 @@ function cancelSingleMeal(e){
             <button onClick={goToprofile} class="btn btn-primary pull-right " style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-user"> Profile</i></button>
             <button onClick={cancelMeal} id="caninheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Cancel Meal</i></button>
             <button onClick={goToNotify} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-bell">  Notifications</i></button>
-            <button onClick={goToEmphist} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-history">  History</i></button>
+            <button onClick={empHistory} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-history">  History</i></button>
 
 
               <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe..</i></button>

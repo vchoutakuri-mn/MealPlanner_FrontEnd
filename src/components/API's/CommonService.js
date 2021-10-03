@@ -79,6 +79,9 @@ export const EMPLOYEE_SELECTED_MEAL_DATES="http://localhost:8080/mealCalender/se
 export const EMPLOYEE_UPDATED_MEAL_DATES="http://localhost:8080/mealCalender/cancelMeal";
 
 
+export const EMPLOYEE_HISTORY="http://localhost:8080/employee/history/{startdate}/{enddate}/{pageno}/{pagesize}";
+
+
             //---------------------TOKEN-------------------//
 export const TOKEN='';
 
