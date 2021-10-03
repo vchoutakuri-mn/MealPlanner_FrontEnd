@@ -6,7 +6,6 @@
 //Method type:
 export const USERS_REST_API_URL="http://localhost:8083/vendor/home";
 
-
 // For updating daily meal status of particular employee or list of employees
 // Request:list of empId 
 //Expected:'sucess' message on sucessful updation . 'failed' message on unsucessful updation
@@ -18,13 +17,13 @@ export const SUBMIT_REST_API_URL="http://localhost:8083/vendor/updateMealStatus/
 // Return the number of employees of particular vendor id
 //Expected :number
 //Method type:
-export const NUMBER_OF_RECORDS="http://localhost:8080/employee/numberOfRecord"
+export const NUMBER_OF_RECORDS="http://localhost:8083/employee/numberOfRecord"
 
 //In vendor's report page , need an API which return the list which have a details like total number of meals
 //Request :startDate and endDate as path variable
 //Expected:List of json objects
-//Method type:get
-export const MEAL_DETAILS_BETWEEN_DATES='http://localhost:8083/vendor/report/';
+//Method type:
+export const MEAL_DETAILS_BETWEEN_DATES='http://localhost:8083/vendor/report';
 
 //For updating or changing the meal price in vendor's home page
 //Request:veg:$ and nonVeg:$
@@ -41,7 +40,7 @@ export const MEAL_PRICE='';
 //Request:
 //Expected:
 //Method type:
-export const DATES_WITH_MEAL_DETAILS="http://localhost:8080/employee/getAll";
+export const DATES_WITH_MEAL_DETAILS="http://localhost:8083/employee/getAll";
 
 
 
@@ -69,16 +68,31 @@ export const SIGNUP="http://localhost:8083/userCred/signup";
 //
 //request:token or employee id
 //Expected:true or false
-export const MEAL_SUBSCRIPTION='http://localhost:8083/employee/getMealSubscriptionStatus';
+export const MEAL_SUBSCRIPTION='http://localhost:8083/employee/subscribe';
 
 
 
-export const EMPLOYEE_SELECTED_MEAL_DATES="http://localhost:8083/employee/selectedDates"
+export const EMPLOYEE_SELECTED_MEAL_DATES="http://localhost:8083/mealCalender/selectMeals"
 
 
 
-export const EMPLOYEE_UPDATED_MEAL_DATES="";
+export const EMPLOYEE_UPDATED_MEAL_DATES="http://localhost:8083/mealCalender/cancelMeal";
 
+
+
+//delete record from database api 
+//request:List<date,mealtype,vendorid,subscribed>
+//Expected:delete cancelled meals/dates
+//method type:delete
+export const EMPLOYEE_CANCEL_MEAL_DATES="http://localhost:8083/mealCalender/cancelMeal"
+
+
+
+//getexistdates to cancel a meal url
+//Request:vendorid
+//Expected:mealdate,mealtype
+//Method type:get
+export const EXISTDATES="http://localhost:8083/employee/getexistdates/";
 
             //---------------------TOKEN-------------------//
 export const TOKEN='';
