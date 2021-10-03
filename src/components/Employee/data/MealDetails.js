@@ -1,7 +1,15 @@
 import axios  from "axios";
-import { EMPLOYEE_SELECTED_MEAL_DATES,EMPLOYEE_UPDATED_MEAL_DATES, TOKEN, MEAL_SUBSCRIPTION,EMPLOYEE_HISTORY } from "../../API's/CommonService";
+import { 
+    EMPLOYEE_SELECTED_MEAL_DATES,
+    EMPLOYEE_UPDATED_MEAL_DATES, 
+    TOKEN, 
+    MEAL_SUBSCRIPTION ,
+    EXISTDATES,
+    EMPLOYEE_HISTORY,
+    EMPLOYEE_CANCEL_MEAL_DATES} from "../../API's/CommonService";
 import { GET_TOKEN } from "../../Vender/data/Storage";
 import moment from 'moment';
+import { each } from "jquery";
 
 
 const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/employee/page?"
@@ -33,24 +41,69 @@ class MealDetails {
                 headers: { Authorization: `Bearer ${GET_TOKEN()}` }
             });
     }
+    
+    getSelectedDates(){
+  
+        return axios.get(EXISTDATES,{
+            headers: 
+            { Authorization: `Bearer ${GET_TOKEN()}` }
+        });
+    }
+
+    getSelectedMealDates(empID){
+        return axios.get(EMPLOYEE_SELECTED_MEAL_DATES+"/"+empID,{
+            headers: 
+            { Authorization: `Bearer ${GET_TOKEN()}` }
+        });
+    }
+    
+    // checkMealSubscription(){
+    //     return axios.get(MEAL_SUBSCRIPTION, {
+    //         headers: 
+    //         { Authorization: `Bearer ${GET_TOKEN()}` }
+    //     });
+        
+    // }
+
 
     updateMealDetails(updatedDatesList){
+
+        // var data=[]
+        // updatedDatesList.map(eachDay=>{
+        //     data .push({
+        //         d:eachDay[0],
+        //         mealType:eachDay[1]=='veg'?true:false,
+        //         vid : 1,
+        //         subscribed:true
+        //     })
+        // })
+        // console.log(data)
+        // return axios.delete(EMPLOYEE_UPDATED_MEAL_DATES+'/'+data,{
+        //     headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+        // })
         var data=[]
         updatedDatesList.map(eachDay=>{
+            if(!data.includes(eachDay))
             data .push({
-            
                 d:eachDay[0],
                 vid : 1,
                 mealType:eachDay[1]=='veg'?true:false,
-                subscribed:1
+                subscribed:true
             })
         })
-        console.log(data)
-        return axios.post(EMPLOYEE_UPDATED_MEAL_DATES+'/'+data,{
-            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
-        })
-    }
-    
+        // data=[
+        //     {
+        //         d:"2021-10-08",
+        //         vid:1,
+        //         subscribed:true,
+        //         mealType:true
+        //     }
+        // ]
+         console.log(data)
+         return axios.delete(EMPLOYEE_CANCEL_MEAL_DATES,{
+            headers: 
+            { Authorization: `Bearer ${GET_TOKEN()}` }},data)
+         }
 
     createRegularDateFormat(arr1) {
         var d

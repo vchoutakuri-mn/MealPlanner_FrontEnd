@@ -17,7 +17,7 @@ export const SUBMIT_REST_API_URL="http://localhost:8080/vendor/updateMealStatus/
 // Return the number of employees of particular vendor id
 //Expected :number
 //Method type:
-export const NUMBER_OF_RECORDS="http://localhost:8080/employee/numberOfRecord"
+export const NUMBER_OF_RECORDS="http://localhost:8083/employee/numberOfRecord"
 
 //In vendor's report page , need an API which return the list which have a details like total number of meals
 //Request :startDate and endDate as path variable
@@ -40,7 +40,7 @@ export const MEAL_PRICE='';
 //Request:
 //Expected:
 //Method type:
-export const DATES_WITH_MEAL_DETAILS="http://localhost:8080/employee/getAll";
+export const DATES_WITH_MEAL_DETAILS="http://localhost:8083/employee/getAll";
 
 
 
@@ -79,12 +79,32 @@ export const EMPLOYEE_SELECTED_MEAL_DATES="http://localhost:8080/mealCalender/se
 export const EMPLOYEE_UPDATED_MEAL_DATES="http://localhost:8080/mealCalender/cancelMeal";
 
 
+
+//delete record from database api 
+//request:List<date,mealtype,vendorid,subscribed>
+//Expected:delete cancelled meals/dates
+//method type:delete
+export const EMPLOYEE_CANCEL_MEAL_DATES="http://localhost:8080/mealCalender/cancelMeal/"
+
+
+
+//getexistdates to cancel a meal url
+//Request:vendorid
+//Expected:mealdate,mealtype
+//Method type:get
+export const EXISTDATES="http://localhost:8080/employee/getexistdates/1";
+
+//History url
+//Request:startdate,enddate,pageno,pagesize
+//Expected:mealdate,mealtaken,mealtype
+//Method type:get
 export const EMPLOYEE_HISTORY="http://localhost:8080/employee/history/{startdate}/{enddate}/{pageno}/{pagesize}";
+
 
 
             //---------------------TOKEN-------------------//
 export const TOKEN='';
 
 
-export const VALIDATE_TOKEN="http://localhost:8083/userCred/validate"
+export const VALIDATE_TOKEN="http://localhost:8080/userCred/validate"
 

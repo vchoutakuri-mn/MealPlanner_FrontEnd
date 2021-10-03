@@ -182,6 +182,7 @@ console.log(currentSelectedDatesList[0][0])
                 }
             }).catch(function (error) {
                if(error.response){
+                   console.log("details wrong ",error)
                    if(error.response.status.include(4)){
                     reactDom.render(<PageNotFound/>,document.getElementById("root"))
                    }

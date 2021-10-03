@@ -13,20 +13,21 @@ import MealDetails from './data/MealDetails';
 
 toast.configure();
 
-var prevoiusdatesforcancel =
-[
-  ["2021-10-01" ,'veg'],
-  ["2021-10-04",'non-veg'],
-  ["2021-10-06",'non-veg'],
-  ["2021-10-07",'veg'],
-  
-]
+var prevoiusdatesforcancel =[]
+// =
+//     [
+//       ["2021-10-01" ,'veg'],
+//       ["2021-10-04",'nonveg'],
+//       ["2021-10-06",'nonveg'],
+//       ["2021-10-07",'veg'],
+      
+//     ]
 
 var selectedDatesList = [
   
-  ["2021-9-30", 'non-veg'],
+  ["2021-9-30", 'nonveg'],
   ["2021-10-3", 'veg'],
-  ["2021-10-5", 'non-veg'],
+  ["2021-10-5", 'nonveg'],
   ["2021-10-6", 'veg'],
 
 ]
@@ -144,7 +145,7 @@ function getDetails(e){
     }
 
   }else{
-    console.log("in getdetails in veg")
+    console.log(date,e.target.id)
     if(e.target.checked){
       console.log("veg checked")
       //console.log(date,"printing dates..",date+'nonveg')
@@ -297,22 +298,27 @@ var getDaysArray = function (start, end) {
         console.log(Response.data);
         meal_subscribed=Response.data
         console.log("meal_subscribed",meal_subscribed[0][0])
+        console.log("meal_subscribed",meal_subscribed[0][0])
         if (meal_subscribed[0][0] == true) {
             alert("subscribed")
             //fade button
             return
           }
+          else{
+            if (enable) {
+              document.getElementById("proceedtosub").disabled = false;
+            }
+            else {
+              //console.log("not subscribed and proceedtosub is not disabled")
+              document.getElementById("proceedtosub").disabled = true;
+            }
+           
+            document.getElementById("sub").style.display = "block";
+          }
      })
     
 
-    if (enable) {
-      document.getElementById("proceedtosub").disabled = false;
-    }
-    else {
-      //console.log("not subscribed and proceedtosub is not disabled")
-      document.getElementById("proceedtosub").disabled = true;
-    }
-    document.getElementById("sub").style.display = "block";
+   
 
     // this.handleModal();
     // reactDom.render(<Demo/>,document.getElementById("root"))
@@ -423,22 +429,32 @@ console.log(currentSelectedDatesList)
 
 function cancelMeal(e){
   console.log("this is in cancel meal")
-  MealDetails.getEmployeeMealDates(empId).then(Response=>{
-    console.log("Fetching the selected mealdates",Response.status);
+  MealDetails.getSelectedDates().then(Response=>{
+    console.log("Fetching the selected mealdates",Response.data);
     if(Response.status==200){
-      console.log(Response.data);
+      console.log(Response.data,'from api');
       prevoiusdatesforcancel =Response.data;
+      console.log(prevoiusdatesforcancel)
+      document.getElementById('btn2').style.display='block';
+      document.getElementById('btn1').style.display='none';
+      document.getElementById('mealsTable').style.display='none'
+      document.getElementById('selectedMealDates').style.display='block'
+      document.getElementById('mealsTable').style.display='none'
+      setSelectedMealDatesHide('block')
+    
+      for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
+        if(!prevoiusdatesforcancel[eachDay][1]){
+          prevoiusdatesforcancel[eachDay][1]='veg'
+        }else{
+          prevoiusdatesforcancel[eachDay][1]='nonveg'
+        }
+      }
+
+      doReload();
     }
   }).catch(err=>console.log("Caught error ",err)).finally()
   //meal_date,meal_type
 
-  console.log(prevoiusdatesforcancel)
-  document.getElementById('btn2').style.display='block';
-  document.getElementById('btn1').style.display='none';
-  document.getElementById('mealsTable').style.display='none'
-  document.getElementById('selectedMealDates').style.display='block'
-  document.getElementById('mealsTable').style.display='none'
-  setSelectedMealDatesHide('block')
   
 }
 
@@ -466,7 +482,7 @@ function updateDetails(){
   //  }
    console.log("delete dates",deleteddates)
    console.log("selectedDatesList",prevoiusdatesforcancel)
-  MealDetails.updateMealDetails(deleteddates,empId).then(Response=>{
+  MealDetails.updateMealDetails(deleteddates).then(Response=>{
     console.log("Response code for updating the mealdates ",Response.status)
   }).catch(err=>console.log("Caught err ",err))
 }
@@ -480,17 +496,27 @@ function cancelSingleMeal(e){
   var getdate = a.slice(0,10)
   console.log(getdate)
   var canceledmealtype = a.slice(11,)
-  deleteddates.push([getdate,canceledmealtype])
+  console.log(deleteddates)
+  if(!deleteddates.includes([getdate,canceledmealtype])){
+    deleteddates.push([getdate,canceledmealtype])
+  }
+  console.log(deleteddates)
+
   var index =-1
+
   for (var i=0;i<prevoiusdatesforcancel.length;i=i+1){
-    if(prevoiusdatesforcancel[i][0]==getdate){
+    
+    if(prevoiusdatesforcancel[i][0].includes(getdate)){
       index=i;
+      console.log(prevoiusdatesforcancel[i][0],getdate)
       break
     }
     index=-1
   }
-    var index = dates2.indexOf(prevoiusdatesforcancel)
+   // var index = dates2.indexOf(prevoiusdatesforcancel)
+
     prevoiusdatesforcancel.splice(index,1)
+
  // var i = e.target.parentNode.parentNode.parentNode.rowIndex;
   
   doReload();
@@ -667,13 +693,13 @@ function cancelSingleMeal(e){
                 <th>Cancel Meal</th>
               </tr>
             </thead>
-            {console.log(prevoiusdatesforcancel, "in html")}
+            {console.log(prevoiusdatesforcancel.length, "in html")}
             <tbody>
               {
 
 prevoiusdatesforcancel.map(eachDay =>
                   <tr >
-                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
+                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0].slice(0,10)}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
                       <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={(eachDay[1]) == 'veg'} />
@@ -681,7 +707,7 @@ prevoiusdatesforcancel.map(eachDay =>
                     </th>
                     <th style={{ padding: "10px 50px" }}>
 
-                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={(eachDay[1]) == 'non-veg'} />
+                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={(eachDay[1]) == 'nonveg'} />
 
                     </th>
                     <th>
