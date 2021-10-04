@@ -45,8 +45,7 @@ var deleteddates = [];
 var datespulsmealtype = []
 var datesmealtype2d = []
 var duplicate = []
- 
-
+var empHistData 
 
 
 
@@ -130,15 +129,15 @@ function getDetails(e){
   console.log("e.target",e.target)
   datespulsmealtype.push(n)
   var date=e.target.id
-  date=e.target.id.slice(0,9)
+  date=e.target.id.slice(0,10)
   console.log("datespulsmealtype",date)
-  var mealtype = e.target.id.slice(9,)
+  var mealtype = e.target.id.slice(10,)
   console.log(mealtype)
   //console.log(date+'nonveg'==e.target.id)
  
   if(e.target.id.includes('nonveg') ){
   if(e.target.checked){
-  
+    console.log("in getdetails in nonveg")
     document.getElementById(date+'nonveg').disabled=false
     document.getElementById(date+'veg').disabled=true
     }else{
@@ -277,12 +276,29 @@ var getDaysArray = function (start, end) {
     doReload();
   }
 
+  function createRegularDateFormat(arr1) {
+    var d
+  
+        d = new Date(arr1)
+        var day = d.getDate();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        var month = d.getMonth() + 1;
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var year = d.getFullYear();
+       return year + "-" + month + "-" + day
+        //console.log("string date in date format ",year + "-" + month + "-" + day)
+        //console.log("datespulsmealtype[i]",datespulsmealtype.replace(datespulsmealtype[i].slice(0,11),year + "-" + month + "-" + day))
+    }
+
   function goToSubs() {
     
       Employee.checkMealSubscription().then((Response)=>{
         console.log(Response.data);
         meal_subscribed=Response.data
-        console.log("meal_subscribed",meal_subscribed[0][0])
         console.log("meal_subscribed",meal_subscribed[0][0])
         if (meal_subscribed[0][0] == true) {
             alert("subscribed")
@@ -333,21 +349,22 @@ const onChangeDate = date => {
   var tempDatesArray=[]
   var arr1 = newdate.split(' ');
   for (let i = 0; i < datesArray.length; i++) {
-    console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
-    tempDatesArray.push([ createRegularDateFormat(datesArray[i],'-')])
+    console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i]))
+   // console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
+    tempDatesArray.push([ createRegularDateFormat(datesArray[i])])
   }
   datesArray=tempDatesArray
 }
 
 
-function createRegularDateFormat(t, s) {
-  let a = [{ year: 'numeric' }, { month: 'numeric' }, { day: 'numeric' }];
-  function format(m) {
-    let f = new Intl.DateTimeFormat('en', m);
-    return f.format(t);
-  }
-  return a.map(format).join(s);
-}
+// function createRegularDateFormat(t, s) {
+//   let a = [{ year: 'numeric' }, { month: 'numeric' }, { day: 'numeric' }];
+//   function format(m) {
+//     let f = new Intl.DateTimeFormat('en', m);
+//     return f.format(t);
+//   }
+//   return a.map(format).join(s);
+// }
 
 
   const today1 = new Date()
@@ -415,6 +432,7 @@ console.log(currentSelectedDatesList)
     else if (subveg == true) {
       console.log("entering into gototable and veg section ")
       document.getElementById('mealsTableveg').style.display = 'block';
+      document.getElementById('mealsTable').style.display = 'none';
       document.getElementById('btn1').style.display = 'block';
       setDates(currentSelectedDatesList)
     }
@@ -433,8 +451,8 @@ console.log(currentSelectedDatesList)
 
 function cancelMeal(e){
   console.log("this is in cancel meal")
-  MealDetails.getSelectedDates(empId).then(Response=>{
-    console.log("Fetching the selected mealdates",Response.status);
+  MealDetails.getSelectedDates().then(Response=>{
+    console.log("Fetching the selected mealdates",Response.data);
     if(Response.status==200){
       console.log(Response.data,'from api');
       prevoiusdatesforcancel =Response.data;
@@ -458,7 +476,6 @@ function cancelMeal(e){
     }
   }).catch(err=>console.log("Caught error ",err)).finally()
   //meal_date,meal_type
-
 
   
 }
@@ -487,8 +504,10 @@ function updateDetails(){
   //  }
    console.log("delete dates",deleteddates)
    console.log("selectedDatesList",prevoiusdatesforcancel)
-  MealDetails.updateMealDetails(deleteddates,empId).then(Response=>{
+  
     
+  MealDetails.updateMealDetails(deleteddates,empId).then(Response=>{
+    console.log("Response code for updating the mealdates ",Response.status)
     toast.success(
       "Meal  updated  successfully",
       {
@@ -542,6 +561,18 @@ function cancelSingleMeal(e){
   }
 
 
+  function empHistory(start, end) {
+    MealDetails.getMealDates(start, end).then(Response => {
+      console.log("status code ", Response.data)
+      empHistData = Response.data;
+      console.log(empHistData)
+    }).catch(err => {
+      console.log("Something went wrong in empHist")
+    })
+
+  }
+
+
   return (
     <>
       <div>
@@ -569,9 +600,7 @@ function cancelSingleMeal(e){
             <button onClick={cancelMeal} id="caninheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Cancel Meal</i></button>
             <button onClick={goToNotify} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-bell">  Notifications</i></button>
             <button onClick={goToEmphist} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-history">  History</i></button>
-
-
-              <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe..</i></button>
+            <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe..</i></button>
 
       
 
@@ -666,12 +695,12 @@ function cancelSingleMeal(e){
                     <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
-                      <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?false:true)} />
+                      <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('nonveg')?false:true)} />
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>
 
-                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?true:false)} />
+                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('nonveg')?true:false)} />
 
                     </th>
                     <th>
