@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Employee from './data/Employee';
 import { SET_TOKEN } from '../Vender/data/Storage';
 import MealDetails from './data/MealDetails';
+import { common } from '@material-ui/core/colors';
+import { FormText } from 'react-bootstrap';
 
 toast.configure();
 
@@ -46,7 +48,7 @@ var datespulsmealtype = []
 var datesmealtype2d = []
 var duplicate = []
 var empHistData 
-
+var selectedmealtype
 
 
 export default function MyApp(props) {
@@ -114,9 +116,9 @@ export default function MyApp(props) {
 //   }
 
 
-  function goToNotify() {
-    document.getElementById("myFormNotif").style.display = "block";
-  }
+  // function goToNotify() {
+  //   document.getElementById("myFormNotif").style.display = "block";
+  // }
 
 
   function closeFormNotif() {
@@ -150,7 +152,8 @@ function getDetails(e){
     if(e.target.checked){
       console.log("veg checked")
       //console.log(date,"printing dates..",date+'nonveg')
-      document.getElementById(date+'veg').disabled=false
+      document.getElementById(date+'veg').checked = true
+      //document.getElementById(date+'veg').disabled=false
       document.getElementById(date+'nonveg').disabled=true
     }else{
       document.getElementById(date+'nonveg').disabled=false
@@ -220,6 +223,7 @@ function subscribed(e){
   function finalSubsciption() {
     closeForm1();
     //alert("subscribed for "+typeOfMeal+" successfully")
+    //console.log("meal_subscribed",meal_subscribed[0][0])
     if (typeOfMeal == 'nonveg') {
       subnv = true
       console.log("making subnv true")
@@ -252,23 +256,47 @@ var getDaysArray = function (start, end) {
 };
 
 
-
+function goToDelveg(e) {
+  console.log("onclickkkkk", e.target.parentNode.id)
+  document.getElementById(e.target.id)
+  //console.log(e.target.parentNode.parentNode)
+  var a = e.target.parentNode.id
+  var getdate = a.slice(0, 12)
+  console.log(getdate)
+  var index = dates2.indexOf(getdate)
+  dates2.splice(index, 1)
+  //console.log("dates after deleting ",dates2)
+  var i = e.target.parentNode.parentNode.parentNode.rowIndex;
+  //document.getElementById("mealsTable").deleteRow(i);
+  //e.target.parentNode.parentNode.parentNode.style.display="none"
+  //console.log("datesarray ",dates2)
+  doReload();
+}
+var index
   function goToDel(e) {
     console.log("onclickkkkk", e.target.parentNode.id)
-    document.getElementById(e.target.id)
+    //document.getElementById(e.target.id)
     //console.log(e.target.parentNode.parentNode)
     var a = e.target.parentNode.id
-    var getdate = a.slice(0, 12)
+    var getdate = a.slice(0, 10)
     console.log(getdate)
-    var index = dates2.indexOf(getdate)
-    //console.log("checking index",getdate,dates2[index])
+    console.log("dates2",dates2)
+    for(var i = 0;i<dates2.length;i++){
+      if(getdate == dates2[i][0]){
+        console.log(i)
+        index = i
+      }
+    }
+    //index = dates2.indexOf(getdate)
+    console.log("checking index",getdate,index)
 
 
     //console.log("deleted delete and index ",getdate,index,dates2)
 
     dates2.splice(index, 1)
     
-    //console.log("dates after deleting ",dates2)
+    
+    console.log("dates after deleting ",dates2)
     var i = e.target.parentNode.parentNode.parentNode.rowIndex;
     //document.getElementById("mealsTable").deleteRow(i);
     //e.target.parentNode.parentNode.parentNode.style.display="none"
@@ -295,11 +323,13 @@ var getDaysArray = function (start, end) {
     }
 
   function goToSubs() {
-    
+    let pro='vikas'
       Employee.checkMealSubscription().then((Response)=>{
         console.log(Response.data);
         meal_subscribed=Response.data
-        console.log("meal_subscribed",meal_subscribed[0][0])
+        console.log("meal_subscribed",meal_subscribed[0][1])
+        pro='vyshali'
+        //console.log("meal_subscribed",meal_subscribed[0][0])
         if (meal_subscribed[0][0] == true) {
             alert("subscribed")
             //fade button
@@ -316,8 +346,13 @@ var getDaysArray = function (start, end) {
            
             document.getElementById("sub").style.display = "block";
           }
+          console.log("meal_subscribed 324",meal_subscribed[0][1])
+         
+    //goToTable(meal_subscribed[0][1])
+          
      })
     
+     
 
    
 
@@ -380,7 +415,10 @@ const onChangeDate = date => {
 
 
   function goToTable() {
-
+    Employee.checkMealSubscription().then((Response)=>{
+      console.log(Response.data);
+      meal_subscribed=Response.data
+ selectedmealtype = meal_subscribed[0][1]
     MealDetails.getSelectedDates(empId).then(Response=>{
       console.log("Fetching the selected mealdates",Response.status);
       if(Response.status==200){
@@ -418,10 +456,17 @@ const onChangeDate = date => {
 console.log(currentSelectedDatesList)
 
     
-    document.getElementById('mealsTable').style.display = 'block'
+    document.getElementById('mealsTable').style.display = 'none'
     document.getElementById('selectedMealDates').style.display = 'none'
-    document.getElementById('btn2').style.display = 'none'
-    if (subnv == true) {
+    document.getElementById('btn1').style.display = 'none'
+    document.getElementById('btn2').style.display = 'none';
+    
+    //console.log("meal_subscribed[1][0]",meal_subscribed[1][0])
+    console.log("subveg,selectedmealtypesubnv",selectedmealtype)
+   // selectedmealtype == true ? subnv = true : subveg = true
+    console.log("subveg,subnv",subveg,subnv)
+
+    if (!selectedmealtype) {
       console.log("entering into gototable and non veg ")
       document.getElementById('mealsTable').style.display = 'block';
       document.getElementById('btn1').style.display = 'block';
@@ -429,14 +474,14 @@ console.log(currentSelectedDatesList)
       //console.log("type of dates ...",typeof datesArray)
     }
 
-    else if (subveg == true) {
+    else  {
       console.log("entering into gototable and veg section ")
       document.getElementById('mealsTableveg').style.display = 'block';
       document.getElementById('mealsTable').style.display = 'none';
       document.getElementById('btn1').style.display = 'block';
       setDates(currentSelectedDatesList)
     }
-    else {
+    if(!meal_subscribed[0][0]) {
       alert("Please subscribe! ")
     }
     document.getElementById('btn1').style.display = 'block';
@@ -445,7 +490,7 @@ console.log(currentSelectedDatesList)
       console.log(selectedDatesList,'...',datesArray)
       }
     });
-
+  })
   }
 
 
@@ -561,18 +606,21 @@ function cancelSingleMeal(e){
   }
 
 
-  function empHistory(start, end) {
-    MealDetails.getMealDates(start, end).then(Response => {
-      console.log("status code ", Response.data)
-      empHistData = Response.data;
-      console.log(empHistData)
-    }).catch(err => {
-      console.log("Something went wrong in empHist")
-    })
-
+  function goToNotify(){
+    MealDetails.ViewNotifications().then(Response=>{
+      console.log("Response code for updating the mealdates ",Response.data)
+    }).catch(err=>console.log("Caught err ",err))
   }
 
+function updatemeal(typeOfMeal) {
+  typeOfMeal == "veg"?subveg=true:subnv=true;
+  console.log(subnv,subveg)
+  MealDetails.updatemealplantype(typeOfMeal).then(Response=>{
+    console.log("Response code for updating the mealdates ",Response.data)
+  }).catch(err=>console.log("Caught err ",err))
+}
 
+  
   return (
     <>
       <div>
@@ -704,7 +752,7 @@ function cancelSingleMeal(e){
 
                     </th>
                     <th>
-                      <span onClick={goToDel} id={eachDay + "delete"}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
+                      <span onClick={goToDel} id={eachDay }><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
                     </th>
                   </tr>)
               }
@@ -776,7 +824,7 @@ prevoiusdatesforcancel.map(eachDay =>
               
             </th> */}
                     <th>
-                      <span onClick={goToDel} id={eachDay + "delete"}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
+                      <span onClick={goToDelveg} id={eachDay}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
                     </th>
                   </tr>)
               }
