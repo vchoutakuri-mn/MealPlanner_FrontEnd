@@ -10,8 +10,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Employee from './data/Employee';
 import { SET_TOKEN } from '../Vender/data/Storage';
 import MealDetails from './data/MealDetails';
-import { common } from '@material-ui/core/colors';
-import { FormText } from 'react-bootstrap';
 
 toast.configure();
 
@@ -48,7 +46,7 @@ var datespulsmealtype = []
 var datesmealtype2d = []
 var duplicate = []
 var empHistData 
-var selectedmealtype
+
 
 
 export default function MyApp(props) {
@@ -116,9 +114,9 @@ export default function MyApp(props) {
 //   }
 
 
-  // function goToNotify() {
-  //   document.getElementById("myFormNotif").style.display = "block";
-  // }
+  function goToNotify() {
+    document.getElementById("myFormNotif").style.display = "block";
+  }
 
 
   function closeFormNotif() {
@@ -128,36 +126,43 @@ export default function MyApp(props) {
 
 function getDetails(e){
   var n = e.target.id
-  console.log("e.target",e.target)
+  console.error("e.target",e.target.id)
   datespulsmealtype.push(n)
   var date=e.target.id
   date=e.target.id.slice(0,10)
-  console.log("datespulsmealtype",date)
+  //console.log("datespulsmealtype",date)
   var mealtype = e.target.id.slice(10,)
-  console.log(mealtype)
+  //console.log(mealtype)
   //console.log(date+'nonveg'==e.target.id)
- 
+  
   if(e.target.id.includes('nonveg') ){
+    
   if(e.target.checked){
-    console.log("in getdetails in nonveg")
+
+   console.log("NON VEG checked ",document.getElementById(date+'nonveg').checked)
     document.getElementById(date+'nonveg').disabled=false
+    document.getElementById(date+'veg').checked=false
     document.getElementById(date+'veg').disabled=true
     }else{
-      document.getElementById(date+'veg').disabled=false
-      document.getElementById(date+'nonveg').disabled=false
+      console.log("NON VEG unchecked")
+     document.getElementById(date+'veg').disabled=false
+      document.getElementById(date+'nonveg').checked=false
     }
 
   }else{
-    console.log(date,e.target.id)
+    // console.log("in getdetails in veg",date+'veg',e.target.id)
+    // console.log(date,e.target.id)
     if(e.target.checked){
       console.log("veg checked")
       //console.log(date,"printing dates..",date+'nonveg')
-      document.getElementById(date+'veg').checked = true
-      //document.getElementById(date+'veg').disabled=false
-      document.getElementById(date+'nonveg').disabled=true
-    }else{
-      document.getElementById(date+'nonveg').disabled=false
+  
       document.getElementById(date+'veg').disabled=false
+      document.getElementById(date+'nonveg').checked=false
+       document.getElementById(date+'nonveg').disabled=true
+    }else{
+      console.log("veg unchecked")
+       document.getElementById(date+'nonveg').disabled=false
+       document.getElementById(date+'veg').disabled=false
 
       }
     }
@@ -223,7 +228,6 @@ function subscribed(e){
   function finalSubsciption() {
     closeForm1();
     //alert("subscribed for "+typeOfMeal+" successfully")
-    //console.log("meal_subscribed",meal_subscribed[0][0])
     if (typeOfMeal == 'nonveg') {
       subnv = true
       console.log("making subnv true")
@@ -256,53 +260,39 @@ var getDaysArray = function (start, end) {
 };
 
 
-function goToDelveg(e) {
+
+var index
+function goToDel(e) {
   console.log("onclickkkkk", e.target.parentNode.id)
-  document.getElementById(e.target.id)
+  //document.getElementById(e.target.id)
   //console.log(e.target.parentNode.parentNode)
   var a = e.target.parentNode.id
-  var getdate = a.slice(0, 12)
+  var getdate = a.slice(0, 10)
   console.log(getdate)
-  var index = dates2.indexOf(getdate)
+  console.log("dates2",dates2)
+  for(var i = 0;i<dates2.length;i++){
+    if(getdate == dates2[i][0]){
+      console.log(i)
+      index = i
+    }
+  }
+  //index = dates2.indexOf(getdate)
+  console.log("checking index",getdate,index)
+
+
+  //console.log("deleted delete and index ",getdate,index,dates2)
+
   dates2.splice(index, 1)
-  //console.log("dates after deleting ",dates2)
+  
+  
+  console.log("dates after deleting ",dates2)
   var i = e.target.parentNode.parentNode.parentNode.rowIndex;
   //document.getElementById("mealsTable").deleteRow(i);
   //e.target.parentNode.parentNode.parentNode.style.display="none"
   //console.log("datesarray ",dates2)
   doReload();
 }
-var index
-  function goToDel(e) {
-    console.log("onclickkkkk", e.target.parentNode.id)
-    //document.getElementById(e.target.id)
-    //console.log(e.target.parentNode.parentNode)
-    var a = e.target.parentNode.id
-    var getdate = a.slice(0, 10)
-    console.log(getdate)
-    console.log("dates2",dates2)
-    for(var i = 0;i<dates2.length;i++){
-      if(getdate == dates2[i][0]){
-        console.log(i)
-        index = i
-      }
-    }
-    //index = dates2.indexOf(getdate)
-    console.log("checking index",getdate,index)
 
-
-    //console.log("deleted delete and index ",getdate,index,dates2)
-
-    dates2.splice(index, 1)
-    
-    
-    console.log("dates after deleting ",dates2)
-    var i = e.target.parentNode.parentNode.parentNode.rowIndex;
-    //document.getElementById("mealsTable").deleteRow(i);
-    //e.target.parentNode.parentNode.parentNode.style.display="none"
-    //console.log("datesarray ",dates2)
-    doReload();
-  }
 
   function createRegularDateFormat(arr1) {
     var d
@@ -323,13 +313,11 @@ var index
     }
 
   function goToSubs() {
-    let pro='vikas'
+    
       Employee.checkMealSubscription().then((Response)=>{
         console.log(Response.data);
         meal_subscribed=Response.data
-        console.log("meal_subscribed",meal_subscribed[0][1])
-        pro='vyshali'
-        //console.log("meal_subscribed",meal_subscribed[0][0])
+        console.log("meal_subscribed",meal_subscribed[0][0])
         if (meal_subscribed[0][0] == true) {
             alert("subscribed")
             //fade button
@@ -346,13 +334,8 @@ var index
            
             document.getElementById("sub").style.display = "block";
           }
-          console.log("meal_subscribed 324",meal_subscribed[0][1])
-         
-    //goToTable(meal_subscribed[0][1])
-          
      })
     
-     
 
    
 
@@ -415,10 +398,7 @@ const onChangeDate = date => {
 
 
   function goToTable() {
-    Employee.checkMealSubscription().then((Response)=>{
-      console.log(Response.data);
-      meal_subscribed=Response.data
- selectedmealtype = meal_subscribed[0][1]
+
     MealDetails.getSelectedDates(empId).then(Response=>{
       console.log("Fetching the selected mealdates",Response.status);
       if(Response.status==200){
@@ -456,17 +436,10 @@ const onChangeDate = date => {
 console.log(currentSelectedDatesList)
 
     
-    document.getElementById('mealsTable').style.display = 'none'
+    document.getElementById('mealsTable').style.display = 'block'
     document.getElementById('selectedMealDates').style.display = 'none'
-    document.getElementById('btn1').style.display = 'none'
-    document.getElementById('btn2').style.display = 'none';
-    
-    //console.log("meal_subscribed[1][0]",meal_subscribed[1][0])
-    console.log("subveg,selectedmealtypesubnv",selectedmealtype)
-   // selectedmealtype == true ? subnv = true : subveg = true
-    console.log("subveg,subnv",subveg,subnv)
-
-    if (!selectedmealtype) {
+    document.getElementById('btn2').style.display = 'none'
+    if (subnv == true) {
       console.log("entering into gototable and non veg ")
       document.getElementById('mealsTable').style.display = 'block';
       document.getElementById('btn1').style.display = 'block';
@@ -474,14 +447,14 @@ console.log(currentSelectedDatesList)
       //console.log("type of dates ...",typeof datesArray)
     }
 
-    else  {
+    else if (subveg == true) {
       console.log("entering into gototable and veg section ")
       document.getElementById('mealsTableveg').style.display = 'block';
       document.getElementById('mealsTable').style.display = 'none';
       document.getElementById('btn1').style.display = 'block';
       setDates(currentSelectedDatesList)
     }
-    if(!meal_subscribed[0][0]) {
+    else {
       alert("Please subscribe! ")
     }
     document.getElementById('btn1').style.display = 'block';
@@ -490,7 +463,7 @@ console.log(currentSelectedDatesList)
       console.log(selectedDatesList,'...',datesArray)
       }
     });
-  })
+
   }
 
 
@@ -606,21 +579,18 @@ function cancelSingleMeal(e){
   }
 
 
-  function goToNotify(){
-    MealDetails.ViewNotifications().then(Response=>{
-      console.log("Response code for updating the mealdates ",Response.data)
-    }).catch(err=>console.log("Caught err ",err))
+  function empHistory(start, end) {
+    MealDetails.getMealDates(start, end).then(Response => {
+      console.log("status code ", Response.data)
+      empHistData = Response.data;
+      console.log(empHistData)
+    }).catch(err => {
+      console.log("Something went wrong in empHist")
+    })
+
   }
 
-function updatemeal(typeOfMeal) {
-  typeOfMeal == "veg"?subveg=true:subnv=true;
-  console.log(subnv,subveg)
-  MealDetails.updatemealplantype(typeOfMeal).then(Response=>{
-    console.log("Response code for updating the mealdates ",Response.data)
-  }).catch(err=>console.log("Caught err ",err))
-}
 
-  
   return (
     <>
       <div>
@@ -743,16 +713,16 @@ function updatemeal(typeOfMeal) {
                     <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
-                      <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?false:true)} />
+                      <input type="checkbox" id={eachDay.length==2?eachDay[0]+ 'veg':eachDay+'veg'} onChange={getDetails} checked={eachDay.length==2?(eachDay[1].includes('nonveg')?null:true):null} />
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>
-
-                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?true:false)} />
+                      {console.log(eachDay,eachDay.length)}
+                      <input type="checkbox" id={eachDay.length==2?eachDay[0]+ 'nonveg':eachDay+'nonveg'} onChange={getDetails} checked={eachDay.length==2?(eachDay[1].includes('nonveg')?true:null):null}  />
 
                     </th>
                     <th>
-                      <span onClick={goToDel} id={eachDay }><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
+                      <span onClick={goToDel} id={eachDay + "delete"}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
                     </th>
                   </tr>)
               }
@@ -824,7 +794,7 @@ prevoiusdatesforcancel.map(eachDay =>
               
             </th> */}
                     <th>
-                      <span onClick={goToDelveg} id={eachDay}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
+                      <span onClick={goToDel} id={eachDay + "delete"}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
                     </th>
                   </tr>)
               }
