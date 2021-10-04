@@ -4,6 +4,7 @@ import {
     EMPLOYEE_UPDATED_MEAL_DATES, 
     TOKEN, 
     MEAL_SUBSCRIPTION ,
+    HISTORY,
     EXISTDATES,
     EMPLOYEE_HISTORY,
     EMPLOYEE_CANCEL_MEAL_DATES} from "../../API's/CommonService";
@@ -57,13 +58,13 @@ class MealDetails {
         });
     }
     
-    // checkMealSubscription(){
-    //     return axios.get(MEAL_SUBSCRIPTION, {
-    //         headers: 
-    //         { Authorization: `Bearer ${GET_TOKEN()}` }
-    //     });
+    checkMealSubscription(){
+        return axios.get(MEAL_SUBSCRIPTION, {
+            headers: 
+            { Authorization: `Bearer ${GET_TOKEN()}` }
+        });
         
-    // }
+    }
 
 
     updateMealDetails(updatedDatesList){
@@ -162,6 +163,12 @@ class MealDetails {
         
         return axios.post(EMPLOYEE_SELECTED_MEAL_DATES,data1,{
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
+}
+
+getHistory(startDate,endDate){
+    return axios.get(HISTORY+startDate+'/'+endDate+'/1/10',{
+        headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
+
 }
 }
 export default new MealDetails();

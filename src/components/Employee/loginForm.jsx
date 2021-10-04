@@ -159,6 +159,7 @@ console.log(currentSelectedDatesList[0][0])
                     localStorage.setItem('role', userType)
                     localStorage.setItem('validUser', true)
                     localStorage.setItem('token', GET_TOKEN());
+                    localStorage.setItem('empId',empid)
 
                     if (userType == "Employee") {
                         var meal_subscribed;
@@ -183,7 +184,7 @@ console.log(currentSelectedDatesList[0][0])
             }).catch(function (error) {
                if(error.response){
                    console.log("details wrong ",error)
-                   if(error.response.status.include(4)){
+                   if(error.response!=undefined ){
                     reactDom.render(<PageNotFound/>,document.getElementById("root"))
                    }
                    else if(error.response.status.include(5)){
@@ -230,7 +231,7 @@ console.log(currentSelectedDatesList[0][0])
         } else if (localStorage.getItem('role') != undefined && localStorage.getItem('role').includes("Employee")) {
             return (
                 <>
-                    <MyApp />
+                    <MyApp empId={localStorage.getItem('empId')} />
                 </>
             )
         } else if (localStorage.getItem('role') != undefined && localStorage.getItem('role').includes("financier")) {

@@ -4,6 +4,7 @@ import './css/empHomecss.css'
 import Start from './home';
 import MyApp from './Emp_home_new';
 import ReactDOM from 'react-dom';
+import MealDetails from './data/MealDetails';
 //import EmployeeMealDetails from './EmployeeMealDetails';
 
 
@@ -15,6 +16,15 @@ var TABLEHIDE='none'
 let DAYLIST=[]
 let resetStartDate=false;
 let resetEndDate=false
+var weekdays = new Array(7);
+weekdays[0] = "Saturday";
+weekdays[1] = "Sunday";
+weekdays[2] = "Monday";
+weekdays[3] = "Tuesday";
+weekdays[4] = "Wednesday";
+weekdays[5] = "Thursday";
+weekdays[6] = "Friday";
+
 
 const initialState = {
   startDate: null,
@@ -33,7 +43,7 @@ function reducer(state, action) {
   }
 }
 
-export default function Hist () {
+export default function Hist (props) {
 
   const [state, dispatch] = useReducer(reducer, initialState)
   const [doReset,startDoingReset]=useState([])
@@ -49,21 +59,38 @@ export default function Hist () {
       return a.map(format).join(s);
    }
 
-
+   function createIrregularDateFormat(t, s) {
+    let a = [  {year: 'numeric'},{month: 'numeric'},{day: 'numeric'}];
+    function format(m) {
+       let f = new Intl.DateTimeFormat('en', m);
+       return f.format(t);
+    }
+    return a.map(format).join(s);
+ }
+let START='';
   function start(startDate){
-    let date = createRegularDateFormat(startDate, '/');
+    let date = createRegularDateFormat(startDate, '-');
     //console.log('date is start ',date,typeof startDate)
       let dateObj=startDate
+       START=createIrregularDateFormat(startDate, '-');
       if(date!=null){
+        MealDetails.getHistory(START,START+1).then(
+          Response=>{
+     
+            DAYLIST=Response.data
+          }
+        ).catch(err=>{
+          console.error("something went wrong ",err)
+        })
       // let startDateArray=dateObj.getUTCFullYear()+'-'+ (dateObj.getUTCMonth())  +'-'+ (dateObj.getUTCDate()) 
 
-      if(DateArray[0]==undefined ){
-        DateArray.push(date)
-      } else{
-        DateArray[0]=date
-      }
-      //console.log('start date',date,DateArray)
-      showTableData(DateArray)
+      // if(DateArray[0]==undefined ){
+      //   DateArray.push(date)
+      // } else{
+      //   DateArray[0]=date
+      // }
+      // //console.log('start date',date,DateArray)
+      // showTableData(DateArray)
       }
       
     return startDate
@@ -73,17 +100,25 @@ export default function Hist () {
 
   function end(endDate){
     console.log("end date selected")
-    let date = createRegularDateFormat(endDate, '/');
+    let date = createRegularDateFormat(endDate, '-');
+    let END=createIrregularDateFormat(endDate, '-');
       if(date!=null){
       // let startDateArray=dateObj.getUTCFullYear()+'-'+ (dateObj.getUTCMonth())  +'-'+ (dateObj.getUTCDate()) 
-
-      if(DateArray[1]==undefined ){
-              DateArray.push(date)
-            } else{
-              DateArray[1]=date
-            }
-      //console.log('s date',date)
-      showTableData(DateArray)
+      MealDetails.getHistory(START,END+1).then(
+        Response=>{
+          DAYLIST=Response.data
+         
+        }
+      ).catch(err=>{
+        console.error("something went wrong ",err)
+      })
+      // if(DateArray[1]==undefined ){
+      //         DateArray.push(date)
+      //       } else{
+      //         DateArray[1]=date
+      //       }
+      // //console.log('s date',date)
+      // showTableData(DateArray)
       }
      
 
@@ -233,11 +268,10 @@ function goToHome(){
       <tr>
         <th>Date</th>
         <th>Day</th>
-        <th>Subscription</th>
+        
         <th>Meal Status</th>
         <th>Veg/Non-veg</th>
         
-       
       </tr>
     </thead> 
         <tbody>
@@ -245,10 +279,12 @@ function goToHome(){
                   DAYLIST.map(
                     eachDay=>
                 <tr>
-                    <th scope="row">{eachDay[0]}</th>
-                    <td>{eachDay[1]}</td>
-                    <td>{eachDay[2]}</td>
-                    <td>{eachDay[3]}</td>
+                    <th scope="row">{eachDay[0].slice(0, 10)}</th>
+
+                    <td>{weekdays[new Date(eachDay[0]).getDay()]}</td>
+                    <td >{eachDay[1]==true?<span class="label label-success">Taken</span>:<span class="label label-danger">Skipped</span>}</td>
+                    <td>{eachDay[2]==true?"veg":"non-veg"}</td>
+                    
                    
                     <td><span class="label label-info">{eachDay[5]}</span></td>
                 </tr>

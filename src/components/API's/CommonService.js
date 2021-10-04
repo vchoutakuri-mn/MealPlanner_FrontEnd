@@ -102,6 +102,16 @@ export const EMPLOYEE_HISTORY="http://localhost:8080/employee/history/{startdate
 
 
 
+
+
+//History url
+//Request:startdate,enddate,pageno,pagesize
+//Expected:mealdate,mealtaken,mealtype
+//Method type:get
+export const HISTORY="http://localhost:8080/employee/history/";
+
+
+
             //---------------------TOKEN-------------------//
 export const TOKEN='';
 

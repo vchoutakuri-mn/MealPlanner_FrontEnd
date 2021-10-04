@@ -23,18 +23,19 @@ var prevoiusdatesforcancel =[]
       
 //     ]
 
-var selectedDatesList = [
+var selectedDatesList = []
+// [
   
-  ["2021-9-30", 'nonveg'],
-  ["2021-10-3", 'veg'],
-  ["2021-10-5", 'nonveg'],
-  ["2021-10-6", 'veg'],
+//   ["2021-9-30", 'nonveg'],
+//   ["2021-10-3", 'veg'],
+//   ["2021-10-5", 'nonveg'],
+//   ["2021-10-6", 'veg'],
 
-]
+// ]
 
 var TABLE_HIDE = 'none';
 var btn_hide = 'none';
-var datesArray;
+var datesArray=[];
 var dates = []
 var typeOfMeal;
 var subnv = false;
@@ -266,6 +267,7 @@ var getDaysArray = function (start, end) {
     //console.log("deleted delete and index ",getdate,index,dates2)
 
     dates2.splice(index, 1)
+    
     //console.log("dates after deleting ",dates2)
     var i = e.target.parentNode.parentNode.parentNode.rowIndex;
     //document.getElementById("mealsTable").deleteRow(i);
@@ -379,11 +381,29 @@ const onChangeDate = date => {
 
   function goToTable() {
 
-    console.log(selectedDatesList,'///../',datesArray)
+    MealDetails.getSelectedDates(empId).then(Response=>{
+      console.log("Fetching the selected mealdates",Response.status);
+      if(Response.status==200){
+        console.log(Response.data,'from api');
+        prevoiusdatesforcancel =Response.data;
+        
+        setSelectedMealDatesHide('block')
+      
+        for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
+          if(!prevoiusdatesforcancel[eachDay][1]){
+            prevoiusdatesforcancel[eachDay][1]='veg'
+          }else{
+            prevoiusdatesforcancel[eachDay][1]='nonveg'
+          }
+        }
+
+        
+    console.log(prevoiusdatesforcancel,'///../',datesArray)
+    selectedDatesList=prevoiusdatesforcancel
     var currentSelectedDatesList=datesArray
     for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
       for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
-        console.log(selectedDatesList[previouslySelectedDate][0],currentSelectedDatesList[currentSelectedDate][0])
+       console.log(selectedDatesList[previouslySelectedDate][0]+"][][]["+currentSelectedDatesList[currentSelectedDate][0])
           if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
               if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
                 currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
@@ -397,7 +417,6 @@ const onChangeDate = date => {
    
 console.log(currentSelectedDatesList)
 
-    console.log(currentSelectedDatesList)
     
     document.getElementById('mealsTable').style.display = 'block'
     document.getElementById('selectedMealDates').style.display = 'none'
@@ -424,6 +443,9 @@ console.log(currentSelectedDatesList)
 
       setDates(currentSelectedDatesList)
       console.log(selectedDatesList,'...',datesArray)
+      }
+    });
+
   }
 
 
@@ -482,8 +504,17 @@ function updateDetails(){
   //  }
    console.log("delete dates",deleteddates)
    console.log("selectedDatesList",prevoiusdatesforcancel)
-  MealDetails.updateMealDetails(deleteddates).then(Response=>{
+  
+    
+  MealDetails.updateMealDetails(deleteddates,empId).then(Response=>{
     console.log("Response code for updating the mealdates ",Response.status)
+    toast.success(
+      "Meal  updated  successfully",
+      {
+        autoClose: 2000,
+        position: toast.POSITION.TOP_CENTER
+      }
+    )
   }).catch(err=>console.log("Caught err ",err))
 }
 
@@ -568,10 +599,8 @@ function cancelSingleMeal(e){
             <button onClick={goToprofile} class="btn btn-primary pull-right " style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-user"> Profile</i></button>
             <button onClick={cancelMeal} id="caninheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Cancel Meal</i></button>
             <button onClick={goToNotify} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-bell">  Notifications</i></button>
-            <button onClick={empHistory} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-history">  History</i></button>
-
-
-              <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe..</i></button>
+            <button onClick={goToEmphist} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-history">  History</i></button>
+            <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe..</i></button>
 
       
 
@@ -658,7 +687,7 @@ function cancelSingleMeal(e){
                 <th>Cancel</th>
               </tr>
             </thead>
-
+            {}
             <tbody>
               {
                 dates2.map(eachDay =>
