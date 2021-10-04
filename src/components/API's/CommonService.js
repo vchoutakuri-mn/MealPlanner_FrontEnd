@@ -110,7 +110,10 @@ export const EMPLOYEE_HISTORY="http://localhost:8083/employee/history/{startdate
 //Method type:get
 export const HISTORY="http://localhost:8083/employee/history/";
 
+export const EMPLOYEE_NOTIFICATIONS = "http://localhost:8080/notifications/sendlist";
 
+
+export const UPDATE_MEAL_TYPE = "http://localhost:8080/employee/updatePlanType";
 
             //---------------------TOKEN-------------------//
 export const TOKEN='';

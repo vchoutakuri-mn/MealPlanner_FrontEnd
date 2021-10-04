@@ -126,35 +126,43 @@ export default function MyApp(props) {
 
 function getDetails(e){
   var n = e.target.id
-  console.log("e.target",e.target)
+  console.error("e.target",e.target.id)
   datespulsmealtype.push(n)
   var date=e.target.id
   date=e.target.id.slice(0,10)
-  console.log("datespulsmealtype",date)
+  //console.log("datespulsmealtype",date)
   var mealtype = e.target.id.slice(10,)
-  console.log(mealtype)
+  //console.log(mealtype)
   //console.log(date+'nonveg'==e.target.id)
- 
+  
   if(e.target.id.includes('nonveg') ){
+    
   if(e.target.checked){
-    console.log("in getdetails in nonveg")
+
+   console.log("NON VEG checked ",document.getElementById(date+'nonveg').checked)
     document.getElementById(date+'nonveg').disabled=false
+    document.getElementById(date+'veg').checked=false
     document.getElementById(date+'veg').disabled=true
     }else{
-      document.getElementById(date+'veg').disabled=false
-      document.getElementById(date+'nonveg').disabled=false
+      console.log("NON VEG unchecked")
+     document.getElementById(date+'veg').disabled=false
+      document.getElementById(date+'nonveg').checked=false
     }
 
   }else{
-    console.log(date,e.target.id)
+    // console.log("in getdetails in veg",date+'veg',e.target.id)
+    // console.log(date,e.target.id)
     if(e.target.checked){
       console.log("veg checked")
       //console.log(date,"printing dates..",date+'nonveg')
+  
       document.getElementById(date+'veg').disabled=false
-      document.getElementById(date+'nonveg').disabled=true
+      document.getElementById(date+'nonveg').checked=false
+       document.getElementById(date+'nonveg').disabled=true
     }else{
-      document.getElementById(date+'nonveg').disabled=false
-      document.getElementById(date+'veg').disabled=false
+      console.log("veg unchecked")
+       document.getElementById(date+'nonveg').disabled=false
+       document.getElementById(date+'veg').disabled=false
 
       }
     }
@@ -253,28 +261,38 @@ var getDaysArray = function (start, end) {
 
 
 
-  function goToDel(e) {
-    console.log("onclickkkkk", e.target.parentNode.id)
-    document.getElementById(e.target.id)
-    //console.log(e.target.parentNode.parentNode)
-    var a = e.target.parentNode.id
-    var getdate = a.slice(0, 12)
-    console.log(getdate)
-    var index = dates2.indexOf(getdate)
-    //console.log("checking index",getdate,dates2[index])
-
-
-    //console.log("deleted delete and index ",getdate,index,dates2)
-
-    dates2.splice(index, 1)
-    
-    //console.log("dates after deleting ",dates2)
-    var i = e.target.parentNode.parentNode.parentNode.rowIndex;
-    //document.getElementById("mealsTable").deleteRow(i);
-    //e.target.parentNode.parentNode.parentNode.style.display="none"
-    //console.log("datesarray ",dates2)
-    doReload();
+var index
+function goToDel(e) {
+  console.log("onclickkkkk", e.target.parentNode.id)
+  //document.getElementById(e.target.id)
+  //console.log(e.target.parentNode.parentNode)
+  var a = e.target.parentNode.id
+  var getdate = a.slice(0, 10)
+  console.log(getdate)
+  console.log("dates2",dates2)
+  for(var i = 0;i<dates2.length;i++){
+    if(getdate == dates2[i][0]){
+      console.log(i)
+      index = i
+    }
   }
+  //index = dates2.indexOf(getdate)
+  console.log("checking index",getdate,index)
+
+
+  //console.log("deleted delete and index ",getdate,index,dates2)
+
+  dates2.splice(index, 1)
+  
+  
+  console.log("dates after deleting ",dates2)
+  var i = e.target.parentNode.parentNode.parentNode.rowIndex;
+  //document.getElementById("mealsTable").deleteRow(i);
+  //e.target.parentNode.parentNode.parentNode.style.display="none"
+  //console.log("datesarray ",dates2)
+  doReload();
+}
+
 
   function createRegularDateFormat(arr1) {
     var d
@@ -695,12 +713,12 @@ function cancelSingleMeal(e){
                     <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
-                      <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('nonveg')?false:true)} />
+                      <input type="checkbox" id={eachDay.length==2?eachDay[0]+ 'veg':eachDay+'veg'} onChange={getDetails} checked={eachDay.length==2?(eachDay[1].includes('nonveg')?null:true):null} />
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>
-
-                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('nonveg')?true:false)} />
+                      {console.log(eachDay,eachDay.length)}
+                      <input type="checkbox" id={eachDay.length==2?eachDay[0]+ 'nonveg':eachDay+'nonveg'} onChange={getDetails} checked={eachDay.length==2?(eachDay[1].includes('nonveg')?true:null):null}  />
 
                     </th>
                     <th>

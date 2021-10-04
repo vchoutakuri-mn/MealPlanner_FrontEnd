@@ -104,10 +104,10 @@ let START='';
     let END=createIrregularDateFormat(endDate, '-');
       if(date!=null){
       // let startDateArray=dateObj.getUTCFullYear()+'-'+ (dateObj.getUTCMonth())  +'-'+ (dateObj.getUTCDate()) 
-      MealDetails.getHistory(START,END+1).then(
+      MealDetails.getHistory(START,END).then(
         Response=>{
           DAYLIST=Response.data
-         
+         console.log(Response.data)
         }
       ).catch(err=>{
         console.error("something went wrong ",err)
@@ -213,7 +213,7 @@ let START='';
  }
  
 function goToHome(){
-  ReactDOM.render(<MyApp empId={localStorage.getItem('empId')} />,document.getElementById("root"))
+  ReactDOM.render(<MyApp empId={localStorage.getItem('empId')}  />,document.getElementById("root"))
 }
   function search(){
    

@@ -7,7 +7,9 @@ import {
     HISTORY,
     EXISTDATES,
     EMPLOYEE_HISTORY,
-    EMPLOYEE_CANCEL_MEAL_DATES} from "../../API's/CommonService";
+    UPDATE_MEAL_TYPE,
+    EMPLOYEE_CANCEL_MEAL_DATES,
+    EMPLOYEE_NOTIFICATIONS} from "../../API's/CommonService";
 import { GET_TOKEN } from "../../Vender/data/Storage";
 import moment from 'moment';
 import { each } from "jquery";
@@ -166,9 +168,21 @@ class MealDetails {
 }
 
 getHistory(startDate,endDate){
-    return axios.get(HISTORY+startDate+'/'+endDate+'/1/10',{
+    return axios.get(HISTORY+startDate+'/'+endDate+'/1/20',{
         headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
 
 }
+
+ViewNotifications(){
+    return axios.get(EMPLOYEE_NOTIFICATIONS,{
+        headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
+
 }
+
+updatemealplantype(mealtype){
+    console.log(mealtype)
+    mealtype = mealtype.includes('nonveg')?true:false 
+    return axios.put(UPDATE_MEAL_TYPE+"/"+mealtype,{},{
+        headers: { Authorization: `Bearer ${GET_TOKEN()}`}})
+    }}
 export default new MealDetails();
