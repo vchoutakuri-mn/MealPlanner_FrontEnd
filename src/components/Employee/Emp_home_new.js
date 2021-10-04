@@ -10,33 +10,50 @@ import 'react-toastify/dist/ReactToastify.css';
 import Employee from './data/Employee';
 import { SET_TOKEN } from '../Vender/data/Storage';
 import MealDetails from './data/MealDetails';
-import WindowFocusHandler from '../HomeFolder/FocusHandler';
 
-
-var selectedDatesList = [
-  
-  ["2021-9-30", 'non-veg'],
-  ["2021-10-3", 'veg'],
-  ["2021-10-5", 'non-veg'],
-  ["2021-10-6", 'veg'],
-
-]
 toast.configure();
+
+var prevoiusdatesforcancel =[]
+// =
+//     [
+//       ["2021-10-01" ,'veg'],
+//       ["2021-10-04",'nonveg'],
+//       ["2021-10-06",'nonveg'],
+//       ["2021-10-07",'veg'],
+      
+//     ]
+
+var selectedDatesList = []
+// [
+  
+//   ["2021-9-30", 'nonveg'],
+//   ["2021-10-3", 'veg'],
+//   ["2021-10-5", 'nonveg'],
+//   ["2021-10-6", 'veg'],
+
+// ]
 
 var TABLE_HIDE = 'none';
 var btn_hide = 'none';
-var datesArray;
+var datesArray=[];
 var dates = []
 var typeOfMeal;
 var subnv = false;
 var subveg = false;
 var enable = false;
+var deleteddates = [];
+var datespulsmealtype = []
+var datesmealtype2d = []
+var duplicate = []
+ 
 
 
 
 
 export default function MyApp(props) {
-  const { empId, meal_subscribed, token } = props;
+  var meal_subscribed
+  const { empId, token } = props;
+  //const { empId, meal_subscribed, token } = props;
   const [value, onChange] = useState(false);
   var [dates2, setDates] = useState([])
   const [reload, doReload] = useReducer((x) => x + 1, 0)
@@ -45,17 +62,8 @@ export default function MyApp(props) {
 
 
 
-
-  // if(meal_subscribed){
-  //   document.getElementById("proceedtosub").disabled = true;
-  // }
-  // else{
-  //   document.getElementById("proceedtosub").disabled = false;
-  // }
-  // document.getElementById("sub").style.display = "block";
-
-
   function goToEmphist() {
+
     ReactDOM.render(<Hist />, document.getElementById("root"))
   }
 
@@ -66,7 +74,45 @@ export default function MyApp(props) {
     ReactDOM.render(<Start />, document.getElementById("root"))
   }
 
+//   function comparedisp(datesmealtype2d){
+    
+//     for(var i = 0; i< selectedDatesList.length; i++){
+//       for(var j=0 ; j< datesmealtype2d.length; j++){
+//       if(datesmealtype2d[j][0] == selectedDatesList[i][0]){
+//         datesmealtype2d[j][1] = selectedDatesList[i][1] 
+//         if(datesmealtype2d[j][1] == 'veg')
+//         console.log(datesmealtype2d[j][0]+"veg")
+//         document.getElementById(datesmealtype2d[j][0]+"veg").checked = true
+//       }
+//       else if(datesmealtype2d[j][1] == 'non-veg'){
+//         console.log(datesmealtype2d[j][0]+"nonveg")
+//         document.getElementById(datesmealtype2d[j][0]+"nonveg").checked = true
+//       }
+//       else{
+//         datesmealtype2d[j][1] = null
+//       }
+//    }
+   
+// }
 
+//   }
+  
+  
+
+// function insertdatemealtype(duplicate,comparedisp){
+//   console.log("duplicate insertdatemealtype",typeof duplicate)
+//     for(var i=0;i<duplicate.length;i++){
+//       console.log("duplicate[i]", duplicate[i].slice(0,10))
+//        datesmealtype2d.push([duplicate[i].slice(0,10),duplicate[i].slice(10,)])
+//        //console.log("datesmealtype2d[i][0]",datesmealtype2d)
+//        //datesmealtype2d[i][0] = duplicate[i].slice(0,10)
+//       // datesmealtype2d[i][1] = duplicate[i].slice(11,14)
+       
+//     }
+//     console.log("datesmealtype2d",datesmealtype2d)
+//     console.log("datesmealtype2d,selectedDatesList start",datesmealtype2d,selectedDatesList)
+//     comparedisp(datesmealtype2d)
+//   }
 
 
   function goToNotify() {
@@ -79,69 +125,82 @@ export default function MyApp(props) {
   }
 
 
-  function getDetails(e) {
-    // if(document.getElementById("nonveg").checked == true){
-    //   document.getElementById("veg").disabled = true;
-    //   console.log("checked")
-    // }
-    // if(document.getElementById(eachDay+"veg").checked == true){
-    //   document.getElementById(eachDay+"nonveg").disabled = true;
-    //   console.log("veg checked")
-    // }
-    // var n = e.target.id
-    // var v = document.getElementById("veg")
-    // var nv = document.getElementById("nonveg")
-    // console.log("n",n)
-    // if(v.checked){
-    //     nv.disabled=true;
-    //   }
-    //console.log(e.target.id)
+function getDetails(e){
+  var n = e.target.id
+  console.log("e.target",e.target)
+  datespulsmealtype.push(n)
+  var date=e.target.id
+  date=e.target.id.slice(0,9)
+  console.log("datespulsmealtype",date)
+  var mealtype = e.target.id.slice(9,)
+  console.log(mealtype)
+  //console.log(date+'nonveg'==e.target.id)
+ 
+  if(e.target.id.includes('nonveg') ){
+  if(e.target.checked){
+  
+    document.getElementById(date+'nonveg').disabled=false
+    document.getElementById(date+'veg').disabled=true
+    }else{
+      document.getElementById(date+'veg').disabled=false
+      document.getElementById(date+'nonveg').disabled=false
+    }
 
-    var date = e.target.id.slice(0, 12)//sep 12 2021 veg
-    console.log(date)
-    var mealtype = e.target.id.slice(12, 15)
-    //console.log(mealtype)
-    ////console.log(date+'nonveg'==e.target.id)
-    if (e.target.id.includes('nonveg')) {
-      if (e.target.checked) {
-        document.getElementById(date + 'nonveg').disabled = false
-        document.getElementById(date + 'veg').disabled = true
-      } else {
-        document.getElementById(date + 'veg').disabled = false
-        document.getElementById(date + 'nonveg').disabled = false
-      }
-
-    } else {
-      if (e.target.checked) {
-        document.getElementById(date + 'nonveg').disabled = true
-        document.getElementById(date + 'veg').disabled = false
-      } else {
-        document.getElementById(date + 'veg').disabled = false
-        document.getElementById(date + 'nonveg').disabled = false
+  }else{
+    console.log(date,e.target.id)
+    if(e.target.checked){
+      console.log("veg checked")
+      //console.log(date,"printing dates..",date+'nonveg')
+      document.getElementById(date+'veg').disabled=false
+      document.getElementById(date+'nonveg').disabled=true
+    }else{
+      document.getElementById(date+'nonveg').disabled=false
+      document.getElementById(date+'veg').disabled=false
 
       }
     }
-
+  // console.log("duplicate,118",duplicate,datespulsmealtype)
+  // copydata(datespulsmealtype,insertdatemealtype)
+  // console.log("duplicate 120",duplicate)
+  //insertdatemealtype(duplicate);
+  //comparedisp(datesmealtype2d)
   }
 
+// function copydata(datespulsmealtype,insertdatemealtype){
+//   //API call.then(
+//     console.log(datespulsmealtype)
+//     duplicate = datespulsmealtype
+   
+//  // )
+//   insertdatemealtype(duplicate,comparedisp)
 
-  function subscribed(e) {
-    //var type = document.getElementById("veg").value
-    //console.log("clicked veg/nonveg")
+    
+//   //  for(var i =0; i<datespulsmealtype.length ;i++){
+//   //    console.log("in for loop")
+//   //    console.log(datespulsmealtype[i])
+//   //  //duplicate[i] = datespulsmealtype[i]
+// // }
+//  console.log(duplicate)
+// }
 
-    enable = true
-    ////console.log("enable set to true",enable)
-    goToSubs();
-    typeOfMeal = e.target.id
-    //console.log("typeOfMeal....",typeOfMeal)
-    ////console.log(e.target.id)
-    if (e.target.id.includes('nonveg')) {
-      if (e.target.checked) {
-        document.getElementById('nonveg').disabled = false
-        document.getElementById('veg').disabled = true
-      } else {
-        document.getElementById('veg').disabled = false
-        document.getElementById('nonveg').disabled = false
+
+function subscribed(e){
+  //var type = document.getElementById("veg").value
+  //console.log("clicked veg/nonveg")
+  
+  enable = true
+  ////console.log("enable set to true",enable)
+  goToSubs();
+  typeOfMeal = e.target.id
+  //console.log("typeOfMeal....",typeOfMeal)
+  ////console.log(e.target.id)
+  if(e.target.id.includes('nonveg') ){
+    if(e.target.checked){
+      document.getElementById('nonveg').disabled=false
+        document.getElementById('veg').disabled=true
+      }else{
+        document.getElementById('veg').disabled=false
+        document.getElementById('nonveg').disabled=false
       }
 
     } else {
@@ -157,6 +216,7 @@ export default function MyApp(props) {
     }
 
   }
+
 
   function finalSubsciption() {
     closeForm1();
@@ -182,49 +242,17 @@ export default function MyApp(props) {
   }
 
 
-  function check() {
-    alert("Meal details submitted successfully")
-    document.location.reload();
+var getDaysArray = function (start, end) {
+  for (var arr = [], dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
+    //console.log("checking for days",dt.getDay())
+    if (0 == dt.getDay() || 6 == dt.getDay())
+      continue
+    arr.push(new Date(dt));
   }
+  return arr;
+};
 
 
-  function submitDetails(e) {
-    console.log("submiting")
-    MealDetails.submitMealDetails(dates2, empId).then(Response => {
-      console.log("Response code for updating the mealdates ", Response.status)
-    }).catch(err => console.log("Caught err ", err))
-
-    //window.location.href=window.location.href
-    window.location.reload();
-    //setTimeout(function(){window.location.reload();},10);
-    //e.preventDefault();
-    //document.location.reload();
-
-    //Location.reload(true);
-
-    //window.onload = check();
-  }
-
-
-  function App() {
-    const [value, setValue] = useState();
-    const onChange = useCallback(
-      (value) => {
-        setValue(value);
-      },
-      [setValue],
-    );
-  }
-
-  var getDaysArray = function (start, end) {
-    for (var arr = [], dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
-      //console.log("checking for days",dt.getDay())
-      if (0 == dt.getDay() || 6 == dt.getDay())
-        continue
-      arr.push(new Date(dt));
-    }
-    return arr;
-  };
 
   function goToDel(e) {
     console.log("onclickkkkk", e.target.parentNode.id)
@@ -240,6 +268,7 @@ export default function MyApp(props) {
     //console.log("deleted delete and index ",getdate,index,dates2)
 
     dates2.splice(index, 1)
+    
     //console.log("dates after deleting ",dates2)
     var i = e.target.parentNode.parentNode.parentNode.rowIndex;
     //document.getElementById("mealsTable").deleteRow(i);
@@ -249,26 +278,32 @@ export default function MyApp(props) {
   }
 
   function goToSubs() {
-    if (meal_subscribed) {
-      alert("subscribed")
-      return
-    }
-    //console.log("clicked on subscribe")
-    // //console.log("checking enable",meal_subscribed[0])
-    ////console.log("this is data from ..",Employee.checkMealSubscription())
-    //   Employee.checkMealSubscription(empId).then((Response)=>{
-    //     //console.log(typeof Response.data);
-    //     meal_subscribed=Response.data
-    //  })
+    
+      Employee.checkMealSubscription().then((Response)=>{
+        console.log(Response.data);
+        meal_subscribed=Response.data
+        console.log("meal_subscribed",meal_subscribed[0][0])
+        console.log("meal_subscribed",meal_subscribed[0][0])
+        if (meal_subscribed[0][0] == true) {
+            alert("subscribed")
+            //fade button
+            return
+          }
+          else{
+            if (enable) {
+              document.getElementById("proceedtosub").disabled = false;
+            }
+            else {
+              //console.log("not subscribed and proceedtosub is not disabled")
+              document.getElementById("proceedtosub").disabled = true;
+            }
+           
+            document.getElementById("sub").style.display = "block";
+          }
+     })
+    
 
-    if (enable) {
-      document.getElementById("proceedtosub").disabled = false;
-    }
-    else {
-      //console.log("not subscribed and proceedtosub is not disabled")
-      document.getElementById("proceedtosub").disabled = true;
-    }
-    document.getElementById("sub").style.display = "block";
+   
 
     // this.handleModal();
     // reactDom.render(<Demo/>,document.getElementById("root"))
@@ -282,48 +317,44 @@ export default function MyApp(props) {
     document.getElementById("sub").style.display = "none";
   }
 
-  function goToprofile() {
-    //console.log("empid   ....",empId)
-    document.getElementById("myprofile").style.display = "block";
+function goToprofile(){
+  //console.log("empid   ....",empId)
+  console.log("deleted dates array ",deleteddates)
+  document.getElementById("myprofile").style.display = "block";
+}
+
+
+const [date , setDate] = useState(new Date()) 
+const onChangeDate = date => {
+  setDate(date);
+  console.log("ALL DATESSSS ", getDaysArray(date[0], date[1]))
+  datesArray = getDaysArray(date[0], date[1])
+  var newdate = date.toString()
+  var tempDatesArray=[]
+  var arr1 = newdate.split(' ');
+  for (let i = 0; i < datesArray.length; i++) {
+    console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
+    tempDatesArray.push([ createRegularDateFormat(datesArray[i],'-')])
   }
+  datesArray=tempDatesArray
+}
 
 
-
-  const [date, setDate] = useState(new Date())
-  const onChangeDate = date => {
-    setDate(date);
-    console.log("ALL DATESSSS ", getDaysArray(date[0], date[1]))
-    datesArray = getDaysArray(date[0], date[1])
-    var newdate = date.toString()
-    var tempDatesArray=[]
-    var arr1 = newdate.split(' ');
-    for (let i = 0; i < datesArray.length; i++) {
-      console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
-      tempDatesArray.push([ createRegularDateFormat(datesArray[i],'-')])
-    }
-    datesArray=tempDatesArray
+function createRegularDateFormat(t, s) {
+  let a = [{ year: 'numeric' }, { month: 'numeric' }, { day: 'numeric' }];
+  function format(m) {
+    let f = new Intl.DateTimeFormat('en', m);
+    return f.format(t);
   }
+  return a.map(format).join(s);
+}
 
-  function createRegularDateFormat(t, s) {
-    let a = [{ year: 'numeric' }, { month: 'numeric' }, { day: 'numeric' }];
-    function format(m) {
-      let f = new Intl.DateTimeFormat('en', m);
-      return f.format(t);
-    }
-    return a.map(format).join(s);
-  }
 
   const today1 = new Date()
   const tomorrow = new Date(today1)
   tomorrow.setDate(tomorrow.getDate() + 1)
 
 
-  // constructor(props){
-  //   super(props);
-  //   this.state={
-  //      value:this.props.location.state,
-  //   }
-  // }
 
 
   function init() {
@@ -333,12 +364,29 @@ export default function MyApp(props) {
 
   function goToTable() {
 
-    console.log(selectedDatesList,'///../',datesArray)
+    MealDetails.getSelectedDates(empId).then(Response=>{
+      console.log("Fetching the selected mealdates",Response.status);
+      if(Response.status==200){
+        console.log(Response.data,'from api');
+        prevoiusdatesforcancel =Response.data;
+        
+        setSelectedMealDatesHide('block')
+      
+        for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
+          if(!prevoiusdatesforcancel[eachDay][1]){
+            prevoiusdatesforcancel[eachDay][1]='veg'
+          }else{
+            prevoiusdatesforcancel[eachDay][1]='nonveg'
+          }
+        }
+
+        
+    console.log(prevoiusdatesforcancel,'///../',datesArray)
+    selectedDatesList=prevoiusdatesforcancel
     var currentSelectedDatesList=datesArray
     for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
       for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
-        console.log(selectedDatesList[previouslySelectedDate][0],currentSelectedDatesList[currentSelectedDate][0])
-
+       console.log(selectedDatesList[previouslySelectedDate][0]+"][][]["+currentSelectedDatesList[currentSelectedDate][0])
           if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
               if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
                 currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
@@ -352,7 +400,6 @@ export default function MyApp(props) {
    
 console.log(currentSelectedDatesList)
 
-    console.log(currentSelectedDatesList)
     
     document.getElementById('mealsTable').style.display = 'block'
     document.getElementById('selectedMealDates').style.display = 'none'
@@ -378,61 +425,113 @@ console.log(currentSelectedDatesList)
 
       setDates(currentSelectedDatesList)
       console.log(selectedDatesList,'...',datesArray)
-  }
-
-
-
-  function cancelMeal() {
-
-    MealDetails.getEmployeeMealDates(empId).then(Response => {
-      console.log("Fetching the selected mealdates", Response.status);
-      if (Response.status == 200) {
-        console.log(Response.data);
-        //selectedDatesList = Response.data;
       }
-    }).catch(err => console.log("Caught error ", err)).finally()
-    //meal_date,meal_type
-
-    console.log(selectedDatesList)
-    document.getElementById('btn2').style.display = 'block';
-    document.getElementById('btn1').style.display = 'none';
-    document.getElementById('mealsTable').style.display = 'none'
-    document.getElementById('selectedMealDates').style.display = 'block'
-    document.getElementById('mealsTable').style.display = 'none'
-    setSelectedMealDatesHide('block')
-
+    });
 
   }
 
-  function updateDetails() {
-    MealDetails.updateMealDetails(selectedDatesList, empId).then(Response => {
-      console.log("Response code for updating the mealdates ", Response.status)
-    }).catch(err => console.log("Caught err ", err))
-  }
 
-
-  function cancelSingleMeal(e) {
-    console.log("onclickkkkk", e.target.parentNode.id)
-    document.getElementById(e.target.id)
-    //console.log(e.target.parentNode.parentNode)
-    var a = e.target.parentNode.id
-    var getdate = a.slice(0, 10)
-    console.log(getdate)
-    console.log("2021-09-26" == getdate, '///////////')
-    var index = -1
-    for (var i = 0; i < selectedDatesList.length; i = i + 1) {
-      if (selectedDatesList[i][0] == getdate) {
-        index = i;
-        break
+function cancelMeal(e){
+  console.log("this is in cancel meal")
+  MealDetails.getSelectedDates(empId).then(Response=>{
+    console.log("Fetching the selected mealdates",Response.status);
+    if(Response.status==200){
+      console.log(Response.data,'from api');
+      prevoiusdatesforcancel =Response.data;
+      console.log(prevoiusdatesforcancel)
+      document.getElementById('btn2').style.display='block';
+      document.getElementById('btn1').style.display='none';
+      document.getElementById('mealsTable').style.display='none'
+      document.getElementById('selectedMealDates').style.display='block'
+      document.getElementById('mealsTable').style.display='none'
+      setSelectedMealDatesHide('block')
+    
+      for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
+        if(!prevoiusdatesforcancel[eachDay][1]){
+          prevoiusdatesforcancel[eachDay][1]='veg'
+        }else{
+          prevoiusdatesforcancel[eachDay][1]='nonveg'
+        }
       }
-      index = -1
+
+      doReload();
     }
+  }).catch(err=>console.log("Caught error ",err)).finally()
+  //meal_date,meal_type
 
-    selectedDatesList.splice(index, 1)
 
-    var i = e.target.parentNode.parentNode.parentNode.rowIndex;
+  
+}
 
-    doReload();
+
+function submitDetails(e){
+    if(datesArray.length == datespulsmealtype.length){
+    MealDetails.submitMealDetails(datespulsmealtype,empId).then(Response=>{
+      console.log("Response code for updating the mealdates ",Response.status)
+    }).catch(err=>console.log("Caught err ",err))
+    toast.success(
+       'submission successful',
+       {autoClose:2000}
+       )
+  }
+  else{
+    alert("please select meal type")
+  }
+  
+  }
+  
+
+function updateDetails(){
+  //  for(var i =0; i< deleteddates.length;i++){
+  //    selectedDatesList[i] = deleteddates[i]
+  //  }
+   console.log("delete dates",deleteddates)
+   console.log("selectedDatesList",prevoiusdatesforcancel)
+  MealDetails.updateMealDetails(deleteddates,empId).then(Response=>{
+    
+    toast.success(
+      "Meal  updated  successfully",
+      {
+        autoClose: 2000,
+        position: toast.POSITION.TOP_CENTER
+      }
+    )
+  }).catch(err=>console.log("Caught err ",err))
+}
+
+
+function cancelSingleMeal(e){
+  console.log("onclickkkkk",e.target.parentNode.id)
+  document.getElementById(e.target.id)
+  console.log(e.target.parentNode.id)
+  var a =e.target.parentNode.id
+  var getdate = a.slice(0,10)
+  console.log(getdate)
+  var canceledmealtype = a.slice(11,)
+  console.log(deleteddates)
+  if(!deleteddates.includes([getdate,canceledmealtype])){
+    deleteddates.push([getdate,canceledmealtype])
+  }
+  console.log(deleteddates)
+
+  var index =-1
+
+  for (var i=0;i<prevoiusdatesforcancel.length;i=i+1){
+    
+    if(prevoiusdatesforcancel[i][0].includes(getdate)){
+      index=i;
+      console.log(prevoiusdatesforcancel[i][0],getdate)
+      break
+    }
+    index=-1
+  }
+   // var index = dates2.indexOf(prevoiusdatesforcancel)
+
+    prevoiusdatesforcancel.splice(index,1)
+
+ // var i = e.target.parentNode.parentNode.parentNode.rowIndex;
+  
+  doReload();
   }
 
   function closeTable() {
@@ -467,12 +566,12 @@ console.log(currentSelectedDatesList)
 
             <div>
             <button onClick={goToprofile} class="btn btn-primary pull-right " style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-user"> Profile</i></button>
-            <button onClick={cancelMeal} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Cancel Meal</i></button>
+            <button onClick={cancelMeal} id="caninheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Cancel Meal</i></button>
             <button onClick={goToNotify} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-bell">  Notifications</i></button>
             <button onClick={goToEmphist} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-history">  History</i></button>
 
 
-              <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe</i></button>
+              <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe..</i></button>
 
       
 
@@ -480,37 +579,6 @@ console.log(currentSelectedDatesList)
             </div>
           </div>
 
-
-
-
-
-
-
-
-          {/* <div class="container">
-  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" onClick={goToModal}>subscribe...</button>
-
- 
-   <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-  
-</div> */}
 
 <div class="form-popup pull-right" id="myprofile" style={{ position: "fixed", top: "18%", left: "90%", marginLeft: "-30px" }}>
                 <form class="form-container" style={{ textAlign: "left" }}>
@@ -543,20 +611,6 @@ console.log(currentSelectedDatesList)
             </form>
           </div>
 
-          {/* <div class="container">
-   <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu">
-      <li><a href="#">HTML</a></li>
-      <li><a href="#">CSS</a></li>
-      <li><a href="#">JavaScript</a></li>
-    </ul>
-  </div>
-</div> */}
-
-          {/* <button  data-toggle="popover" data-container="a" title="Popover Header" data-content="Some content inside the popover">Toggle popover</button> */}
-          <WindowFocusHandler />
           <div class="form-popup" id="myFormNotif" style={{ position: "fixed", top: "18%", left: "90%", marginLeft: "-300px" }}>
             <form class="form-container" style={{ textAlign: "left" }}>
               <h4>Employee Notifications</h4>
@@ -604,7 +658,7 @@ console.log(currentSelectedDatesList)
                 <th>Cancel</th>
               </tr>
             </thead>
-
+            {}
             <tbody>
               {
                 dates2.map(eachDay =>
@@ -612,7 +666,7 @@ console.log(currentSelectedDatesList)
                     <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
-                      <input type="checkbox" id={eachDay[0] + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?false:true)} />
+                      <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?false:true)} />
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>
@@ -639,13 +693,13 @@ console.log(currentSelectedDatesList)
                 <th>Cancel Meal</th>
               </tr>
             </thead>
-            {console.log(selectedDatesList, "in html")}
+            {console.log(prevoiusdatesforcancel.length, "in html")}
             <tbody>
               {
 
-                selectedDatesList.map(eachDay =>
+prevoiusdatesforcancel.map(eachDay =>
                   <tr >
-                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
+                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0].slice(0,10)}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
                       <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={(eachDay[1]) == 'veg'} />
@@ -653,11 +707,11 @@ console.log(currentSelectedDatesList)
                     </th>
                     <th style={{ padding: "10px 50px" }}>
 
-                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={(eachDay[1]) == 'non-veg'} />
+                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={(eachDay[1]) == 'nonveg'} />
 
                     </th>
                     <th>
-                      <span onClick={cancelSingleMeal} id={eachDay + "delete"}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
+                      <span onClick={cancelSingleMeal} id={eachDay}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
                     </th>
                   </tr>)
               }
@@ -710,146 +764,3 @@ console.log(currentSelectedDatesList)
 
   );
 }
-
-
-/*commented js code*/
-
-// var datee = new Date();
-// var newdate = datee.toString()
-// var arr1 = newdate.split(' ');
-// var onlydate = arr1[2]
-// var finaldate = parseInt(onlydate)+1
-// var today = datee.getDate()+1;
-// arr1.splice(2, 0, finaldate);
-// delete arr1[3]
-// var str='';
-// for (var i = 0; i < arr1.length; i++) {
-//   str+=arr1[i]+" ";
-// }
-//arr1.filter(n => n)
-//str.replace('undefined', '');
-
-//   const [startDate, setStartDate] = useState(null);
-//  const [endDate, setEndDate] = useState(null);
-//  () => {
-//   const [startDate, setStartDate] = useState(new Date());
-//   const [endDate, setEndDate] = useState(null);
-//   const onChange = (dates) => {
-//     const [start, end] = dates;
-//     setStartDate(start);
-//     setEndDate(end);
-//   };
-// }
-
-//  function handleDateChange(date) {
-//     // initial change: start by setting the startDate
-//     console.log("in handle date change")
-//     if (!startDate && !endDate) {
-//       setStartDate(date);
-//      // startDate has been set, set the end date
-//     } else if (startDate && !endDate) {
-//      setEndDate(date);
-//     }
-//     console.log("in start date"+startDate)
-//     console.log(endDate)
-//     // user is choosing another range => set the start date
-//     // and set the endDate back to null
-//     if (startDate && endDate) {
-//       setStartDate(date);
-//       setEndDate(null);
-//     }
-//  }
-//function goToNotif(){
-//  document.getElementById("myForm").style.display = "block";
-// toast.info(
-// 'Meal subscribed, but not taken on aug 18 2021',
-// {autoClose:false}
-// )
-// toast.info(
-//   'Meal subscribed, but not taken on aug 23 2021',
-//   {autoClose:3000}
-//   )
-// toast.warn(
-//   'Total of 5 subscibed meals were not taken!',
-//   {autoClose:false}
-//   )
-//}
-    // var c = document.parent.childNodes;
-    //console.log("emp type",parent,c[0])
-    //document.getElementById("demo").innerHTML = parent;
-  //   var c = document.parent.childNodes;
-  //   var txt = "";
-  //   var i;
-  //   for (i = 0; i < c.length; i++) {
-  //     txt = txt + c[i].nodeName + "<br>";
-  // }
-  // console.log(txt)
-
-
-
-//function submitDetails(){
-  //document.getElementById('btn1').style.display='block';
-  // var x = document.getElementById("btn");
-  // if (x.style.display === "none") {
-  //   x.style.display = "block";
-  // } else {
-  //   x.style.display = "none";
-  // }
-  // document.getElementById('btn').style.display='block';
-  //alert("Meal details submitted successfully")
-//}
-
-
-// function handler(e){
-//   console.log("in handler")
-//   var date = new Date();
-//   var tdate = date.getDate();
-//   var month = date.getMonth() +1;
-//   var year = date.getUTCFullYear() - 0; 
-//   if(month < 10){
-//     month = "0" + month 
-//   }
-//   if(tdate < 10){
-//     tdate = "0" + tdate;
-//   }
-//   var maxDate = year + "-" + month + "-" + tdate;
-//   dates.push(e.target.value)
-//   document.getElementById("demo1").setAttribute("min", maxDate);
-  //console.log(dates)
-    // let object={
-    //   'dates':dates,
-    //   'emplpoyessId':USERID
-    // }
-  // submitDattes(object)
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

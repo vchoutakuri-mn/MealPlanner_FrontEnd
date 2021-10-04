@@ -159,6 +159,7 @@ console.log(currentSelectedDatesList[0][0])
                     localStorage.setItem('role', userType)
                     localStorage.setItem('validUser', true)
                     localStorage.setItem('token', GET_TOKEN());
+                    localStorage.setItem('empId',empid)
 
                     if (userType == "Employee") {
                         var meal_subscribed;
@@ -182,7 +183,8 @@ console.log(currentSelectedDatesList[0][0])
                 }
             }).catch(function (error) {
                if(error.response){
-                   if(error.response.status.include(4)){
+                   console.log("details wrong ",error)
+                   if(error.response!=undefined ){
                     reactDom.render(<PageNotFound/>,document.getElementById("root"))
                    }
                    else if(error.response.status.include(5)){
@@ -229,7 +231,7 @@ console.log(currentSelectedDatesList[0][0])
         } else if (localStorage.getItem('role') != undefined && localStorage.getItem('role').includes("Employee")) {
             return (
                 <>
-                    <MyApp />
+                    <MyApp empId={localStorage.getItem('empId')} />
                 </>
             )
         } else if (localStorage.getItem('role') != undefined && localStorage.getItem('role').includes("financier")) {
@@ -263,7 +265,6 @@ console.log(currentSelectedDatesList[0][0])
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="widget blank no-padding">
-
                                     <div class="panel panel-default work-progress-table">
                                         {/* Default panel contents */}
                                         <div class="panel-heading" style={{ textAlign: "center", fontSize: "30px" }}>MEAL PLANNER
@@ -297,7 +298,7 @@ console.log(currentSelectedDatesList[0][0])
                                             <input type="text" name="name" placeholder="User Id" required="" id="userId" style={{ width: "40%", marginLeft: "32px", textAlign: 'center' }} />
                                             <label style={{ fontSize: "14px", marginLeft: "25%" }}>Password  </label>
                                             <input type="Password" name="password" placeholder="User Password" required="" id="password" style={{ width: "40%", marginLeft: "50px", textAlign: 'center' }} />
-                                            <button onClick={goToHome} class="tag" style={{ marginLeft: "50%", marginTop: "20%" }} >Sign in</button>
+                                            <button onClick={goToHome} class="btn btn-primary" style={{ marginLeft: "50%", top: "20%" }} >Sign in</button>
 
                                             <br></br>
                                             <h5 style={{ marginTop: "30px", marginLeft: "40%" }}>Don't have an account? </h5>
