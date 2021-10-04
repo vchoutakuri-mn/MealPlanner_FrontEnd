@@ -5,7 +5,8 @@ import {
     TOKEN, 
     MEAL_SUBSCRIPTION ,
     EXISTDATES,
-    EMPLOYEE_CANCEL_MEAL_DATES} from "../../API's/CommonService";
+    EMPLOYEE_CANCEL_MEAL_DATES,
+    HISTORY} from "../../API's/CommonService";
 import { GET_TOKEN } from "../../Vender/data/Storage";
 import moment from 'moment';
 import { each } from "jquery";
@@ -38,7 +39,7 @@ class MealDetails {
     // }
 
 
-    updateMealDetails(updatedDatesList){
+    updateMealDetails(updatedDatesList,id){
         var data=[]
         updatedDatesList.map(eachDay=>{
             if(!data.includes(eachDay))
@@ -49,16 +50,18 @@ class MealDetails {
                 subscribed:1
             })
         })
-        data=[
-            {
-                d:"2021-10-08",
-                vid:1,
-                subscribed:true,
-                mealType:true
-            }
-        ]
+        console.error(data)
+        // data=[
+        //     {
+        //         d:"2021-10-05",
+        //         vid:1,
+        //         subscribed:true,
+        //         mealType:true
+        //     }
+        // ]
         console.log(data,EMPLOYEE_CANCEL_MEAL_DATES)
-        return axios.get(EMPLOYEE_CANCEL_MEAL_DATES,{
+        return axios.delete(EMPLOYEE_CANCEL_MEAL_DATES,{
+            data,
             headers: 
             { Authorization: `Bearer ${GET_TOKEN()}` }
         })
@@ -122,5 +125,12 @@ class MealDetails {
         return axios.post(EMPLOYEE_SELECTED_MEAL_DATES,data1,{
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
 }
+
+    getHistory(startDate,endDate){
+    return axios.get(HISTORY+startDate+'/'+endDate+'/1/10',{
+        headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
+
+}
+
 }
 export default new MealDetails();

@@ -94,6 +94,16 @@ export const EMPLOYEE_CANCEL_MEAL_DATES="http://localhost:8083/mealCalender/canc
 //Method type:get
 export const EXISTDATES="http://localhost:8083/employee/getexistdates/";
 
+
+
+//History url
+//Request:startdate,enddate,pageno,pagesize
+//Expected:mealdate,mealtaken,mealtype
+//Method type:get
+export const HISTORY="http://localhost:8083/employee/history/";
+
+
+
             //---------------------TOKEN-------------------//
 export const TOKEN='';
 
