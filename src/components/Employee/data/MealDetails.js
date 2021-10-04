@@ -4,9 +4,10 @@ import {
     EMPLOYEE_UPDATED_MEAL_DATES, 
     TOKEN, 
     MEAL_SUBSCRIPTION ,
+    HISTORY,
     EXISTDATES,
-    EMPLOYEE_CANCEL_MEAL_DATES,
-    HISTORY} from "../../API's/CommonService";
+    EMPLOYEE_HISTORY,
+    EMPLOYEE_CANCEL_MEAL_DATES} from "../../API's/CommonService";
 import { GET_TOKEN } from "../../Vender/data/Storage";
 import moment from 'moment';
 import { each } from "jquery";
@@ -15,9 +16,36 @@ import { each } from "jquery";
 const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/employee/page?"
 
 class MealDetails {
-    getSelectedDates(pageNo,pageSize){
+    getEmployeeMealDates(pageNo,pageSize){
+        console.log(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+pageNo+"&pageSize="+pageSize)
+        return axios.get(DATES_WITH_EMPLOYEE_DETSILS+'pageNo='+(pageNo-1)+"&pageSize="+pageSize);
+    }
+
+    // getSelectedMealDates(empID){
+    //     return axios.get(EMPLOYEE_SELECTED_MEAL_DATES+"/"+empID,{
+    //         headers: 
+    //         { Authorization: `Bearer ${GET_TOKEN()}` }
+    //     });
+    // }
+    
+    // checkMealSubscription(){
+    //     return axios.get(MEAL_SUBSCRIPTION, {
+    //         headers: 
+    //         { Authorization: `Bearer ${GET_TOKEN()}` }
+    //     });
+        
+    // }
+
+
+    getMealDates(start, end){
+        return axios.get(EMPLOYEE_HISTORY, {
+                headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+            });
+    }
+    
+    getSelectedDates(){
   
-        return axios.get(EXISTDATES+'1',{
+        return axios.get(EXISTDATES,{
             headers: 
             { Authorization: `Bearer ${GET_TOKEN()}` }
         });
@@ -30,16 +58,30 @@ class MealDetails {
         });
     }
     
-    // checkMealSubscription(){
-    //     return axios.get(MEAL_SUBSCRIPTION, {
-    //         headers: 
-    //         { Authorization: `Bearer ${GET_TOKEN()}` }
-    //     });
+    checkMealSubscription(){
+        return axios.get(MEAL_SUBSCRIPTION, {
+            headers: 
+            { Authorization: `Bearer ${GET_TOKEN()}` }
+        });
         
-    // }
+    }
 
 
-    updateMealDetails(updatedDatesList,id){
+    updateMealDetails(updatedDatesList){
+
+        // var data=[]
+        // updatedDatesList.map(eachDay=>{
+        //     data .push({
+        //         d:eachDay[0],
+        //         mealType:eachDay[1]=='veg'?true:false,
+        //         vid : 1,
+        //         subscribed:true
+        //     })
+        // })
+        // console.log(data)
+        // return axios.delete(EMPLOYEE_UPDATED_MEAL_DATES+'/'+data,{
+        //     headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+        // })
         var data=[]
         updatedDatesList.map(eachDay=>{
             if(!data.includes(eachDay))
@@ -47,26 +89,23 @@ class MealDetails {
                 d:eachDay[0],
                 vid : 1,
                 mealType:eachDay[1]=='veg'?true:false,
-                subscribed:1
+                subscribed:true
             })
         })
-        console.error(data)
         // data=[
         //     {
-        //         d:"2021-10-05",
+        //         d:"2021-10-08",
         //         vid:1,
         //         subscribed:true,
         //         mealType:true
         //     }
         // ]
-        console.log(data,EMPLOYEE_CANCEL_MEAL_DATES)
-        return axios.delete(EMPLOYEE_CANCEL_MEAL_DATES,{
-            data,
+        
+         console.log(data)
+         return axios.delete(EMPLOYEE_CANCEL_MEAL_DATES,{
             headers: 
-            { Authorization: `Bearer ${GET_TOKEN()}` }
-        })
-    }
-    
+            { Authorization: `Bearer ${GET_TOKEN()}` },data})
+         }
 
     createRegularDateFormat(arr1) {
         var d
@@ -126,11 +165,10 @@ class MealDetails {
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
 }
 
-    getHistory(startDate,endDate){
+getHistory(startDate,endDate){
     return axios.get(HISTORY+startDate+'/'+endDate+'/1/10',{
         headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
 
 }
-
 }
 export default new MealDetails();

@@ -43,7 +43,7 @@ function reducer(state, action) {
   }
 }
 
-export default function Hist () {
+export default function Hist (props) {
 
   const [state, dispatch] = useReducer(reducer, initialState)
   const [doReset,startDoingReset]=useState([])
