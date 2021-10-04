@@ -213,7 +213,7 @@ let START='';
  }
  
 function goToHome(){
-  ReactDOM.render(<MyApp/>,document.getElementById("root"))
+  ReactDOM.render(<MyApp empId={localStorage.getItem('empId')}  />,document.getElementById("root"))
 }
   function search(){
    
