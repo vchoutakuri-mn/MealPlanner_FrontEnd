@@ -291,7 +291,7 @@ console.log(currentSelectedDatesList[0][0])
                                             <select name="logs" id="log" style={{ marginTop: "1%", width: "40%", marginLeft: "16%", textAlign: 'center' }} onChange={setTypeOfUser} >
                                                 <option value="employee" >Employee</option>
                                                 <option value="vendor" >Vendor</option>
-                                                <option value="financier">Financier</option>
+                                                <option value="financier">Finance Department</option>
                                             </select><br></br>
                                             <label style={{ fontSize: "14px", marginLeft: "25%" }}>Employee ID  </label>
                                             <input type="text" name="name" placeholder="User Id" required="" id="userId" style={{ width: "40%", marginLeft: "32px", textAlign: 'center' }} />

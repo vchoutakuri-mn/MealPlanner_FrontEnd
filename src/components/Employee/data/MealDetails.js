@@ -99,10 +99,11 @@ class MealDetails {
         //         mealType:true
         //     }
         // ]
+        
          console.log(data)
          return axios.delete(EMPLOYEE_CANCEL_MEAL_DATES,{
             headers: 
-            { Authorization: `Bearer ${GET_TOKEN()}` }},data)
+            { Authorization: `Bearer ${GET_TOKEN()}` },data})
          }
 
     createRegularDateFormat(arr1) {

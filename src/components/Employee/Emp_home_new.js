@@ -298,7 +298,6 @@ var getDaysArray = function (start, end) {
         console.log(Response.data);
         meal_subscribed=Response.data
         console.log("meal_subscribed",meal_subscribed[0][0])
-        console.log("meal_subscribed",meal_subscribed[0][0])
         if (meal_subscribed[0][0] == true) {
             alert("subscribed")
             //fade button
@@ -414,6 +413,7 @@ console.log(currentSelectedDatesList)
     else if (subveg == true) {
       console.log("entering into gototable and veg section ")
       document.getElementById('mealsTableveg').style.display = 'block';
+      document.getElementById('mealsTable').style.display = 'none';
       document.getElementById('btn1').style.display = 'block';
       setDates(currentSelectedDatesList)
     }
