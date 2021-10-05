@@ -149,7 +149,10 @@ console.log(currentSelectedDatesList[0][0])
             //    }
             //    this.handleAxiosError(error)
             // }
-            Employee.checkValidation(empid, empasswd).then(Response => {
+            if(strUser == "Finance Department"){
+                strUser = "financer"
+            }
+            Employee.checkValidation( empid, empasswd, strUser).then(Response => {
                 console.log("In login", Response.status)
                 if (Response.status == 200 && Response.data != '' && Response.data != undefined) {
 
