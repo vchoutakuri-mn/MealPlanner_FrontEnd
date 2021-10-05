@@ -130,37 +130,32 @@ function getDetails(e){
   datespulsmealtype.push(n)
   var date=e.target.id
   date=e.target.id.slice(0,10)
-  //console.log("datespulsmealtype",date)
+
   var mealtype = e.target.id.slice(10,)
-  //console.log(mealtype)
-  //console.log(date+'nonveg'==e.target.id)
-  
+
   if(e.target.id.includes('nonveg') ){
     
   if(e.target.checked){
 
-   console.log("NON VEG checked ",document.getElementById(date+'nonveg').checked)
     document.getElementById(date+'nonveg').disabled=false
     document.getElementById(date+'veg').checked=false
     document.getElementById(date+'veg').disabled=true
     }else{
-      console.log("NON VEG unchecked")
+
      document.getElementById(date+'veg').disabled=false
       document.getElementById(date+'nonveg').checked=false
     }
 
   }else{
-    // console.log("in getdetails in veg",date+'veg',e.target.id)
-    // console.log(date,e.target.id)
+
     if(e.target.checked){
-      console.log("veg checked")
-      //console.log(date,"printing dates..",date+'nonveg')
+
   
       document.getElementById(date+'veg').disabled=false
       document.getElementById(date+'nonveg').checked=false
        document.getElementById(date+'nonveg').disabled=true
     }else{
-      console.log("veg unchecked")
+
        document.getElementById(date+'nonveg').disabled=false
        document.getElementById(date+'veg').disabled=false
 
@@ -315,7 +310,7 @@ function goToDel(e) {
   function goToSubs() {
     
       Employee.checkMealSubscription().then((Response)=>{
-        console.log(Response.data);
+
         meal_subscribed=Response.data
         console.log("meal_subscribed",meal_subscribed[0][0])
         if (meal_subscribed[0][0] == true) {
@@ -361,13 +356,13 @@ function goToprofile(){
 const [date , setDate] = useState(new Date()) 
 const onChangeDate = date => {
   setDate(date);
-  console.log("ALL DATESSSS ", getDaysArray(date[0], date[1]))
+
   datesArray = getDaysArray(date[0], date[1])
   var newdate = date.toString()
   var tempDatesArray=[]
   var arr1 = newdate.split(' ');
   for (let i = 0; i < datesArray.length; i++) {
-    console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i]))
+
    // console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
     tempDatesArray.push([ createRegularDateFormat(datesArray[i])])
   }
@@ -421,7 +416,6 @@ const onChangeDate = date => {
     var currentSelectedDatesList=datesArray
     for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
       for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
-       console.log(selectedDatesList[previouslySelectedDate][0]+"][][]["+currentSelectedDatesList[currentSelectedDate][0])
           if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
               if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
                 currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
@@ -433,7 +427,7 @@ const onChangeDate = date => {
   }
     
    
-console.log(currentSelectedDatesList)
+
 
     
     document.getElementById('mealsTable').style.display = 'block'
@@ -460,7 +454,7 @@ console.log(currentSelectedDatesList)
     document.getElementById('btn1').style.display = 'block';
 
       setDates(currentSelectedDatesList)
-      console.log(selectedDatesList,'...',datesArray)
+
       }
     });
 
@@ -472,9 +466,9 @@ function cancelMeal(e){
   MealDetails.getSelectedDates().then(Response=>{
     console.log("Fetching the selected mealdates",Response.data);
     if(Response.status==200){
-      console.log(Response.data,'from api');
+
       prevoiusdatesforcancel =Response.data;
-      console.log(prevoiusdatesforcancel)
+
       document.getElementById('btn2').style.display='block';
       document.getElementById('btn1').style.display='none';
       document.getElementById('mealsTable').style.display='none'
@@ -520,8 +514,7 @@ function updateDetails(){
   //  for(var i =0; i< deleteddates.length;i++){
   //    selectedDatesList[i] = deleteddates[i]
   //  }
-   console.log("delete dates",deleteddates)
-   console.log("selectedDatesList",prevoiusdatesforcancel)
+
   
     
   MealDetails.updateMealDetails(deleteddates,empId).then(Response=>{
@@ -682,7 +675,7 @@ function cancelSingleMeal(e){
             
             <div style={{ marginLeft: "100px", marginRight: "100px" }} >
               <Calendar selectRange onChange={onChangeDate} value={date} minDate={tomorrow} id="demo1" />
-              {console.log(date)}
+      
               {/* {date.toString()}   */}
             </div>
             <div>
@@ -717,7 +710,7 @@ function cancelSingleMeal(e){
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>
-                      {console.log(eachDay,eachDay.length)}
+        
                       <input type="checkbox" id={eachDay.length==2?eachDay[0]+ 'nonveg':eachDay+'nonveg'} onChange={getDetails} checked={eachDay.length==2?(eachDay[1].includes('nonveg')?true:null):null}  />
 
                     </th>
