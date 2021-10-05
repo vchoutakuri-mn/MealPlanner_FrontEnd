@@ -245,6 +245,7 @@ function subscribed(e){
         position: toast.POSITION.TOP_CENTER
       }
     )
+    updatemeal(typeOfMeal)
 
   }
 
@@ -312,29 +313,35 @@ function goToDel(e) {
         //console.log("datespulsmealtype[i]",datespulsmealtype.replace(datespulsmealtype[i].slice(0,11),year + "-" + month + "-" + day))
     }
 
-  function goToSubs() {
-    
-      Employee.checkMealSubscription().then((Response)=>{
-        console.log(Response.data);
-        meal_subscribed=Response.data
-        console.log("meal_subscribed",meal_subscribed[0][0])
-        if (meal_subscribed[0][0] == true) {
-            alert("subscribed")
-            //fade button
-            return
-          }
-          else{
-            if (enable) {
-              document.getElementById("proceedtosub").disabled = false;
+    function goToSubs() {
+      let pro='vikas'
+        Employee.checkMealSubscription().then((Response)=>{
+          console.log(Response.data);
+          meal_subscribed=Response.data
+          console.log("meal_subscribed",meal_subscribed[0][1])
+          pro='vyshali'
+          //console.log("meal_subscribed",meal_subscribed[0][0])
+          if (meal_subscribed[0][0] == true) {
+              alert("subscribed")
+              //fade button
+              return
             }
-            else {
-              //console.log("not subscribed and proceedtosub is not disabled")
-              document.getElementById("proceedtosub").disabled = true;
+            else{
+              if (enable) {
+                document.getElementById("proceedtosub").disabled = false;
+              }
+              else {
+                //console.log("not subscribed and proceedtosub is not disabled")
+                document.getElementById("proceedtosub").disabled = true;
+              }
+             
+              document.getElementById("sub").style.display = "block";
             }
+            console.log("meal_subscribed 324",meal_subscribed[0][1])
            
-            document.getElementById("sub").style.display = "block";
-          }
-     })
+      //goToTable(meal_subscribed[0][1])
+            
+       })
     
 
    
@@ -396,9 +403,12 @@ const onChangeDate = date => {
     document.getElementById("subinheader").disabled = meal_subscribed
   }
 
-
+var selectedmealtype
   function goToTable() {
-
+    Employee.checkMealSubscription().then((Response)=>{
+      console.log(Response.data);
+      meal_subscribed=Response.data
+    selectedmealtype = meal_subscribed[0][1]
     MealDetails.getSelectedDates(empId).then(Response=>{
       console.log("Fetching the selected mealdates",Response.status);
       if(Response.status==200){
@@ -436,10 +446,17 @@ const onChangeDate = date => {
 console.log(currentSelectedDatesList)
 
     
-    document.getElementById('mealsTable').style.display = 'block'
+    document.getElementById('mealsTable').style.display = 'none'
     document.getElementById('selectedMealDates').style.display = 'none'
-    document.getElementById('btn2').style.display = 'none'
-    if (subnv == true) {
+    document.getElementById('btn1').style.display = 'none'
+    document.getElementById('btn2').style.display = 'none';
+    
+    //console.log("meal_subscribed[1][0]",meal_subscribed[1][0])
+    console.log("subveg,selectedmealtypesubnv",selectedmealtype)
+   // selectedmealtype == true ? subnv = true : subveg = true
+    console.log("subveg,subnv",subveg,subnv)
+
+    if (!selectedmealtype) {
       console.log("entering into gototable and non veg ")
       document.getElementById('mealsTable').style.display = 'block';
       document.getElementById('btn1').style.display = 'block';
@@ -447,14 +464,14 @@ console.log(currentSelectedDatesList)
       //console.log("type of dates ...",typeof datesArray)
     }
 
-    else if (subveg == true) {
+    else  {
       console.log("entering into gototable and veg section ")
       document.getElementById('mealsTableveg').style.display = 'block';
       document.getElementById('mealsTable').style.display = 'none';
       document.getElementById('btn1').style.display = 'block';
       setDates(currentSelectedDatesList)
     }
-    else {
+    if(!meal_subscribed[0][0]) {
       alert("Please subscribe! ")
     }
     document.getElementById('btn1').style.display = 'block';
@@ -463,8 +480,9 @@ console.log(currentSelectedDatesList)
       console.log(selectedDatesList,'...',datesArray)
       }
     });
-
+  })
   }
+
 
 
 function cancelMeal(e){
@@ -590,6 +608,13 @@ function cancelSingleMeal(e){
 
   }
 
+  function updatemeal(typeOfMeal) {
+    typeOfMeal == "veg"?subveg=true:subnv=true;
+    console.log(subnv,subveg)
+    MealDetails.updatemealplantype(typeOfMeal).then(Response=>{
+      console.log("Response code for updating the mealdates ",Response.data)
+    }).catch(err=>console.log("Caught err ",err))
+  }
 
   return (
     <>
