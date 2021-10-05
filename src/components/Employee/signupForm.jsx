@@ -1,7 +1,8 @@
 import React, { useContext , useState } from "react";
 import "../../App.css";
 import Employee from "./data/Employee";
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import reactDom  from "react-dom";
 import './css/signUpFormcss.css'
 import  LoginForm  from "./loginForm";
@@ -10,7 +11,7 @@ import Start from "./home";
 import Demo from "./subscribe";
 import Vender from "../Vender";
 import Finance from "../FinanaceTeam/finance";
-
+toast.configure();
 var USERTYPE='employee';
 export default function SignupForm(props) {
 //   const { switchToSignin } = useContext(AccountContext);
@@ -75,7 +76,13 @@ function setUserType(e){
 
 function goToHome(e){
   e.preventDefault()
-  
+  toast.success(
+    "User Created Successfully",
+    {
+      autoClose: 2000,
+      position: toast.POSITION.TOP_CENTER
+    }
+  )
   var useuse = document.getElementById("userType").value;
   console.log("use use",useuse)
   var userType=USERTYPE;
@@ -102,9 +109,6 @@ function goToHome(e){
      //userPassword.includes(confirmPassword)
       )
       {
-
-     
-    
     
      var token=''
      //console.log("New User details")
@@ -194,27 +198,29 @@ function goToStart(){
                 <div class="formBox" style={{backgroundColor:"#D3D3D3", height:"550px"}}>
                     <p class="sign" style={{marginTop:"-50px"}}>Create Account</p>
                     <form  style={{marginTop:"-35px"}}>
-                        <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px" }}>SignUp</p>
-                        <select name="cars" id="userType" style={{marginTop:"-10px",width:"40%",marginLeft:"6px" }} onChange={setUserType} >
+                        <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px"}}>SignUp</p>
+                        <select name="cars" id="userType" style={{marginTop:"-10px",width:"40%",marginLeft:"6px",textAlign: 'center' }} onChange={setUserType} >
                         <option value="employee">Employee</option>
                         <option value="vendor" >Vendor</option>
-                        <option value="financer">Financer</option>
+                        <option value="financer">Finance Department</option>
                         </select><br></br>
                         <p>UserId</p>
-                        <input type="text" id="userId"  name="name" placeholder="Your Id" required/>
-
+                        {/* <input type="text" id="userId"  name="name" placeholder="Your Id" required/> */}
+                        <input type="text" name="userId" placeholder="User ID" required="" id="userId" style={{ textAlign: 'center' }} />
                         <p>User Name</p>
-                        <input type="text" id="userName"  name="name" placeholder="Your Name" required/>
-
+                        {/* <input type="text" id="userName"  name="name" placeholder="Your Name" required/> */}
+                        <input type="text" name="userName" placeholder="User Name" required="" id="userName" style={{ textAlign: 'center' }} />
                         <p>E-mail Address</p>
-                        <input type="text" id ="userEmail" name="email" placeholder="Enter your Mail ID" required/>
-
+                        {/* <input type="text" id ="userEmail" name="email" placeholder="Enter your Mail ID" required/> */}
+                        <input type="text" name="userId" placeholder="Enter your Mail ID" required="" id="userEmail" style={{ textAlign: 'center' }} />
                         <p>Create Password</p>
-                        <input type="Password" id="password" name="password" placeholder="Create a Strong Password" required />
+                        {/* <input type="Password" id="password" name="password" placeholder="Create a Strong Password" required /> */}
+                        <input type="Password" name="password" placeholder="Create a Strong Password" required="" id="password" style={{ textAlign: 'center' }} />
                         <p>Confirm Password</p>
-                        <input type="Password" id="confirmPassword" placeholder="Re-enter your Password" required />
+                        <input type="Password" name="password" placeholder="Re-enter your Password" required="" id="confirmPassword" style={{ textAlign: 'center' }} />
+                        {/* <input type="Password" id="confirmPassword" placeholder="Re-enter your Password" required /> */}
                         <span id = "message2" style={{color:"red",fontSize: "10px"}}> </span> 
-                        <button class="btn btn-primary" onClick={goToHome} >create an account..</button>
+                        <button class="btn btn-primary" onClick={goToHome} >create an account</button>
                          
 
                         {/* <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px" }}>Subscribe</p>

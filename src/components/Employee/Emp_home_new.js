@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Employee from './data/Employee';
 import { SET_TOKEN } from '../Vender/data/Storage';
 import MealDetails from './data/MealDetails';
+import { dateSingleInputPhrases } from '@datepicker-react/styled';
 
 toast.configure();
 
@@ -165,30 +166,11 @@ function getDetails(e){
        document.getElementById(date+'veg').disabled=false
 
       }
-    }
-  // console.log("duplicate,118",duplicate,datespulsmealtype)
-  // copydata(datespulsmealtype,insertdatemealtype)
-  // console.log("duplicate 120",duplicate)
-  //insertdatemealtype(duplicate);
-  //comparedisp(datesmealtype2d)
+
   }
+}
 
-// function copydata(datespulsmealtype,insertdatemealtype){
-//   //API call.then(
-//     console.log(datespulsmealtype)
-//     duplicate = datespulsmealtype
-   
-//  // )
-//   insertdatemealtype(duplicate,comparedisp)
 
-    
-//   //  for(var i =0; i<datespulsmealtype.length ;i++){
-//   //    console.log("in for loop")
-//   //    console.log(datespulsmealtype[i])
-//   //  //duplicate[i] = datespulsmealtype[i]
-// // }
-//  console.log(duplicate)
-// }
 
 
 function subscribed(e){
@@ -359,8 +341,6 @@ function goToDel(e) {
   }
 
 function goToprofile(){
-  //console.log("empid   ....",empId)
-  console.log("deleted dates array ",deleteddates)
   document.getElementById("myprofile").style.display = "block";
 }
 
@@ -405,16 +385,22 @@ const onChangeDate = date => {
 
 var selectedmealtype
   function goToTable() {
+    console.log(dates2)
     Employee.checkMealSubscription().then((Response)=>{
       console.log(Response.data);
       meal_subscribed=Response.data
+      
     selectedmealtype = meal_subscribed[0][1]
     MealDetails.getSelectedDates(empId).then(Response=>{
       console.log("Fetching the selected mealdates",Response.status);
       if(Response.status==200){
         console.log(Response.data,'from api');
         prevoiusdatesforcancel =Response.data;
-        
+        if(!meal_subscribed[0][0]) {
+          alert("Please subscribe! ")
+          return
+          
+        }
         setSelectedMealDatesHide('block')
       
         for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
@@ -471,9 +457,7 @@ console.log(currentSelectedDatesList)
       document.getElementById('btn1').style.display = 'block';
       setDates(currentSelectedDatesList)
     }
-    if(!meal_subscribed[0][0]) {
-      alert("Please subscribe! ")
-    }
+    
     document.getElementById('btn1').style.display = 'block';
 
       setDates(currentSelectedDatesList)
@@ -517,8 +501,15 @@ function cancelMeal(e){
 }
 
 
-function submitDetails(e){
-    if(datesArray.length == datespulsmealtype.length){
+function submitDetails(){
+  Employee.checkMealSubscription().then((Response)=>{
+    meal_subscribed=Response.data
+  selectedmealtype = meal_subscribed[0][1]
+    //if(datesArray.length == datespulsmealtype.length){
+      if(selectedmealtype){
+        datespulsmealtype = dates2
+        console.log("datespulsmealtype in submission",datespulsmealtype)
+      }
     MealDetails.submitMealDetails(datespulsmealtype,empId).then(Response=>{
       console.log("Response code for updating the mealdates ",Response.status)
     }).catch(err=>console.log("Caught err ",err))
@@ -526,11 +517,11 @@ function submitDetails(e){
        'submission successful',
        {autoClose:2000}
        )
-  }
-  else{
-    alert("please select meal type")
-  }
-  
+  // }
+  // else{
+  //   alert("please select meal type")
+  // }
+    });
   }
   
 
@@ -597,16 +588,7 @@ function cancelSingleMeal(e){
   }
 
 
-  function empHistory(start, end) {
-    MealDetails.getMealDates(start, end).then(Response => {
-      console.log("status code ", Response.data)
-      empHistData = Response.data;
-      console.log(empHistData)
-    }).catch(err => {
-      console.log("Something went wrong in empHist")
-    })
-
-  }
+  
 
   function updatemeal(typeOfMeal) {
     typeOfMeal == "veg"?subveg=true:subnv=true;
@@ -742,7 +724,7 @@ function cancelSingleMeal(e){
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>
-                      {console.log(eachDay,eachDay.length)}
+                      {/* {console.log(eachDay,eachDay.length)} */}
                       <input type="checkbox" id={eachDay.length==2?eachDay[0]+ 'nonveg':eachDay+'nonveg'} onChange={getDetails} checked={eachDay.length==2?(eachDay[1].includes('nonveg')?true:null):null}  />
 
                     </th>
