@@ -125,48 +125,6 @@ export default function MyApp(props) {
   }
 
 
-  function getDetailsVeg(e) {
-    
-    var n = e.target.id
-  console.error("e.target",e.target.id)
-  datespulsmealtype.push(n)
-  var date=e.target.id
-  date=e.target.id.slice(0,10)
-  var mealtype = e.target.id.slice(10,) 
-  
-  if(e.target.id.includes('nonveg') ){
-    
-  if(e.target.checked){
-
-   console.log("NON VEG checked ",document.getElementById(date+'nonveg').checked)
-    document.getElementById(date+'nonveg').disabled=false
-    document.getElementById(date+'veg').checked=false
-    document.getElementById(date+'veg').disabled=true
-    }else{
-      console.log("NON VEG unchecked")
-     document.getElementById(date+'veg').disabled=false
-      document.getElementById(date+'nonveg').checked=false
-    }
-
-  }else{
-    if(e.target.checked){
-      console.log("veg checked")
-      document.getElementById(date+'veg').disabled=false
-      document.getElementById(date+'nonveg').checked=false
-       document.getElementById(date+'nonveg').disabled=true
-    }else{
-      console.log("veg unchecked")
-       document.getElementById(date+'nonveg').disabled=false
-       document.getElementById(date+'veg').disabled=false
-
-      }
-    }
-    datespulsmealtype = dates2
-    console.log(dates2)
-    console.log(datespulsmealtype)
-
-  }
-
 function getDetails(e){
   var n = e.target.id
   console.error("e.target",e.target.id)
@@ -208,30 +166,11 @@ function getDetails(e){
        document.getElementById(date+'veg').disabled=false
 
       }
-    }
-  // console.log("duplicate,118",duplicate,datespulsmealtype)
-  // copydata(datespulsmealtype,insertdatemealtype)
-  // console.log("duplicate 120",duplicate)
-  //insertdatemealtype(duplicate);
-  //comparedisp(datesmealtype2d)
+
   }
+}
 
-// function copydata(datespulsmealtype,insertdatemealtype){
-//   //API call.then(
-//     console.log(datespulsmealtype)
-//     duplicate = datespulsmealtype
-   
-//  // )
-//   insertdatemealtype(duplicate,comparedisp)
 
-    
-//   //  for(var i =0; i<datespulsmealtype.length ;i++){
-//   //    console.log("in for loop")
-//   //    console.log(datespulsmealtype[i])
-//   //  //duplicate[i] = datespulsmealtype[i]
-// // }
-//  console.log(duplicate)
-// }
 
 
 function subscribed(e){
@@ -402,8 +341,6 @@ function goToDel(e) {
   }
 
 function goToprofile(){
-  //console.log("empid   ....",empId)
-  console.log("deleted dates array ",deleteddates)
   document.getElementById("myprofile").style.display = "block";
 }
 
