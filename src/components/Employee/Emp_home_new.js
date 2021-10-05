@@ -128,7 +128,7 @@ export default function MyApp(props) {
 
 function getDetails(e){
   var n = e.target.id
-  console.log("e.target",e.target)
+  console.log("e.target",e.target.id)
   datespulsmealtype.push(n)
   var date=e.target.id
   date=e.target.id.slice(0,10)
@@ -743,9 +743,11 @@ function updatemeal(typeOfMeal) {
                     <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
+                      {/* <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?false:true)} /> */}
                       <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?false:true)} />
 
                     </th>
+
                     <th style={{ padding: "10px 50px" }}>
 
                       <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={eachDay[1]==undefined?false:(eachDay[1].includes('non-veg')?true:false)} />
