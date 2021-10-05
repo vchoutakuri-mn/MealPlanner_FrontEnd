@@ -17,7 +17,7 @@ export const SUBMIT_REST_API_URL="http://localhost:8080/vendor/updateMealStatus/
 // Return the number of employees of particular vendor id
 //Expected :number
 //Method type:
-export const NUMBER_OF_RECORDS="http://localhost:8083/employee/numberOfRecord"
+export const NUMBER_OF_RECORDS="http://localhost:8080/employee/numberOfRecord"
 
 //In vendor's report page , need an API which return the list which have a details like total number of meals
 //Request :startDate and endDate as path variable
@@ -40,7 +40,7 @@ export const MEAL_PRICE='';
 //Request:
 //Expected:
 //Method type:
-export const DATES_WITH_MEAL_DETAILS="http://localhost:8083/employee/getAll";
+export const DATES_WITH_MEAL_DETAILS="http://localhost:8080/employee/getAll";
 
 
 
@@ -48,7 +48,7 @@ export const DATES_WITH_MEAL_DETAILS="http://localhost:8083/employee/getAll";
 //Request:startdate and enddate,pageno,pagesize
 //Expected:List of json objects
 //Method type:get
-export const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8083/mealCalender/home/financer";
+export const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/mealCalender/home/financer";
 
 
 
