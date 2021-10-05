@@ -1,6 +1,6 @@
 import React, { useContext , useState } from "react";
 import "../../App.css";
-
+import Employee from "./data/Employee";
 
 import reactDom  from "react-dom";
 import './css/signUpFormcss.css'
@@ -8,10 +8,13 @@ import  LoginForm  from "./loginForm";
 import MyApp from "./Emp_home_new";
 import Start from "./home";
 import Demo from "./subscribe";
+import Vender from "../Vender";
+import Finance from "../FinanaceTeam/finance";
 
+var USERTYPE='employee';
 export default function SignupForm(props) {
 //   const { switchToSignin } = useContext(AccountContext);
-
+    const [userType,changeUserType]=useState('employee');
 //   const [email, setEmail] = useState('');
 //   const [password, setPassword] = useState('');
 //   const [repeatPassword, setRepeatPassword] = useState('');
@@ -64,30 +67,77 @@ export default function SignupForm(props) {
 function goToLogin(){
   reactDom.render(<LoginForm/>,document.getElementById("root"))
 }
-const [showDialog,setShowDialog]=useState(false)
+const [showDialog,setShowDialog]=useState(false);
 
-function goToHome(){
-  var p1 = document.getElementById("pswd1").value
-  var p2 = document.getElementById("pswd2").value
+function setUserType(e){
+  USERTYPE=e.target.value;
+}
+
+function goToHome(e){
+  e.preventDefault()
+  
+  var useuse = document.getElementById("userType").value;
+  console.log("use use",useuse)
+  var userType=USERTYPE;
+  var userId=document.getElementById("userId").value;
+  var userName=document.getElementById("userName").value;
+  var userEMail=document.getElementById("userEmail").value;
+  var userPassword = document.getElementById("password").value
+  var confirmPassword = document.getElementById("confirmPassword").value
+  //var mealSubscribed=document.getElementById("mealSubscribed").value;
+
+  var mealSubscribed=false;
+  
+  
   
   var lowerCaseLetters = /[a-z]/g;
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
+    
 
-    if( p1.length >= 8  &&
-       p1.match(lowerCaseLetters) != null && 
-       p1.match(upperCaseLetters) !=null && 
-       p1.match(numbers) != null  &&
-       p1==p2
-    )
-       {
-        reactDom.render(<MyApp/>,document.getElementById("root"))
-    }
-    else{
-        alert("Invalid username or password!")
-        console.log("in else")
-    }
-}
+      if( userPassword.length >= 8  &&
+       userPassword.match(lowerCaseLetters) != null && 
+     userPassword.match(upperCaseLetters) !=null && 
+   userPassword.match(numbers) != null  
+     //userPassword.includes(confirmPassword)
+      )
+      {
+
+     
+    
+    
+     var token=''
+     //console.log("New User details")
+     //console.log(userType,userId,userPassword,userName,userEMail,mealSubscribed)
+     Employee.createAccount(userType,userId,userPassword,userName,userEMail,mealSubscribed).then(Response=>{
+       console.log(Response.status)
+       
+     
+     //reactDom.render(<MyApp />,document.getElementById("root"))
+      if(Response.status==200 ){
+                  //go to next page
+                  //console.log("response success")
+                  console.log("usertype",useuse)
+              
+                   token=Response.data;
+                  console.log('Token generated')
+                  console.log(token)
+                 
+                    reactDom.render(<LoginForm />,document.getElementById("root"))
+               
+              }else{
+                console.log('details wrong')
+                  //Reload component or input fields make empty
+              }
+          }).catch(err=>console.log('Something went wrong'))
+  
+          
+        }else{
+          alert("Please provide proper password")
+        }
+      }
+        
+    
 
 
 
@@ -126,10 +176,11 @@ function goToStart(){
                 
                     <div class="panel panel-default work-progress-table">
                             {/* Default panel contents */}
-                        <div class="panel-heading" style={{textAlign:"center"}}>Meal Planer<i style={{textColor:'#f2f2f2'}}>Employee Login Page</i>
-                        <button class="btn btn-primary pull-right" style={{marginTop:"-50px"}} onClick = {goToStart}>Home</button>
-                        </div>
-                        </div>
+                            <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER
+                        <button class="btn btn-primary pull-right" style={{marginTop:"1%"}} onClick = {goToStart}>Home</button>
+                         </div>
+                  </div>
+                        
                         
       </div>
       </div>
@@ -140,25 +191,30 @@ function goToStart(){
       
         <div class="container">
             <div class="right" style={{marginLeft:"25%",marginTop:"1%"}}>
-                <div class="formBox" style={{backgroundColor:"#D3D3D3"}}>
+                <div class="formBox" style={{backgroundColor:"#D3D3D3", height:"550px"}}>
                     <p class="sign" style={{marginTop:"-50px"}}>Create Account</p>
                     <form  style={{marginTop:"-35px"}}>
                         <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px" }}>SignUp</p>
-                        <select name="cars" id="cars" style={{marginTop:"-10px",width:"40%",marginLeft:"6px"}} >
-                        <option value="volvo">Employee</option>
-                        <option value="saab" >Vendor</option>
-                        <option value="opel">Financier</option>
+                        <select name="cars" id="userType" style={{marginTop:"-10px",width:"40%",marginLeft:"6px" }} onChange={setUserType} >
+                        <option value="employee">Employee</option>
+                        <option value="vendor" >Vendor</option>
+                        <option value="financer">Financer</option>
                         </select><br></br>
                         <p>UserId</p>
-                        <input type="text"  name="name" placeholder="Your Name" required/>
+                        <input type="text" id="userId"  name="name" placeholder="Your Id" required/>
+
+                        <p>User Name</p>
+                        <input type="text" id="userName"  name="name" placeholder="Your Name" required/>
+
                         <p>E-mail Address</p>
-                        <input type="text" name="email" placeholder="Enter your Mail ID" required/>
+                        <input type="text" id ="userEmail" name="email" placeholder="Enter your Mail ID" required/>
+
                         <p>Create Password</p>
-                        <input type="Password" name="password" id="pswd1" placeholder="Create a Strong Password" required />
+                        <input type="Password" id="password" name="password" placeholder="Create a Strong Password" required />
                         <p>Confirm Password</p>
-                        <input type="Password" id="pswd2" placeholder="Re-enter your Password" required />
+                        <input type="Password" id="confirmPassword" placeholder="Re-enter your Password" required />
                         <span id = "message2" style={{color:"red",fontSize: "10px"}}> </span> 
-                        <button class="btn btn-primary" onClick={goToHome}>create an account</button>
+                        <button class="btn btn-primary" onClick={goToHome} >create an account..</button>
                          
 
                         {/* <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px" }}>Subscribe</p>

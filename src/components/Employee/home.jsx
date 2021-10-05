@@ -12,6 +12,11 @@ import LoginForm from "./loginForm";
 
 
 import Calendar from 'react-calendar';
+import ValidateToken from "../HomeFolder/UTILITY_HELPER/ValidateToken";
+import Vender from "../Vender";
+import MyApp from "./Emp_home_new";
+import Finance from "../FinanaceTeam/finance";
+import WindowFocusHandler from "../HomeFolder/FocusHandler";
 
 
 
@@ -19,8 +24,9 @@ import Calendar from 'react-calendar';
 
 
 export default function Start(props) {
- 
-  
+
+  var loginRequired=localStorage.getItem("validUser")
+  const {homeLoginButton,setHomeLoginButton}=useState('Login')
   function onClick(element) {
     document.getElementById("img01").src = element.src;
     document.getElementById("modal01").style.display = "block";
@@ -31,6 +37,7 @@ export default function Start(props) {
   function goToLogin(){
     //<Calendar selectRange onChange={onChange} value={date} />
     console.log('going to login page...')
+   
       reactDom.render(<LoginForm/>,document.getElementById("root"))
     }
     
@@ -56,19 +63,23 @@ export default function Start(props) {
   const buttons = document.querySelectorAll('button');
   buttons.forEach( button =>{
       button.addEventListener('click',()=>{
+        if(button.nextElementSibling)
+        {
           const para = button.nextElementSibling;
           const icon = button.children[1];
-  
+          //let next = target.nextElementSibling;
+        
           para.classList.toggle('show');
           icon.classList.toggle('rotate');
+        }
       })
   } )
 }
 
-
+{
     return (
       <>
-<div >
+      <div >
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"/>
@@ -77,51 +88,33 @@ export default function Start(props) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     {/*---- Include the above in your HEAD tag --------*/}
-
-<div class="container">
+    <WindowFocusHandler/>
+<div class="container" style={{width:"100%"}}>
     <div class="row">
             <div class="col-md-12">
                 <div class="widget blank no-padding">
                 
-                    <div class="panel panel-default work-progress-table">
+                    <div class="panel panel-default work-progress-table" >
                             {/* Default panel contents */}
-                        <div class="panel-heading" style={{textAlign:"center"}}>Meal Planer<i style={{textColor:'#f2f2f2'}}>Home Page</i>
-                        <button type="button" class="btn btn-primary pull-right" style={{marginTop:"-40px"}} onClick={goToLogin}>Login</button>
+                            {console.log(( localStorage.getItem('validUser')))}
+                            <div class="panel-heading" style={{textAlign:"center", fontSize:"30px",width:"100%"}}>MEAL PLANNER
+                            <div>
+                            <button type="button" class="btn btn-primary pull-right" style={{marginTop:"1%"}} onClick={goToLogin}>{(localStorage.getItem('validUser')==undefined || localStorage.getItem('validUser').includes(false))?"Login":"My account"}</button>
+                            </div>
                        {/* <button class="btn primary pull-right" style={{marginTop:"-50px" }} onClick = {goToStart}>Home</button> */}
                         </div>
                         <div class="dropdown rounded"></div>
                         </div>
-      </div>
-      </div>
+                  </div>
+              </div>
       
       </div>
 
-{/* <head>
-<title>Image Super Resolution</title>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
-<link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com"/>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-
-</head> */}
 
 
-{/* <div class="w3-top">
-  <div class="w3-bar w3-white w3-card" id="myNavbar">
-    <a href="#home" class="w3-bar-item w3-button w3-wide"><strong style={{fontSize: "20px" , marginLeft: "30px;"}}>Meal Planner</strong></a>
-     */}
+
     <div class="w3-right w3-hide-small">
-      {/* <a href="#" class="w3-bar-item w3-button">Home</a>
-      <a href="#about" class="w3-bar-item w3-button active"><i class="fa fa-"></i> About</a>
-      <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-user"></i>Contact Us</a> */}
-     
+      
     </div>
     
     <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
@@ -133,51 +126,37 @@ export default function Start(props) {
 
 <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style={{display:"none"}} id="mySidebar">
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
-  {/* <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
-  <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
-  <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a> */}
   
 </nav>
 
 
-{/* <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
-  <div class="w3-display-left w3-text-white col-lg-6" style={{padding:"48px"}}>
-  
-    <span class="w3-jumbo">MEAL PLANNER</span><br/>
-    
-    <span class="w3-large"><p>Meals made simple!!!</p> </span>
-    
-  </div> 
-  
-  
-</header> */}
 
 <div class="w3-container" style={{padding:"50px", marginTop:"-1000px"}} id="about">
-  <h3 class="w3-center">ABOUT THE PROJECT</h3>
+<h3 class="w3-center" style={{fontSize:"17px",textAlign:"center"}}>About The Project</h3>
   <div class="w3-row-padding w3-center">
 
     <div class="w3-row-padding" id="Resolute">
         <div class="w3-col m6">
           
-          <section class="faq">
+        <section class="faq">
             <div class="questions-container">
                 <div class="question">
                     <button onClick={buttons}>
-                        <span >What is Meal Planner</span>
+                        <span  style={{fontSize:"14px"}}>What is Meal Planner</span>
                         <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
                     <p>Meal planner is an web service designed to digitalize the traditional system</p>
                 </div>
                 <div class="question"  onClick={buttons}>
                     <button>
-                        <span>How it Works?</span>
+                        <span style={{fontSize:"14px"}}>How it Works?</span>
                         <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
                     <p>There are few entities like employees,vendors and finance department who are the main actors</p>
                 </div>
                 <div class="question"  onClick={buttons}>
                     <button>
-                        <span>What is meal subsciprion</span>
+                        <span style={{fontSize:"14px"}}>What is meal subsciprion</span>
                         <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
                     <p>The employee must subscribe mentioning a specific meal type 
@@ -214,27 +193,29 @@ export default function Start(props) {
            
         </div> */}
       <div  style={{padding:"1px"}} id="about">
-  <h3 class="w3-center" style={{ marginTop:"-0.5%"}}>Contact Us</h3>
+  <h3 class="w3-center" style={{ marginTop:"-0.5%", fontSize:"17px"}}>Contact Us</h3>
   <br></br>
-          {/* <h4 style={{fontSize:"20px" , marginLeft:"200px"}}>Team</h4> */}
-          <h6 style={{marginLeft:"-1000px" }}>Vyshali Chava <br></br> mail: vchava@modeln.com</h6>
-          <h6 style={{marginLeft:"-400px" , marginTop:"-2.89%"}}>Vishnu Vadhan Dhandu <br></br> mail: vdhandu@modeln.com</h6>
-          <h6 style={{marginLeft:"300px" , marginTop:"-2.79%"}}>Sandeep Kumar<br></br> mail: sdkumar@modeln.com</h6>
-          <h6 style={{marginLeft:"1000px", marginTop:"-2.6%"}}>Vikas Chotukuti <br></br> mail: vchotukuri@modeln.com</h6>
-          {/* <ul>
-            <li style={{fontSize:"16px" , marginLeft:"200px"}}> Vyshali Chava</li>
-            <div class="jk">
-           
-            </div>
-           
-            <li>Vikas Chotukuri</li>
-            <div class="jk">
-              
-            </div>
-            
-            <li> Modeln N, Hyderabad</li>
-            
-          </ul> */}
+  <table >
+            <tr>
+              <td style={{padding: "0 90px"}}>
+            <h6 >Vyshali Chava <br/>
+          <a href = "mailto: vchava@modeln.com">vchava@modeln.com</a></h6>
+          </td>
+          <td style={{padding: "0 90px"}}>
+          <h6 >Vishnu Vadhan Dhandu <br/>
+          <a href = "mailto: vdhandu@modeln.com">vdhandu@modeln.com</a></h6>
+
+          </td>
+          <td style={{padding: "0 90px"}}>
+          <h6 >Sandeep Kumar<br/>
+          <a href = "mailto: sdkumar@modeln.com">sdkumar@modeln.com</a></h6>
+          </td>
+          <td style={{padding: "0 90px"}}>
+          <h6 >Vikas Chotukuti <br/> 
+          <a href = "mailto: vchotukuri@modeln.com">vchotukuri@modeln.com</a></h6>
+          </td>
+            </tr>
+            </table>
   </div>
  
 
@@ -244,11 +225,10 @@ export default function Start(props) {
   <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
   
 </footer> */}
-
-
-
-     
+ 
 </>
 
 );
+
+}
   }

@@ -1,10 +1,16 @@
 import { indigo } from '@material-ui/core/colors';
+import { Refresh } from '@material-ui/icons';
 import React, { useState } from 'react'
+import { DownloadConfirm, InvalidUser } from './SendNotificationConfirm';
 import './css/App.css'
 import Employee from './data/Employee';
+import { GET_TOKEN } from './data/Storage';
 import Footer from './footer';
 import SimpleDialog from './SendNotificationConfirm'
-
+import MyApp from '../Employee/Emp_home_new';
+import reactDom from 'react-dom';
+import Start from '../Employee/home';
+import MealDetails from './data/MealDetails';
 
 var SelectedEmployees = []
 var Users = [];
@@ -25,7 +31,9 @@ export default class EmployeeMealDetails extends React.Component {
             searchBy:'Employee ID',
             pageSize:DEFAULT_PAGE_SIZE,
             pageNo:1,
-            totalNoOfRecords:0
+            totalNoOfRecords:0,
+            reload:false,
+            sessionTimeOut:false
         }
         this.setEmployes = this.setEmployes.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -41,6 +49,7 @@ export default class EmployeeMealDetails extends React.Component {
         this.nextPage=this.nextPage.bind(this);
         this.selectRowsPerPage=this.selectRowsPerPage.bind(this);
         this.checkList=this.checkList.bind(this)
+        this.reload=this.reload.bind(this)
     }
     /**
      * Get the data from an api and store in the state vairable 'users'
@@ -55,22 +64,32 @@ export default class EmployeeMealDetails extends React.Component {
     };
     checkList(){
         //data is stores in totalNoOfRecords variable
-        console.log(this.state.totalNoOfRecords)
+        //console.log(this.state.totalNoOfRecords)
     }
 
     getData(pageNo,pageSize){
+       
         Employee.getUsers(pageNo,pageSize).then((Response) => {
-            Response.data.content.map(
-                user => {
-                    user['noOfDays'] = Math.floor(Math.random() * 30)
-                    user['noOfDaysInPercentage'] = Math.floor(Math.random() * 100)
-                    this.state.ShowUsers.push(user.id)
-                    ShowUsers.push(user.id)
-                }
-            )
-            this.setState({ users: Response.data.content })
-            Users=this.state.users;
+            //console.log(Response.status);
+            //if(Response.status==403)//console.log("Login expired ")
+
+            // Response.data.map(
+            //     // user => {
+            //     //     user['noOfDays'] = Math.floor(Math.random() * 30)
+            //     //     user['noOfDaysInPercentage'] = Math.floor(Math.random() * 100)
+            //     //     this.state.ShowUsers.push(user.id)
+            //     //     ShowUsers.push(user.id)
+            //     // }
+            // )
             
+            this.setState({ users: Response.data })
+            Users=this.state.users;
+            console.log(Users)
+            
+        }).catch(err=>{
+            //console.log("Something went wrong")
+            console.log("Session time out")
+            this.setState({sessionTimeOut:true})
         });
     }
     //Returns the length of the data that is coming from the api
@@ -80,6 +99,10 @@ export default class EmployeeMealDetails extends React.Component {
            checkList()
         })
       
+    }
+    reload(){
+        document.getElementById('searchData').value=
+        this.getData(1,5);
     }
     setShowUsers() {
 
@@ -120,7 +143,7 @@ o
     raiseNotification(e) {
     }
     uncheck() {
-        console.log("Unchecking")
+        //console.log("Unchecking")
     }
     /**
      * 
@@ -163,7 +186,7 @@ o
      * implemented
      */
     bond(user){
-        console.log("garbage function delete now",user,)
+        //console.log("garbage function delete now",user,)
     }
 
     /**
@@ -172,7 +195,7 @@ o
      */
     search() {
         let searchData = document.getElementById('searchData').value
-        console.log('value..',searchData,this.state.users)
+        //console.log('value..',searchData,this.state.users)
         if(searchData==''||searchData==undefined){
             this.state.users=Users
             this.setState({ShowUsers:[0]})
@@ -181,22 +204,26 @@ o
         this.state.users=[]
         switch(this.state.searchBy){
             case "Employee ID":
+               
                 for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(searchData!='' && String(Users[userNumber].id).includes(searchData)){
+                    console.log("In employee",searchData,Users[userNumber][0])
+                    if(searchData!='' && String(Users[userNumber][0]).includes(searchData)){
+                        console.log('ds c')
                         this.state.users.push(Users[userNumber])
                     }
                 }
+                console.log("In " ,this.state.users,Users)
                 break;
             case "Employee name":
                 for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(Users[userNumber].employeeName.toUpperCase().includes(searchData.toUpperCase())){
+                    if(Users[userNumber][1].toUpperCase().includes(searchData.toUpperCase())){
                         this.state.users.push(Users[userNumber])
                     }
                 }
                 break;
             case "Employee email":
                 for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(Users[userNumber].email.toUpperCase().includes(searchData.toUpperCase())){
+                    if(Users[userNumber][2].toUpperCase().includes(searchData.toUpperCase())){
                         this.state.users.push(Users[userNumber])
                     }
                 }
@@ -204,7 +231,7 @@ o
 
                 case "Number of days skipped":
                     for(let userNumber=0;userNumber<Users.length;userNumber++){
-                        if(searchData!='' && String(Users[userNumber].noOfDays).includes(searchData)){
+                        if(searchData!='' && String(Users[userNumber][3]).includes(searchData)){
                             this.state.users.push(Users[userNumber])
                         }
                     }
@@ -214,21 +241,22 @@ o
                 this.state.users=Users
                 break;
         }
+       
         this.setState({ShowUsers:[0]})
-        console.log("...",this.state.users,searchData)
+        
     }
 
 
     selectSearchType(e){
         this.setState({searchBy:e.target.value})
-        console.log(this.state.searchBy)
+       
     }
 
     
   backward(){
     if(this.state.pageNo-2>0){
       this.state.pageNo=this.state.pageNo-2
-      this.getData(this.state.pageNo,this.state.selectedRows); 
+      this.getData(this.state.pageNo,this.state.pageSize); 
     }
 }
 
@@ -258,9 +286,13 @@ selectRowsPerPage(pageSize){
     this.state.pageSize=pageSize;
     this.getData(this.state.pageNo,pageSize);
 }
+goToHome(){
+    reactDom.render(<Start/>,document.getElementById('root'))
+}
+
 
     render() {
-        //console.log("This is in body page")
+        ////console.log("This is in body page")
         return (
             <>
             
@@ -279,6 +311,7 @@ selectRowsPerPage(pageSize){
                                 <option value="Number of days skipped">Number of days skipped</option>
                             </select>
                         <button type="submit" onClick={this.search} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button>
+                        <button type="submit" onClick={this.reload} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout" ><i class="fa fa-refresh"></i></button>
                     </div>
 
 
@@ -289,8 +322,7 @@ selectRowsPerPage(pageSize){
                                 <th >Employee ID</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th >Meal taken in percentage</th>
-                                <th>No of days skipped</th>
+
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -299,31 +331,26 @@ selectRowsPerPage(pageSize){
                                 this.state.users.map(
                                     user =>
                                         <tr>
-                                            <td>{user.id}</td>
-                                            <td>{user.employeeName}</td>
-                                            <td>{user.email}</td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div style={{ width: user.noOfDaysInPercentage + "%" }} aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" class="red progress-bar">
-                                                        <span>{user.noOfDaysInPercentage}%</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td><span class="label label-info">{user.noOfDays}</span></td>
+                                            <td>{user[0]}</td>
+                                            <td>{user[1]}</td>
+                                            <td>{user[2]}</td>
+                                            
+                                           
                                             <td>
 
                                                 <label class="switch">
-                                                    {(user.status == 'no') ?
-                                                        <>
-                                                            <input type="checkbox" id={user.id} onClick={this.toggleClicked}/>
-                                                            <span class="slider round"></span></> :
-                                                        <><span>Submitted</span></>
+                                                    {(user[3]=='true'|| user[3]==true) ?
+                                                      <><span>Submitted</span></>
+                                                      :
+                                                      <>
+                                                      <input type="checkbox" id={user[0]} onClick={this.toggleClicked}/>
+                                                      <span class="slider round"></span></> 
                                                     }
                                                 </label>
                                             </td>
                                         </tr>
                                 ):
-                                <p style={{width:'100%',marginTop:'10%'}}>No data found</p>
+                                <p style={{textAlign:'center',marginTop:'10%'}}>No data found</p>
                             }
                         </tbody>
                     </table>
@@ -331,7 +358,9 @@ selectRowsPerPage(pageSize){
                 
                 <Footer selectRowsPerPage={this.selectRowsPerPage} rowsPerPage={10} pageNo={this.state.pageNo} noOfRecords={this.state.totalNoOfRecords} backward={this.backward} previousPage={this.previousPage} nextPage={this.nextPage} forward={this.forward} pageSize={this.state.pageSize}/>
                 <SimpleDialog open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} Users={Users} doSave={this.props.doSave} />
-                {/* <SendValidation  open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} uncheck={this.uncheck} /> */}
+
+                <InvalidUser open={this.state.sessionTimeOut}  />
+
             </>
         );
     }
@@ -344,7 +373,7 @@ selectRowsPerPage(pageSize){
  * Uncheck and change the notified text to submitted because these SelectedEmployees has sent a status
  */
 function uncheck(SelectedEmployees) {
-    //console.log("Unchecking",SelectedEmployees.length)
+    ////console.log("Unchecking",SelectedEmployees.length)
     if (SelectedEmployees.length != 0 && SelectedEmployees.length != undefined) {
         SelectedEmployees.forEach(employeeID => {
             let checkBox = document.getElementById(employeeID)
@@ -354,7 +383,7 @@ function uncheck(SelectedEmployees) {
             Employee.submitStatus(employeeID)
             
         });
-        console.log([new Date(),SelectedEmployees])
+        //console.log([new Date(),SelectedEmployees])
     }
 }
 
