@@ -181,7 +181,7 @@ ViewNotifications(){
 
 updatemealplantype(mealtype){
     console.log(mealtype)
-    mealtype = mealtype.includes('veg')?true:false 
+    mealtype = mealtype.includes('nonveg')?false:true 
     return axios.put(UPDATE_MEAL_TYPE+"/"+mealtype,{},{
         headers: { Authorization: `Bearer ${GET_TOKEN()}`}})
     }}

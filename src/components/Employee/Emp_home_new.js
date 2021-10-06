@@ -59,7 +59,8 @@ export default function MyApp(props) {
   const [reload, doReload] = useReducer((x) => x + 1, 0)
   //var [selectedDatesList,setSelectDatesList]=useState([])
   const [SELECTED_MEAL_DATES_HIDE, setSelectedMealDatesHide] = useState('none')
-
+  const [notifmessage, setMessage] = useState();
+  const[notifdate, setNotifdate] = useState();
 
 
   function goToEmphist() {
@@ -115,9 +116,9 @@ export default function MyApp(props) {
 //   }
 
 
-  function goToNotify() {
-    document.getElementById("myFormNotif").style.display = "block";
-  }
+  // function goToNotify() {
+  //   document.getElementById("myFormNotif").style.display = "block";
+  // }
 
 
   function closeFormNotif() {
@@ -587,8 +588,17 @@ function cancelSingleMeal(e){
     document.getElementById('btn1').style.display = 'none';
   }
 
+ 
+  function goToNotify(){
+    MealDetails.ViewNotifications().then(Response =>{
+      console.log("notifications",Response.data)
+      var notif = Response.data
+       setMessage(notif[0][0]) 
+       setNotifdate(notif[0][1].slice(0,10))
+       document.getElementById("myFormNotif").style.display = 'block'
+    })
+  }
 
-  
 
   function updatemeal(typeOfMeal) {
     typeOfMeal == "veg"?subveg=true:subnv=true;
@@ -626,10 +636,6 @@ function cancelSingleMeal(e){
             <button onClick={goToNotify} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-bell">  Notifications</i></button>
             <button onClick={goToEmphist} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-history">  History</i></button>
             <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe..</i></button>
-
-      
-
-             
             </div>
           </div>
 
@@ -638,9 +644,19 @@ function cancelSingleMeal(e){
                 <form class="form-container" style={{ textAlign: "left" }}>
                   <p>Welcome {empId} </p>
                   <a onClick={goToStart} class="btn btn-primary pull-right " style={{ marginTop: "-8px", marginRight: "0.8%" }} ><i class="fa fa-sign-out"> Signout</i></a>
-                  <button type="button" class="btn btn-primary" onClick={closeFormprofile}><i class="fa fa-close"> Close </i></button>
+                  <button type="button" class="btn btn-primary" onClick={closeFormprofile}>Close</button>
                 </form>
               </div>
+
+              <div class="form-popup" id="myFormNotif" style={{ position: "fixed", top: "18%", left: "100%", marginLeft: "-300px" }}>
+              <form class="form-container" style={{ textAlign: "left" }}>
+              <h4>Employee Notifications</h4>
+                  <p>{notifmessage} on {notifdate} </p>
+                  {console.log(notifmessage,notifdate)}
+                  <button type="button" class="btn btn-primary" onClick={closeFormNotif}><i class="fa fa-close"> Close </i></button>
+                </form>
+              </div>
+
           <div class="form-popup" id="sub" style={{ position: "fixed", top: "18%", left: "90%", marginLeft: "-300px" }}>
             <form class="form-container" style={{ width: "400px", textAlign: "left", backgroundColor: "#f0f5fc" }} >
               <p>The minimum meal price for vegetarian is Rs.800/-</p>
@@ -665,7 +681,7 @@ function cancelSingleMeal(e){
             </form>
           </div>
 
-          <div class="form-popup" id="myFormNotif" style={{ position: "fixed", top: "18%", left: "90%", marginLeft: "-300px" }}>
+          {/* <div class="form-popup" id="myFormNotif" style={{ position: "fixed", top: "18%", left: "90%", marginLeft: "-300px" }}>
             <form class="form-container" style={{ textAlign: "left" }}>
               <h4>Employee Notifications</h4>
               <p>Meal subscribed, but not taken on aug 18 2021</p>
@@ -673,7 +689,7 @@ function cancelSingleMeal(e){
               <p>Meal subscribed, but not taken on aug 18 2021</p>
               <button type="button" class="btn btn-primary" onClick={closeFormNotif}>Close</button>
             </form>
-          </div>
+          </div> */}
           <div style={{ marginLeft: "450px", marginRight: "auto" }}>
           </div>
           <div>
