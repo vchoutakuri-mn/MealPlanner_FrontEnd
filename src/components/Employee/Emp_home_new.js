@@ -61,6 +61,7 @@ export default function MyApp(props) {
   const [SELECTED_MEAL_DATES_HIDE, setSelectedMealDatesHide] = useState('none')
   const [notifmessage, setMessage] = useState();
   const[notifdate, setNotifdate] = useState();
+  const[msgs,setMsgs] = useState([])
 
 
   function goToEmphist() {
@@ -582,10 +583,12 @@ function cancelSingleMeal(e){
   }
 
   function closeTable() {
+    //dates2= []
     document.getElementById('mealsTable').style.display = 'none'
     document.getElementById('selectedMealDates').style.display = 'none'
     document.getElementById('btn2').style.display = 'none';
     document.getElementById('btn1').style.display = 'none';
+    doReload();
   }
 
  
@@ -593,9 +596,18 @@ function cancelSingleMeal(e){
     MealDetails.ViewNotifications().then(Response =>{
       console.log("notifications",Response.data)
       var notif = Response.data
-       setMessage(notif[0][0]) 
-       setNotifdate(notif[0][1].slice(0,10))
-       document.getElementById("myFormNotif").style.display = 'block'
+      for(var i= 0; i< notif.length; i++){
+       setMessage(notif[i][0]) 
+       setNotifdate(notif[i][1].slice(0,10))
+       setMsgs(notif)
+       //msgs.push(notifmessage,notifdate)
+       console.log(msgs)
+       
+       //document.getElementById("myFormNotif").innerHTML = msgs;
+      }
+      console.log("after fot loop")
+      document.getElementById("myFormNotif").style.display = 'block'
+      doReload();
     })
   }
 
@@ -651,7 +663,11 @@ function cancelSingleMeal(e){
               <div class="form-popup" id="myFormNotif" style={{ position: "fixed", top: "18%", left: "100%", marginLeft: "-300px" }}>
               <form class="form-container" style={{ textAlign: "left" }}>
               <h4>Employee Notifications</h4>
-                  <p>{notifmessage} on {notifdate} </p>
+              {console.log(msgs)}
+              {msgs.map(
+                i => 
+                <p>{i[0]} on {i[1]} </p>
+              )}
                   {console.log(notifmessage,notifdate)}
                   <button type="button" class="btn btn-primary" onClick={closeFormNotif}><i class="fa fa-close"> Close </i></button>
                 </form>
@@ -709,7 +725,7 @@ function cancelSingleMeal(e){
               {/* {date.toString()}   */}
             </div>
             <div>
-            <button onClick={closeTable} class="btn btn-primary pull-right " style={{ marginLeft: "10px", marginTop: "5px" }} >Close</button>
+            <button onClick={closeTable} class="btn btn-primary pull-right " style={{ marginLeft: "10px", marginTop: "5px" }} >Close...</button>
             <button onClick={goToTable} class="btn btn-primary pull-right " style={{ marginLeft: "1px", marginTop: "5px" }} >Select Dates</button>
  
             </div>
@@ -728,11 +744,12 @@ function cancelSingleMeal(e){
                 <th>Cancel</th>
               </tr>
             </thead>
-            {}
+            
             <tbody>
               {
                 dates2.map(eachDay =>
                   <tr >
+                    {console.log(eachDay.length)}
                     <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
@@ -742,6 +759,11 @@ function cancelSingleMeal(e){
                     <th style={{ padding: "10px 50px" }}>
                       {/* {console.log(eachDay,eachDay.length)} */}
                       <input type="checkbox" id={eachDay.length==2?eachDay[0]+ 'nonveg':eachDay+'nonveg'} onChange={getDetails} checked={eachDay.length==2?(eachDay[1].includes('nonveg')?true:null):null}  />
+                      {eachDay.length==1?document.getElementById(eachDay+'veg')!=undefined?document.getElementById(eachDay+'veg').checked=false:'':''}
+                      {eachDay.length==1?document.getElementById(eachDay+'nonveg')!=undefined?document.getElementById(eachDay+'nonveg').checked=false:'':''}
+                      {eachDay.length==1?document.getElementById(eachDay+'nonveg')!=undefined?document.getElementById(eachDay+'nonveg').disabled=false:'':''}
+                      
+                      {eachDay.length==1?document.getElementById(eachDay+'veg')!=undefined?document.getElementById(eachDay+'veg').disabled=false:'':''}
 
                     </th>
                     <th>
