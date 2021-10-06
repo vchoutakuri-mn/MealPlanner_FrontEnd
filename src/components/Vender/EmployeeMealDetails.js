@@ -380,7 +380,7 @@ function uncheck(SelectedEmployees) {
             checkBox.checked = false
             checkBox.disabled = true
             checkBox.parentElement.parentElement.lastElementChild.innerHTML = 'Submitted'
-            Employee.submitStatus(employeeID)
+           // Employee.submitStatus(employeeID)
             
         });
         //console.log([new Date(),SelectedEmployees])
