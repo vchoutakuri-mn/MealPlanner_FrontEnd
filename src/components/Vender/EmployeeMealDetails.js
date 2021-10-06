@@ -101,7 +101,7 @@ export default class EmployeeMealDetails extends React.Component {
       
     }
     reload(){
-        document.getElementById('searchData').value=
+        document.getElementById('searchData').value=''
         this.getData(1,5);
     }
     setShowUsers() {

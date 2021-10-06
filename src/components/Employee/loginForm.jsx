@@ -149,7 +149,10 @@ console.log(currentSelectedDatesList[0][0])
             //    }
             //    this.handleAxiosError(error)
             // }
-            Employee.checkValidation(empid, empasswd).then(Response => {
+            if(strUser == "Finance Department"){
+                strUser = "financer"
+            }
+            Employee.checkValidation( empid, empasswd, strUser).then(Response => {
                 console.log("In login", Response.status)
                 if (Response.status == 200 && Response.data != '' && Response.data != undefined) {
 
@@ -294,8 +297,8 @@ console.log(currentSelectedDatesList[0][0])
                                                 <option value="vendor" >Vendor</option>
                                                 <option value="financier">Finance Department</option>
                                             </select><br></br>
-                                            <label style={{ fontSize: "14px", marginLeft: "25%" }}>Employee ID  </label>
-                                            <input type="text" name="name" placeholder="User Id" required="" id="userId" style={{ width: "40%", marginLeft: "32px", textAlign: 'center' }} />
+                                            <label style={{ fontSize: "14px", marginLeft: "25%" }}>User ID  </label>
+                                            <input type="text" name="name" placeholder="User Id" required="" id="userId" style={{ width: "40%", marginLeft: "68px", textAlign: 'center' }} />
                                             <label style={{ fontSize: "14px", marginLeft: "25%" }}>Password  </label>
                                             <input type="Password" name="password" placeholder="User Password" required="" id="password" style={{ width: "40%", marginLeft: "50px", textAlign: 'center' }} />
                                             <button onClick={goToHome} class="btn btn-primary" style={{ marginLeft: "50%", top: "20%" }} >Sign in</button>

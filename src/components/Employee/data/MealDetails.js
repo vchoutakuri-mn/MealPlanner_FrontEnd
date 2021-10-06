@@ -155,7 +155,7 @@ class MealDetails {
                 d:this.createRegularDateFormat(eachDay.slice(0,10)),
                 vid:1,
                 subscribed:true,
-                mealType:eachDay.slice(10,).includes('nonveg')?true:false
+                mealType:eachDay.slice(10,).includes('nonveg')?false:true
            
             })
         })
@@ -181,7 +181,7 @@ ViewNotifications(){
 
 updatemealplantype(mealtype){
     console.log(mealtype)
-    mealtype = mealtype.includes('nonveg')?true:false 
+    mealtype = mealtype.includes('nonveg')?false:true 
     return axios.put(UPDATE_MEAL_TYPE+"/"+mealtype,{},{
         headers: { Authorization: `Bearer ${GET_TOKEN()}`}})
     }}

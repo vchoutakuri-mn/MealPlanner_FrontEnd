@@ -13,8 +13,9 @@ class Employee {
     submitStatus(id){
         return axios.put();
     }
-    checkValidation(userId,password){
-        return axios.post(LOGIN,null, { params: { username: userId ,password:password } })
+    checkValidation(userId,password,strUser){
+        console.log("details",userId,password,strUser)
+        return axios.post(LOGIN,null, { params: { username: userId ,password:password, userrole:strUser } })
     }
     createAccount(userType,userId,password,userName,userEmail,mealSubscribed){
         console.log("Type of user",userType);
