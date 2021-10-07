@@ -9,11 +9,11 @@ function Footer(props){
     }
     return(
         <>
-        <div class=" pull-right">
+        <div class=" pull-right">  
 
 <p  class=" pull-left"> Rows Per Page </p>
 {console.log(pageSize,'THis is page size')}
-<p class=" pull-right" style={{ float: 'left', marginLeft: '50px',marginRight:'10px' }} >Page {pageNo} of {Math.ceil(noOfRecords/pageSize)}
+<p class=" pull-right" style={{ float: 'left', marginLeft: '50px',marginRight:'10px' }} >Page {pageNo} 
 <a ><i  class="fa fa-angle-double-left" disabled style={{ marginLeft: '30px' ,marginRight:'10px'}} onClick={backward} aria-hidden="true"></i></a>
 <a> <i class="fa fa-angle-left" aria-hidden="true"style={{ marginLeft: '10px',marginRight:'10px' }} onClick={previousPage} d></i></a>
 <a ><i class="fa fa-angle-right" aria-hidden="true" style={{ marginLeft: '10px',marginRight:'10px' }} onClick={nextPage}></i></a>
@@ -22,7 +22,7 @@ function Footer(props){
 
 <select id="rowsPerPage"   style={{ float: 'left', marginLeft: '5px' }} onChange={selectRowsPerPageHelper} >
 
-                            <option value={pageSize}>{pageSize}</option>
+                           
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>

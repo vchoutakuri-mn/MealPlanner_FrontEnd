@@ -16,7 +16,7 @@ var SelectedEmployees = []
 var Users = [];
 var ShowUsers = []
 var TEMPORERY_SIZE=13
-let DEFAULT_PAGE_SIZE=10;
+let DEFAULT_PAGE_SIZE=5;
 
 export default class EmployeeMealDetails extends React.Component {
     constructor(props) {
@@ -33,7 +33,8 @@ export default class EmployeeMealDetails extends React.Component {
             pageNo:1,
             totalNoOfRecords:0,
             reload:false,
-            sessionTimeOut:false
+            sessionTimeOut:false,
+            compReload:false
         }
         this.setEmployes = this.setEmployes.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -254,10 +255,16 @@ o
 
     
   backward(){
-    if(this.state.pageNo-2>0){
+    if(this.state.pageNo-2>0 ){
       this.state.pageNo=this.state.pageNo-2
       this.getData(this.state.pageNo,this.state.pageSize); 
     }
+    else if(this.state.pageNo-1>0){
+        this.state.pageNo=this.state.pageNo-1
+        this.getData(this.state.pageNo,this.state.pageSize); 
+      }else{
+
+      }
 }
 
 previousPage(){
@@ -269,6 +276,13 @@ previousPage(){
 //Get the length of  data present in database
 
 nextPage(){
+    console.log(this.state.pageNo)
+    if(this.state.users.length==0){
+        console.log(this.state.pageNo)
+  
+        this.getData(this.state.pageNo,this.state.pageSize); 
+        return 
+    }
   if(this.state.pageNo+1<TEMPORERY_SIZE){
       this.state.pageNo=this.state.pageNo+1
       this.getData(this.state.pageNo,this.state.pageSize); 
@@ -276,7 +290,13 @@ nextPage(){
 }
 
 forward(){
-
+    if(this.state.users.length==0){
+        if(this.state.pageNo+2<TEMPORERY_SIZE){
+            this.state.pageNo=this.state.pageNo
+            this.getData(this.state.pageNo,this.state.pageSize); 
+          }
+        return 
+    }
   if(this.state.pageNo+2<TEMPORERY_SIZE){
       this.state.pageNo=this.state.pageNo+2
       this.getData(this.state.pageNo,this.state.pageSize); 
@@ -316,7 +336,7 @@ goToHome(){
                     </div>
 
 
-                    <table id="mytable" class="table" style={{height:'50%'}}>
+                    <table id="mytable" class="table" style={{height:'40%'}}>
                         <thead>
                             <tr>
                                 {/* <th><input type="checkbox" id="checkall" /></th> */}
