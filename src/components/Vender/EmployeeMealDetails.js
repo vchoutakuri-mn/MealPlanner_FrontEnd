@@ -102,6 +102,7 @@ export default class EmployeeMealDetails extends React.Component {
     reload(){
         document.getElementById('searchData').value=''
         this.getData(1,5);
+
     }
     setShowUsers() {
 
@@ -300,15 +301,16 @@ goToHome(){
                     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js" />
                     <script src="//code.jquery.com/jquery-1.11.1.min.js" />
                     <div>
-                        <input type="text" id="searchData" style={{ float: 'left', marginTop: '5px' }} placeholder={this.state.searchBy} onKeyUp={this.search} name="search" />
+                      
                         
                         <select name="sortBy" id="sortBy" onChange={this.search} class="btn btn-primary pull-left" style={{ float: 'left', marginTop: '5px', marginLeft: '5px' }} onClick={this.selectSearchType}>
-                                <option value="Employee ID">Search by</option>
+                               
                                 <option value="Employee ID">EmployeeID</option>
                                 <option value="Employee name">Employee name</option>
                                 <option value="Employee email">Employee email</option>
                                 <option value="Number of days skipped">Number of days skipped</option>
                             </select>
+                            <input type="text" id="searchData" style={{ float: 'left', marginTop: '5px', marginLeft: '5px', marginTop: '8px'  }}  onKeyUp={this.search} name="search" />
                         <button type="submit" onClick={this.search} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button>
                         <button type="submit" onClick={this.reload} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout" ><i class="fa fa-refresh"></i></button>
                     </div>

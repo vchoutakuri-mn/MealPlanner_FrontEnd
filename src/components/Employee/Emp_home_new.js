@@ -63,7 +63,7 @@ export default function MyApp(props) {
   const [notifmessage, setMessage] = useState();
   const[notifdate, setNotifdate] = useState();
   const[msgs,setMsgs] = useState([])
-
+  const [showCalendar, setShowCalendar] = useState(true);
 
   function goToEmphist() {
 
@@ -344,6 +344,15 @@ function goToprofile(){
 }
 
 
+function getTodaysDate() {
+  var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+console.log("printing todays date ..",today)
+return today = yyyy + '-' + mm + '-' + dd;
+}
+
 const [date , setDate] = useState(new Date()) 
 const onChangeDate = date => {
   setDate(date);
@@ -358,6 +367,19 @@ const onChangeDate = date => {
     tempDatesArray.push([ createRegularDateFormat(datesArray[i])])
   }
   datesArray=tempDatesArray
+  
+  var now = getTodaysDate()
+  console.log("todays date",now.toString(),"type",typeof now)
+  console.log("datesArray",datesArray)
+ //var nn = createRegularDateFormat(d.getDate())
+ console.log("datesArray.includes(['2021-07-10'])",datesArray[0].includes(now))
+  if(datesArray[0].includes(now.toString())){
+    datesArray.shift()
+    // var inf = datesArray.indexOf(now) 
+    // datesArray.splice(inf,1)
+    console.log("after removing",datesArray)
+  }
+  
 }
 
 
@@ -384,6 +406,7 @@ const onChangeDate = date => {
 
 var selectedmealtype
   function goToTable() {
+    setShowCalendar(false)
     console.log(dates2)
     Employee.checkMealSubscription().then((Response)=>{
       console.log(Response.status);
@@ -473,6 +496,7 @@ var selectedmealtype
 
 
 function cancelMeal(e){
+  setShowCalendar(false)
   console.log("this is in cancel meal")
   MealDetails.getSelectedDates().then(Response=>{
     console.log("Fetching the selected mealdates",Response.data);
@@ -584,6 +608,7 @@ function cancelSingleMeal(e){
 
   function closeTable() {
     //dates2= []
+    setShowCalendar(true)
     document.getElementById('mealsTable').style.display = 'none'
     document.getElementById('selectedMealDates').style.display = 'none'
     document.getElementById('btn2').style.display = 'none';
@@ -658,7 +683,7 @@ function cancelSingleMeal(e){
             <button onClick={cancelMeal} id="caninheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Cancel Meal</i></button>
             <button onClick={goToNotify} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-bell">  Notifications</i></button>
             <button onClick={goToEmphist} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-history">  History</i></button>
-            <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe..</i></button>
+            <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe</i></button>
             </div>
           </div>
 
@@ -731,14 +756,12 @@ function cancelSingleMeal(e){
             }}>
             
             <div style={{ marginLeft: "100px", marginRight: "100px" }} >
-              <Calendar selectRange onChange={onChangeDate} value={date} minDate={tomorrow} defaultValue={
-                new Date()
-              } id="demo1" />
-      
+              <Calendar selectRange onChange={onChangeDate} value={date} minDate={tomorrow} id="demo1" className={showCalendar ? "" : "hide"} />
+              {console.log(date)}
               {/* {date.toString()}   */}
             </div>
             <div>
-            <button onClick={closeTable} class="btn btn-primary pull-right " style={{ marginLeft: "10px", marginTop: "5px" }} >Close...</button>
+            <button onClick={closeTable} class="btn btn-primary pull-right " style={{ marginLeft: "10px", marginTop: "5px" }} >Close</button>
             <button onClick={goToTable} class="btn btn-primary pull-right " style={{ marginLeft: "1px", marginTop: "5px" }} >Select Dates</button>
  
             </div>
