@@ -44,7 +44,7 @@ function reducer(state, action) {
       throw new Error()
   }
 }
-
+let pageNo=1;
 export default function Report(props) {
   const { downloadReport, closeDownloadReport } = props
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -57,8 +57,8 @@ export default function Report(props) {
   let [data, setDate] = useState([]);
   let [sessionTimeOut, setSessionTimeOut] = useState(false);
   const [downloadError, raiseDownloadError] = useState(false);
-  const [pageNo,setPageNo]=useState(1);
-  const [pageSize,setPageSize]=useState(5);
+
+  let [pageSize,setPageSize]=useState(5);
 
 
   function createRegularDateFormat(t, s) {
@@ -76,7 +76,7 @@ export default function Report(props) {
     let date = createRegularDateFormat(startDate, '-');
     START_DATE = createRegularDateFormat(startDate, '-');
 
-    fetchData(START_DATE, START_DATE + 1,pageNo,pageSize)
+    //fetchData(START_DATE, START_DATE + 1,pageNo,pageSize)
     let dateObj = startDate
     // if(date!=null){
     // if(DateArray[0]==undefined ){
@@ -96,11 +96,13 @@ export default function Report(props) {
     }
 
   }
-  function fetchData(start, end,pageNo,pageSize) {
+  function fetchData(start, end,callback) {
     MealDetails.getMealDates(start, end,pageNo,pageSize).then(Response => {
       console.log("status code ", Response.data)
       REPORTDETAILS = Response.data;
-
+      if(callback!=undefined && callback!=""){
+        callback()
+      }
     }).catch(err => {
       console.log("Something went wrong")
       //setSessionTimeOut(true)
@@ -112,7 +114,7 @@ export default function Report(props) {
     //console.log("end date selected")
     let date = createRegularDateFormat(endDate, '-');
     END_DATE = createRegularDateFormat(endDate, '-');
-    fetchData(START_DATE, END_DATE,pageNo,pageSize)
+    //fetchData(START_DATE, END_DATE,pageNo,pageSize)
 
     // if(date!=null){
 
@@ -167,9 +169,7 @@ export default function Report(props) {
         data.push([(DAYLIST[meals + 1]), DAYS[meals], veg, nonVeg, (nonVeg + veg)])
       }
       TABLEHIDE = 'block'
-
       if (firstTime == true) {
-
         if (data.length != 0) {
           if (data.length <= 10) {
             rowsPerPage = data.length
@@ -177,7 +177,6 @@ export default function Report(props) {
             rowsPerPage = 10
           }
           //REPORTDETAILS=data.slice(0,rowsPerPage)
-
           startPage = 1;
           endPage = rowsPerPage;
         }
@@ -194,21 +193,19 @@ export default function Report(props) {
     doResetDates();
   }
 
-  function selectRowsPerPage() {
+  function selectRowsPerPage(value) {
     firstTime = false
-
-    if (data.length != 0) {
-      if (10 != 10) {
-        rowsPerPage = 10
-      } else {
-        rowsPerPage = document.getElementById("sortBy").value
-      }
+    console.log('chaning rows',value)
+    if (REPORTDETAILS.length != 0) {
+      pageSize=value
+      pageNo=1
+      console.log('chaning rows',START_DATE,END_DATE)
+      fetchData(START_DATE,END_DATE,doResetDates)
       REPORTDETAILS = data.slice(-data.length, rowsPerPage - data.length)
       startPage = 1;
       endPage = 10;
     }
-    //console.log(rowsPerPage,'/././.')
-    doResetDates()
+    //console.log(rowsPerPage,'/././.'
 
   }
   function setPaging(totalRows) {
@@ -228,37 +225,50 @@ export default function Report(props) {
   }
 
 
-  function backward() {
+  function previousPage() {
+    if(pageNo-1>0){
+      pageNo-=1
+      fetchData(START_DATE,END_DATE,doResetDates)
+    }
     console.log('backword')
   }
 
 
 
-  function previousPage() {
+  function backward() {
     console.log('previous page')
+    if(pageNo-2>0){
+      pageNo-=2
+      fetchData(START_DATE,END_DATE,doResetDates)
+    }
+    else if(pageNo-1>0){
+      pageNo-=1
+      fetchData(START_DATE,END_DATE,doResetDates)
+    }else{
+
+    }
   }
 
   function nextPage() {
-    let presentRowsPerPage = rowsPerPage
-    if (data.length != 0) {
-      if (data.length <= endPage + 10) {
-        rowsPerPage = data.length - endPage
-      } else {
-        rowsPerPage = 10
-      }
-
-      REPORTDETAILS = data.slice(presentRowsPerPage - data.length, presentRowsPerPage + rowsPerPage - data.length)
-      console.log(REPORTDETAILS.length + "./", presentRowsPerPage - data.length, presentRowsPerPage + rowsPerPage - data.length)
-      startPage = endPage;
-      endPage = rowsPerPage;
+    
+    if(REPORTDETAILS.length!=0){
+      console.log('next page')
+      console.log(pageNo)
+      pageNo=pageNo+1
+      console.log(pageNo)
+      fetchData(START_DATE,END_DATE,doResetDates)
+      
     }
 
-
-    console.log('next page')
     doResetDates();
   }
 
   function forward() {
+    if(REPORTDETAILS.length!=0){
+      pageNo+=2
+      fetchData(START_DATE,END_DATE,doResetDates)
+
+    }
     console.log('next page.next page')
   }
   var number = 0;
@@ -267,7 +277,10 @@ export default function Report(props) {
     return number
   }
   //create CSV file data in an array
-
+function getTableData(){
+  fetchData(START_DATE, END_DATE,doResetDates)
+  
+}
 
   function closeDownloadError() {
     setOpenDownloadErrorDialog(false)
@@ -283,7 +296,7 @@ export default function Report(props) {
           <DateRangeInput class='dateRangeInput'
             onDatesChange={(data) => {
               console.log("on Date change")
-              fetchData(START_DATE, END_DATE,pageNo,pageSize)
+              fetchData(START_DATE, END_DATE)
               dispatch({ type: 'dateChange', payload: data })
             }}
             onFocusChange={focusedInput => dispatch({ type: 'focusChange', payload: focusedInput })}
@@ -292,7 +305,7 @@ export default function Report(props) {
             focusedInput={state.focusedInput} // START_DATE, END_DATE or null
           />
         </div>
-        <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={() => { doReload(!reload) }}><span class="fa fa-file" ></span> Get Details</button>
+        <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={getTableData}><span class="fa fa-file" ></span> Get Details</button>
         <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={reset}><span class="fa fa-refresh" ></span> Reset</button>
 
 
@@ -314,7 +327,7 @@ export default function Report(props) {
                 <th>Total number of meals</th>
               </tr>
             </thead>
-            <DownloadConfirm open={downloadReport} error={REPORTDETAILS.length} closeWindow={closeDownloadReport} report={REPORTDETAILS} startDate={START_DATE} endDate={END_DATE} />
+            <DownloadConfirm open={downloadReport} error={REPORTDETAILS.length} closeWindow={closeDownloadReport} report={REPORTDETAILS} startDate={START_DATE} endDate={END_DATE} type={"vendor"} />
             <tbody style={{ height: "300px" }}>{console.log(REPORTDETAILS, 'last lins')}
 
               {(REPORTDETAILS.length != 0) ?
@@ -331,7 +344,7 @@ export default function Report(props) {
                       </tr>
                   ))
                 : <>
-                  <p style={{ width: '100%', marginTop: '10%' }}>No data found</p>
+                  <p style={{ width: '100%', marginTop: '10%' ,marginLeft:'45%'}}>No data found</p>
                 </>}
             </tbody>
           </table>
@@ -339,7 +352,7 @@ export default function Report(props) {
         <hr />
         <InvalidUser open={sessionTimeOut} />
 
-        <Footer selectRowsPerPage={selectRowsPerPage} rowsPerPage={rowsPerPage} startPage={startPage} data={data} backward={backward} previousPage={previousPage} nextPage={nextPage} forward={forward} />
+        <Footer selectRowsPerPage={selectRowsPerPage} rowsPerPage={rowsPerPage} startPage={startPage} data={data} backward={backward} previousPage={previousPage} nextPage={nextPage} forward={forward} pageNo={pageNo} />
       </div>
       {/* <DownloadError open={openDownloadErrorDialog} closeWindow={closeDownloadError} /> */}
     </>

@@ -45,6 +45,7 @@ function reducer(state, action) {
       throw new Error()
   }
 }
+let pageNo= 1
 
 export default function EmployeeDesils(props) {
   const [ downloadReport, closeDownloadReport ] = useState(false)
@@ -59,8 +60,8 @@ export default function EmployeeDesils(props) {
   let [sessionTimeOut, setSessionTimeOut] = useState(false)
   const [downloadError, raiseDownloadError] = useState(false)
   let [searchBy,setSearchBy]=useState("Employee id")
-  const [pageNo,setPageNo]= useState(1)
-  const [pageSIze,setPageSIze]=useState(10)
+
+  let [pageSize,setPageSze]=useState(5)
   let [Users,setUsers]=useState([])
 
 
@@ -80,7 +81,7 @@ export default function EmployeeDesils(props) {
     let date = createRegularDateFormat(startDate, '-');
     START_DATE = createRegularDateFormat(startDate, '-');
 
-    fetchData(START_DATE, START_DATE + 1,pageNo,pageSIze)
+    //fetchData(START_DATE, START_DATE + 1,pageNo,pageSIze)
     let dateObj = startDate
     // if(date!=null){
     // if(DateArray[0]==undefined ){
@@ -98,11 +99,12 @@ export default function EmployeeDesils(props) {
     closeDownloadReport(true)
 
   }
-  function fetchData(start, end,pageNo,pageSIze) {
-    MealDetails.getMealDates(start, end,pageNo,pageSIze).then(Response => {
+    function fetchData(start, end,changeData) {
+    MealDetails.getMealDates(start, end,pageNo,pageSize).then(Response => {
       console.log("status code ", Response.data)
       REPORTDETAILS = Response.data;
       Users= Response.data
+      doReload(!reload)
       console.log("Something ",Users)
     }).catch(err => {
       console.log("Something went wrong",err.Response)
@@ -116,7 +118,7 @@ export default function EmployeeDesils(props) {
     ////console.log("end date selected")
     let date = createRegularDateFormat(endDate, '-');
     END_DATE = createRegularDateFormat(endDate, '-');
-    fetchData(START_DATE, END_DATE,pageNo,pageSIze)
+   // fetchData(START_DATE, END_DATE,pageNo,pageSIze)
 
     // if(date!=null){
 
@@ -198,21 +200,19 @@ export default function EmployeeDesils(props) {
     doResetDates();
   }
 
-  function selectRowsPerPage() {
+  function selectRowsPerPage(value) {
     firstTime = false
-
-    if (data.length != 0) {
-      if (10 != 10) {
-        rowsPerPage = 10
-      } else {
-        rowsPerPage = document.getElementById("sortBy").value
-      }
-      REPORTDETAILS = data.slice(-data.length, rowsPerPage - data.length)
+    console.log('chaning rows',value,REPORTDETAILS)
+     {
+      pageSize=value
+      pageNo=1
+      console.log('chaning rows',START_DATE,END_DATE)
+      fetchData(START_DATE,END_DATE)
+      
       startPage = 1;
       endPage = 10;
     }
-    ////console.log(rowsPerPage,'/././.')
-    doResetDates()
+    //console.log(rowsPerPage,'/././.'
 
   }
   function setPaging(totalRows) {
@@ -226,6 +226,8 @@ export default function EmployeeDesils(props) {
   }
 
   function search() {
+
+   
     let searchData = document.getElementById('searchData').value
     searchBy=document.getElementById('searchBy').value
     if(searchData==''||searchData==undefined){
@@ -233,82 +235,69 @@ export default function EmployeeDesils(props) {
         doResetDates()
         return;
     }
-    console.log("Searching...")
-    REPORTDETAILS=[]
-    switch(searchBy){
-        case "Employee ID":
-          console.error("Searching...Employee with ID",Users)
-            for(let userNumber=0;userNumber<Users.length;userNumber++){
-                console.log("In employee",searchData,Users[userNumber][0])
-                if(searchData!='' && String(Users[userNumber][0]).includes(searchData)){
-                    console.log('ds c')
-                    REPORTDETAILS.push(Users[userNumber])
-                }
-            }
-            console.log("In " ,Users)
-            break;
-        case "Employee name":
-          console.log("Searching...Employee with name")
-            for(let userNumber=0;userNumber<Users.length;userNumber++){
-                if(Users[userNumber][1].toUpperCase().includes(searchData.toUpperCase())){
-                  REPORTDETAILS.push(Users[userNumber])
-                }
-            }
-            break;
-        case "Employee email":
-            for(let userNumber=0;userNumber<Users.length;userNumber++){
-                if(Users[userNumber][2].toUpperCase().includes(searchData.toUpperCase())){
-                  REPORTDETAILS.push(Users[userNumber])
-                }
-            }
-            break;
+    MealDetails.searchBy(START_DATE,END_DATE,searchBy,searchData).then(Response=>{
+      console.log(Response.data,"???????????")
+      if(Response.data.length!=0){
+        REPORTDETAILS=Response.data
 
-            
-        default:
-            console.log("In default")
-            REPORTDETAILS=Users
-            break;
-    }
+      }
+      doResetDates()
+    }).catch(er=>{
+      console.error("something went wrong while calling an api.Error ",er)
+    })
+
    
-    doResetDates()
+   
     
 }
 
 
 
-  function backward() {
-    console.log('backword')
+function previousPage() {
+  if(pageNo-1>0){
+    pageNo-=1
+    fetchData(START_DATE,END_DATE,doResetDates)
   }
+  console.log('backword')
+}
 
 
 
-  function previousPage() {
-    console.log('previous page')
+function backward() {
+  console.log('previous page')
+  if(pageNo-2>0){
+    pageNo-=2
+    fetchData(START_DATE,END_DATE,doResetDates)
   }
+  else if(pageNo-1>0){
+    pageNo-=1
+    fetchData(START_DATE,END_DATE,doResetDates)
+  }else{
 
-  function nextPage() {
-    let presentRowsPerPage = rowsPerPage
-    if (data.length != 0) {
-      if (data.length <= endPage + 10) {
-        rowsPerPage = data.length - endPage
-      } else {
-        rowsPerPage = 10
-      }
+  }
+}
 
-      REPORTDETAILS = data.slice(presentRowsPerPage - data.length, presentRowsPerPage + rowsPerPage - data.length)
-      //console.log(REPORTDETAILS.length + "./", presentRowsPerPage - data.length, presentRowsPerPage + rowsPerPage - data.length)
-      startPage = endPage;
-      endPage = rowsPerPage;
-    }
-
-
+function nextPage() {
+  
+  if(REPORTDETAILS.length!=0){
     console.log('next page')
-    doResetDates();
+    console.log(pageNo)
+    pageNo=pageNo+1
+    console.log(pageNo)
+    fetchData(START_DATE,END_DATE,doResetDates)
+    
   }
 
-  function forward() {
-    console.log('next page.next page')
+  doResetDates();
+}
+
+function forward() {
+  if(REPORTDETAILS.length!=0){
+    pageNo+=2
+    fetchData(START_DATE,END_DATE,doResetDates)
   }
+  console.log('next page.next page')
+}
   var number = 0;
   function sno() {
     number = number + 1
@@ -327,9 +316,13 @@ export default function EmployeeDesils(props) {
   function selectSearchType(e){
 
   }
+  function getTableData(){
+    fetchData(START_DATE,END_DATE)
+    
+  }
   return (
     <>
-      {console.log('html is loading', REPORTDETAILS)}
+      
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       <div id='reportPage'>
 
@@ -338,7 +331,7 @@ export default function EmployeeDesils(props) {
           <DateRangeInput class='dateRangeInput'
             onDatesChange={(data) => {
               console.log("on Date change")
-              fetchData(START_DATE, END_DATE,pageNo,pageSIze)
+              fetchData(START_DATE, END_DATE)
               dispatch({ type: 'dateChange', payload: data })
             }}
             onFocusChange={focusedInput => dispatch({ type: 'focusChange', payload: focusedInput })}
@@ -347,7 +340,7 @@ export default function EmployeeDesils(props) {
             focusedInput={state.focusedInput} // START_DATE, END_DATE or null
           />
         </div>
-        <button class="btn btn-primary pull-left" style={{ margin: "5px", marginTop:"10px" }} id="home" data-title="Home" onClick={() => { doReload(!reload) }}><span class="fa fa-file" ></span> Get Details</button>
+        <button class="btn btn-primary pull-left" style={{ margin: "5px", marginTop:"10px" }} id="home" data-title="Home" onClick={getTableData}><span class="fa fa-file" ></span> Get Details</button>
         <button class="btn btn-primary pull-left" style={{ margin: "5px", marginTop:"10px" }} id="home" data-title="Home" onClick={reset}><span class="fa fa-refresh" ></span> Reset</button>
 
 
@@ -356,12 +349,11 @@ export default function EmployeeDesils(props) {
              <button type="submit" onClick={search} class="btn btn-primary pull-right" style={{marginLeft:'5px' ,height:"30px", marginTop:'10px'}} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button>
              <select name="cars" id="searchBy" onChange={search} class="btn btn-primary pull-right" style={{ float: 'left', marginTop: '10px', marginLeft: '5px' }} onClick={selectSearchType}>
                                
-                                <option value="Employee ID">EmployeeID</option>
-                                <option value="Employee name">Employee name</option>
-                                <option value="Employee email">Employee email</option>
-                              
+                                <option value="EmployeeID">EmployeeID</option>
+                                <option value="EmployeeName">Employee name</option>
+                                <option value="EmployeeEmail">Employee email</option>
                             </select>
-                            <input type="text" class="pull-right"id="searchData" style={{float:'left' , marginTop:'13px'}} name="search" onKeyUp={search}/>
+                            <input type="text" class="pull-right"id="searchData" style={{float:'left' , marginTop:'13px'}} name="search" />
 
       </div>
       <br />
@@ -384,7 +376,7 @@ export default function EmployeeDesils(props) {
             </thead>
             <DownloadConfirm open={downloadReport} error={REPORTDETAILS.length} closeWindow={closeDownload} report={REPORTDETAILS} startDate={START_DATE} endDate={END_DATE} />
             <tbody style={{ height: "300px" }}>{console.log(REPORTDETAILS, 'last lins')}
-
+            {console.log('html is loading', REPORTDETAILS)}
               {(REPORTDETAILS.length != 0) ?
                 (
                   REPORTDETAILS.map(
@@ -408,7 +400,7 @@ export default function EmployeeDesils(props) {
         <hr />
         <InvalidUser open={sessionTimeOut} />
 
-        <Footer selectRowsPerPage={selectRowsPerPage} rowsPerPage={rowsPerPage} startPage={startPage} data={data} backward={backward} previousPage={previousPage} nextPage={nextPage} forward={forward} />
+        <Footer selectRowsPerPage={selectRowsPerPage} rowsPerPage={rowsPerPage} startPage={startPage} data={data} backward={backward} previousPage={previousPage} pageNo={pageNo} nextPage={nextPage} forward={forward} />
       </div>
       {/* <DownloadError open={openDownloadErrorDialog} closeWindow={closeDownloadError} /> */}
     </>

@@ -8,7 +8,7 @@ import Start from '../Employee/home';
 import WindowFocusHandler from '../HomeFolder/FocusHandler';
 import InvalidUser from '../HomeFolder/SessionOut';
 const signout = () => {
-  console.log("Signout")
+  //console.log("Signout")
   localStorage.removeItem('token')
   localStorage.removeItem('role')
   localStorage.setItem('validUser', false)
@@ -32,7 +32,7 @@ export default function Finance(props) {
       localStorage.getItem('validUser').includes('false'))) {
       localStorage.setItem('sessionTimeOut', true);
       setInvalidUser(true)
-      console.log('Tab is in focus....', typeof invaludUser);
+      //console.log('Tab is in focus....', typeof invaludUser);
     }
   };
 
@@ -41,19 +41,11 @@ export default function Finance(props) {
   }
   // User has switched away from the tab (AKA tab is hidden)
   const onBlur = () => {
-    console.log('Tab is blurred')
+    //console.log('Tab is blurred')
 
   };
 
-  useEffect(() => {
-    window.addEventListener('focus', onFocus);
-    window.addEventListener('blur', onBlur);
-    // Specify how to clean up after this effect:
-    return () => {
-      window.removeEventListener('focus', onFocus);
-      window.removeEventListener('blur', onBlur);
-    };
-  });
+
   /**
    * As nothing is required beacuse this rendor is in read mode
    */

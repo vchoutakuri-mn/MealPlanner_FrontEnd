@@ -295,9 +295,13 @@ function goToDel(e) {
     }
 
     function goToSubs() {
+      console.log("in subs")
       let pro='vikas'
         Employee.checkMealSubscription().then((Response)=>{
           console.log(Response.data);
+          if(Response.data!=null && Response.data!=undefined &&Response.data!=''){
+
+    
           meal_subscribed=Response.data
           console.log("meal_subscribed",meal_subscribed[0][1])
           pro='vyshali'
@@ -321,7 +325,9 @@ function goToDel(e) {
             console.log("meal_subscribed 324",meal_subscribed[0][1])
            
       //goToTable(meal_subscribed[0][1])
-            
+          }else{
+            console.log('wrong status....')
+          }
        })
     
   }
@@ -401,8 +407,10 @@ const onChangeDate = date => {
 
 var selectedmealtype
   function goToTable() {
+    console.log("in table",dates2)
     setShowCalendar(false)
     console.log(dates2)
+    var currentSelectedDatesList
     Employee.checkMealSubscription().then((Response)=>{
       console.log(Response.status);
       if(Response.data!='' &&Response.data!=undefined && Response.data.length!=0){
@@ -432,7 +440,7 @@ var selectedmealtype
             
         console.log(prevoiusdatesforcancel,'///../',datesArray)
         selectedDatesList=prevoiusdatesforcancel
-        var currentSelectedDatesList=datesArray
+        currentSelectedDatesList=datesArray
         for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
           for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
               if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
@@ -481,6 +489,9 @@ var selectedmealtype
     
           }
         });
+      }else{
+         setDates(currentSelectedDatesList)
+
       }
      
   }).catch(err=>{
@@ -640,16 +651,7 @@ function cancelSingleMeal(e){
       console.log("Response code for updating the mealdates ",Response.data)
     }).catch(err=>console.log("Caught err ",err))
   }
-  
-  document.body.onmousedown = function (e) {
-    // Get IE event object
-   
-    e = e || window.event;
-    var elementId = (e.target || e.srcElement).id;
-    console.log(elementId," id")
-    
-   
-  }
+
   
   return (
     <>

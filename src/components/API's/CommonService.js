@@ -52,6 +52,12 @@ export const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/mealCalender/hom
 
 
 
+
+
+export const SEARCH_BY="http://localhost:8080/financer/searchby/"
+
+
+
             //-------------------------------Employee API's------------------------//
 
 
