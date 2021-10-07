@@ -62,6 +62,7 @@ export default function MyApp(props) {
   const [SELECTED_MEAL_DATES_HIDE, setSelectedMealDatesHide] = useState('none')
   const [notifmessage, setMessage] = useState();
   const[notifdate, setNotifdate] = useState();
+  const[msgs,setMsgs] = useState([])
 
 
   function goToEmphist() {
@@ -385,82 +386,87 @@ var selectedmealtype
   function goToTable() {
     console.log(dates2)
     Employee.checkMealSubscription().then((Response)=>{
-      console.log(Response.data);
-      meal_subscribed=Response.data
+      console.log(Response.status);
+      if(Response.data!='' &&Response.data!=undefined && Response.data.length!=0){
+        meal_subscribed=Response.data
       
-    selectedmealtype = meal_subscribed[0][1]
-    MealDetails.getSelectedDates(empId).then(Response=>{
-      console.log("Fetching the selected mealdates",Response.status);
-      if(Response.status==200){
-        console.log(Response.data,'from api');
-        prevoiusdatesforcancel =Response.data;
-        if(!meal_subscribed[0][0]) {
-          alert("Please subscribe! ")
-          return
+        selectedmealtype = meal_subscribed[0][1]
+        MealDetails.getSelectedDates(empId).then(Response=>{
+          console.log("Fetching the selected mealdates",Response.status);
+          if(Response.status==200){
+            console.log(Response.data,'from api');
+            prevoiusdatesforcancel =Response.data;
+            if(!meal_subscribed[0][0]) {
+              alert("Please subscribe! ")
+              return
+              
+            }
+            setSelectedMealDatesHide('block')
           
-        }
-        setSelectedMealDatesHide('block')
-      
-        for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
-          if(!prevoiusdatesforcancel[eachDay][1]){
-            prevoiusdatesforcancel[eachDay][1]='veg'
-          }else{
-            prevoiusdatesforcancel[eachDay][1]='nonveg'
-          }
-        }
-
-        
-    console.log(prevoiusdatesforcancel,'///../',datesArray)
-    selectedDatesList=prevoiusdatesforcancel
-    var currentSelectedDatesList=datesArray
-    for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
-      for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
-          if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
-              if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
-                currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
+            for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
+              if(!prevoiusdatesforcancel[eachDay][1]){
+                prevoiusdatesforcancel[eachDay][1]='veg'
               }else{
-                currentSelectedDatesList[currentSelectedDate].push(selectedDatesList[previouslySelectedDate][1])
+                prevoiusdatesforcancel[eachDay][1]='nonveg'
+              }
+            }
+    
+            
+        console.log(prevoiusdatesforcancel,'///../',datesArray)
+        selectedDatesList=prevoiusdatesforcancel
+        var currentSelectedDatesList=datesArray
+        for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
+          for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
+              if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
+                  if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
+                    currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
+                  }else{
+                    currentSelectedDatesList[currentSelectedDate].push(selectedDatesList[previouslySelectedDate][1])
+                  }
               }
           }
       }
-  }
+        
+       
     
-   
-
-
     
-    document.getElementById('mealsTable').style.display = 'none'
-    document.getElementById('selectedMealDates').style.display = 'none'
-    document.getElementById('btn1').style.display = 'none'
-    document.getElementById('btn2').style.display = 'none';
+        
+        document.getElementById('mealsTable').style.display = 'none'
+        document.getElementById('selectedMealDates').style.display = 'none'
+        document.getElementById('btn1').style.display = 'none'
+        document.getElementById('btn2').style.display = 'none';
+        
+        //console.log("meal_subscribed[1][0]",meal_subscribed[1][0])
+        console.log("subveg,selectedmealtypesubnv",selectedmealtype)
+       // selectedmealtype == true ? subnv = true : subveg = true
+        console.log("subveg,subnv",subveg,subnv)
     
-    //console.log("meal_subscribed[1][0]",meal_subscribed[1][0])
-    console.log("subveg,selectedmealtypesubnv",selectedmealtype)
-   // selectedmealtype == true ? subnv = true : subveg = true
-    console.log("subveg,subnv",subveg,subnv)
-
-    if (!selectedmealtype) {
-      console.log("entering into gototable and non veg ")
-      document.getElementById('mealsTable').style.display = 'block';
-      document.getElementById('btn1').style.display = 'block';
-      setDates(currentSelectedDatesList)
-      //console.log("type of dates ...",typeof datesArray)
-    }
-
-    else  {
-      console.log("entering into gototable and veg section ")
-      document.getElementById('mealsTableveg').style.display = 'block';
-      document.getElementById('mealsTable').style.display = 'none';
-      document.getElementById('btn1').style.display = 'block';
-      setDates(currentSelectedDatesList)
-    }
+        if (!selectedmealtype) {
+          console.log("entering into gototable and non veg ")
+          document.getElementById('mealsTable').style.display = 'block';
+          document.getElementById('btn1').style.display = 'block';
+          setDates(currentSelectedDatesList)
+          //console.log("type of dates ...",typeof datesArray)
+        }
     
-    document.getElementById('btn1').style.display = 'block';
-
-      setDates(currentSelectedDatesList)
-
+        else  {
+          console.log("entering into gototable and veg section ")
+          document.getElementById('mealsTableveg').style.display = 'block';
+          document.getElementById('mealsTable').style.display = 'none';
+          document.getElementById('btn1').style.display = 'block';
+          setDates(currentSelectedDatesList)
+        }
+        
+        document.getElementById('btn1').style.display = 'block';
+    
+          setDates(currentSelectedDatesList)
+    
+          }
+        });
       }
-    });
+     
+  }).catch(err=>{
+  console.log(JSON.stringify(err))
   })
   }
 
@@ -577,10 +583,12 @@ function cancelSingleMeal(e){
   }
 
   function closeTable() {
+    //dates2= []
     document.getElementById('mealsTable').style.display = 'none'
     document.getElementById('selectedMealDates').style.display = 'none'
     document.getElementById('btn2').style.display = 'none';
     document.getElementById('btn1').style.display = 'none';
+    doReload();
   }
 
  
@@ -589,13 +597,18 @@ function cancelSingleMeal(e){
       console.log("notifications",Response.data)
       
       var notif = Response.data
-      if(notif.length == 0){
-        alert("no Notifications")
-        return
+      for(var i= 0; i< notif.length; i++){
+       setMessage(notif[i][0]) 
+       setNotifdate(notif[i][1].slice(0,10))
+       setMsgs(notif)
+       //msgs.push(notifmessage,notifdate)
+       console.log(msgs)
+       
+       //document.getElementById("myFormNotif").innerHTML = msgs;
       }
-       setMessage(notif[0][0]) 
-       setNotifdate(notif[0][1].slice(0,10))
-       document.getElementById("myFormNotif").style.display = 'block'
+      console.log("after fot loop")
+      document.getElementById("myFormNotif").style.display = 'block'
+      doReload();
     })
   }
 
@@ -607,10 +620,20 @@ function cancelSingleMeal(e){
       console.log("Response code for updating the mealdates ",Response.data)
     }).catch(err=>console.log("Caught err ",err))
   }
-
+  
+  document.body.onmousedown = function (e) {
+    // Get IE event object
+   
+    e = e || window.event;
+    var elementId = (e.target || e.srcElement).id;
+    console.log(elementId," id")
+    
+   
+  }
+  
   return (
     <>
-      <div>
+      <div >
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="StyleSheet.css" rel="stylesheet" type="text/css" media="only screen" />
         <link href="MobileStyleSheet.css" rel="stylesheet" type="text/css" media="only screen and (max-device-width: 480px) , only screen and (-webkit-min-device-pixel-ratio: 2) , screen and (-webkit-device-pixel-ratio:1.5)" />
@@ -651,7 +674,11 @@ function cancelSingleMeal(e){
               <div class="form-popup" id="myFormNotif" style={{ position: "fixed", top: "18%", left: "100%", marginLeft: "-300px" }}>
               <form class="form-container" style={{ textAlign: "left" }}>
               <h4>Employee Notifications</h4>
-                  <p>{notifmessage} on {notifdate} </p>
+              {console.log(msgs)}
+              {msgs.map(
+                i => 
+                <p>{i[0]} on {i[1]} </p>
+              )}
                   {console.log(notifmessage,notifdate)}
                   <button type="button" class="btn btn-primary" onClick={closeFormNotif}><i class="fa fa-close"> Close </i></button>
                 </form>
@@ -704,12 +731,14 @@ function cancelSingleMeal(e){
             }}>
             
             <div style={{ marginLeft: "100px", marginRight: "100px" }} >
-              <Calendar selectRange onChange={onChangeDate} value={date} minDate={tomorrow} id="demo1" />
+              <Calendar selectRange onChange={onChangeDate} value={date} minDate={tomorrow} defaultValue={
+                new Date()
+              } id="demo1" />
       
               {/* {date.toString()}   */}
             </div>
             <div>
-            <button onClick={closeTable} class="btn btn-primary pull-right " style={{ marginLeft: "10px", marginTop: "5px" }} >Close</button>
+            <button onClick={closeTable} class="btn btn-primary pull-right " style={{ marginLeft: "10px", marginTop: "5px" }} >Close...</button>
             <button onClick={goToTable} class="btn btn-primary pull-right " style={{ marginLeft: "1px", marginTop: "5px" }} >Select Dates</button>
  
             </div>
@@ -728,14 +757,14 @@ function cancelSingleMeal(e){
                 <th>Cancel</th>
               </tr>
             </thead>
-            {}
+            
             <tbody>
             {console.log("near html tbale")}
               {
                 
                 dates2.map(eachDay =>
                   <tr >
-                    
+                    {console.log(eachDay.length)}
                     <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}

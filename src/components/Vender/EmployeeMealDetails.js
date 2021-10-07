@@ -59,9 +59,8 @@ export default class EmployeeMealDetails extends React.Component {
     componentDidMount() {
         this.getNumberOfRecords(this.checkList)
         this.getData(this.state.pageNo,this.state.pageSize)
-        
-        
     };
+    
     checkList(){
         //data is stores in totalNoOfRecords variable
         //console.log(this.state.totalNoOfRecords)
@@ -380,7 +379,7 @@ function uncheck(SelectedEmployees) {
             checkBox.checked = false
             checkBox.disabled = true
             checkBox.parentElement.parentElement.lastElementChild.innerHTML = 'Submitted'
-            Employee.submitStatus(employeeID)
+           // Employee.submitStatus(employeeID)
             
         });
         //console.log([new Date(),SelectedEmployees])
