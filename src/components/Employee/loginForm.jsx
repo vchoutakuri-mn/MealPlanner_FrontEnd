@@ -131,6 +131,10 @@ console.log(currentSelectedDatesList[0][0])
 
         var token = ''
         console.log(/[A-Z]/.test(empid))
+        if(empid==''){
+            alert("Please enter ID")
+            return
+        }
         if(/[A-Z]/.test(empid) == true ||
             /[a-z]/.test(empid) == true 
         ){
@@ -143,7 +147,7 @@ console.log(currentSelectedDatesList[0][0])
             /[a-z]/.test(empasswd) == false ||
             /[0-9]/.test(empasswd) == false)
             {
-               console.log("entering wrong pass")
+            console.log("entering wrong pass")
             setShowText(true)
         }
 
@@ -171,14 +175,15 @@ console.log(currentSelectedDatesList[0][0])
             }
             Employee.checkValidation( empid, empasswd, strUser).then(Response => {
                 console.log("In login", Response.data)
-             
+
+               
                 if (Response.status == 200 && Response.data != '' && Response.data != undefined) {
                     if(Response.data  == 'id not found'){
                         alert("User not found, Please Register!")
                         return
                     }
-                    if(Response.data == 'incorrect password'){
-                        alert("Incorrect password!")
+                    if(Response.data == 'invalid userid/password'){
+                        alert("Incorrect UserId/Password!")
                         return
                     }
                     token = Response.data.slice(7);
@@ -204,16 +209,23 @@ console.log(currentSelectedDatesList[0][0])
                         reactDom.render(<Finance token={token} />, document.getElementById("root"))
                     }
                 } else {
+                    if(Response.status==500){
+
+                    }
                     //Reload component or input fields make empty
                     console.log("Details are wrong" )
                     alert("User not found")
                     document.getElementById('password').value=''
+                    return
                     // reactDom.render(<MyApp/>,document.getElementById("root"))
                 }
             }).catch(function (error) {
                 console.log("details wrong ",error)
                if(error.response){
-                   
+                    if(error.response.status == 500 && error.response.data == 'no such user exist'){
+                    alert("no such user exist")
+                    return
+                }
                    if(error.response!=undefined ){
                     reactDom.render(<PageNotFound/>,document.getElementById("root"))
                    }

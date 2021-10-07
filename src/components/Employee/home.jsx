@@ -145,7 +145,7 @@ export default function Start(props) {
                         <span  style={{fontSize:"14px"}}>What is Meal Planner?</span>
                         <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
-                    <p>Meal planner is an web service designed to digitalize the traditional system.The objective of this application is to help food vendors, plan their resources for food/meal requirement in prior, for a given day and which eventually will lead to better planning and reduce food wastages.</p>
+                    <p>Meal planner is an web app designed to digitalize the traditional system.The objective of this application is to help food vendors, plan their resources for food/meal requirement in prior, for a given day and which eventually will lead to better planning and reduce food wastages.</p>
                 </div>
                 <div class="question"  onClick={buttons}>
                     <button>
@@ -160,7 +160,7 @@ export default function Start(props) {
                         <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
                     <p>The employee must subscribe mentioning a specific meal type 
-                      in order to take the meals.
+                      in order to take the meals.The meal price will be deducted from their account according to the subscription chosen and based on the meal taken. After the subscription amount is exhausted employee needs to pay for the meal .
                     </p>
                 </div>
             </div>

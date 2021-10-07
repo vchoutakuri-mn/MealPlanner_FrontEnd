@@ -237,10 +237,9 @@ export default function EmployeeDesils(props) {
     }
     MealDetails.searchBy(START_DATE,END_DATE,searchBy,searchData).then(Response=>{
       console.log(Response.data,"???????????")
-      if(Response.data.length!=0){
-        REPORTDETAILS=Response.data
 
-      }
+        REPORTDETAILS=Response.data
+      
       doResetDates()
     }).catch(er=>{
       console.error("something went wrong while calling an api.Error ",er)
