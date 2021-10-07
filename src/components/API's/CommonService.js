@@ -33,6 +33,12 @@ export const MEAL_PRICE='';
 
 
 
+export const SEARCH_BY_IN_VENDOR="http://localhost:8080/vendor/searchby"
+
+
+export const DOWNLOAD_API="http://localhost:8080/vendor/downloadreport/"
+
+
 
             // -------------------------Financer API's----------------------------//
 
@@ -55,6 +61,8 @@ export const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/mealCalender/hom
 
 
 export const SEARCH_BY="http://localhost:8080/financer/searchby/"
+
+export const DOWNLOAD_API_FOR_FINANCER="http://localhost:8080/financer/downloadreport/"
 
 
 
