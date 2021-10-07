@@ -285,28 +285,28 @@ console.log(currentSelectedDatesList[0][0])
                         <body>
 
                             <div class="container" >
-                                <div class="right" style={{ marginLeft: "25%" }}>
+                                <div class="right" style={{ marginLeft: "30%" }}>
 
-                                    <div class="formBox" style={{ backgroundColor: "#D3D3D3" }} >
-                                        <p class="sign" style={{ marginTop: "1%", fontSize: "25px" }}>Sign in</p>
+                                    <div class="formBox" style={{ backgroundColor: "#D3D3D3", width:"80%" , height:"400px"}} >
+                                        <p class="sign" style={{ marginTop: "-20px", fontSize: "25px" }}>Sign in</p>
 
                                         <form>
                                             <label style={{ marginTop: "1%", fontSize: "14px", marginLeft: "25%" }}>Login</label>
-                                            <select name="logs" id="log" style={{ marginTop: "1%", width: "40%", marginLeft: "16%", textAlign: 'center' }} onChange={setTypeOfUser} >
+                                            <select name="logs" id="log" style={{ marginTop: "1%", width: "150px", marginLeft: "21%",height:"1%", textAlign: 'center'}} class = "btn btn-primary" onChange={setTypeOfUser} >
                                                 <option value="employee" >Employee</option>
                                                 <option value="vendor" >Vendor</option>
-                                                <option value="financier">Finance Department</option>
+                                                <option value="financier">Finance</option>
                                             </select><br></br>
-                                            <label style={{ fontSize: "14px", marginLeft: "25%" }}>User ID  </label>
-                                            <input type="text" name="name" placeholder="User Id" required="" id="userId" style={{ width: "40%", marginLeft: "68px", textAlign: 'center' }} />
+                                            <label style={{ fontSize: "14px", marginLeft: "25%" }}>ID  </label>
+                                            <input type="text" name="name" placeholder="User Id" required="" id="userId" style={{ width: "40%", marginLeft: "100px", textAlign: 'center' }} />
                                             <label style={{ fontSize: "14px", marginLeft: "25%" }}>Password  </label>
                                             <input type="Password" name="password" placeholder="User Password" required="" id="password" style={{ width: "40%", marginLeft: "50px", textAlign: 'center' }} />
                                             <button onClick={goToHome} class="btn btn-primary" style={{ marginLeft: "50%", top: "20%" }} >Sign in</button>
 
                                             <br></br>
-                                            <h5 style={{ marginTop: "30px", marginLeft: "40%" }}>Don't have an account? </h5>
-                                            <a onClick={goTOSignUp} style={{ marginLeft: "55%", marginTop: "5%" }} class="tag" >Create Account</a>
-
+                                            <h5 style={{ marginTop: "30px", marginLeft: "20%" }}>Don't have an account? <a onClick={goTOSignUp}  class="tag" >Create Account</a>
+</h5>
+                                            
                                         </form>
                                     </div>
                                 </div>

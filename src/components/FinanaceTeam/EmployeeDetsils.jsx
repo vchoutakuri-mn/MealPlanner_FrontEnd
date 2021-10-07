@@ -347,21 +347,21 @@ export default function EmployeeDesils(props) {
             focusedInput={state.focusedInput} // START_DATE, END_DATE or null
           />
         </div>
-        <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={() => { doReload(!reload) }}><span class="fa fa-file" ></span> Get Details</button>
-        <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={reset}><span class="fa fa-refresh" ></span> Reset</button>
+        <button class="btn btn-primary pull-left" style={{ margin: "5px", marginTop:"10px" }} id="home" data-title="Home" onClick={() => { doReload(!reload) }}><span class="fa fa-file" ></span> Get Details</button>
+        <button class="btn btn-primary pull-left" style={{ margin: "5px", marginTop:"10px" }} id="home" data-title="Home" onClick={reset}><span class="fa fa-refresh" ></span> Reset</button>
 
 
-        <button type="submit" onClick={download} class="btn btn-primary pull-right" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-download"></i> Download Report</button>
+        <button type="submit" onClick={download} class="btn btn-primary pull-right" style={{ marginLeft: '5px', height: "30px", marginTop: '10px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-download"></i> Download Report</button>
              
-             <button type="submit" onClick={search} class="btn btn-primary pull-right" style={{marginLeft:'5px' ,height:"30px", marginTop:'5px'}} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button>
-             <select name="cars" id="searchBy" onChange={search} class="btn btn-primary pull-right" style={{ float: 'left', marginTop: '5px', marginLeft: '5px' }} onClick={selectSearchType}>
-                                <option value="Employee ID">Search by</option>
+             <button type="submit" onClick={search} class="btn btn-primary pull-right" style={{marginLeft:'5px' ,height:"30px", marginTop:'10px'}} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button>
+             <select name="cars" id="searchBy" onChange={search} class="btn btn-primary pull-right" style={{ float: 'left', marginTop: '10px', marginLeft: '5px' }} onClick={selectSearchType}>
+                               
                                 <option value="Employee ID">EmployeeID</option>
                                 <option value="Employee name">Employee name</option>
                                 <option value="Employee email">Employee email</option>
                               
                             </select>
-                            <input type="text" class="pull-right"id="searchData" style={{float:'left' , marginTop:'5px'}} name="search" placeholder={searchBy} onKeyUp={search}/>
+                            <input type="text" class="pull-right"id="searchData" style={{float:'left' , marginTop:'13px'}} name="search" onKeyUp={search}/>
 
       </div>
       <br />

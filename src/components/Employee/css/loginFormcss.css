@@ -89,15 +89,15 @@ body
 			width: 50%;
 			height: 400px;
 			box-sizing: border-box;
-			background-color:crimson;
+			background-color:white;
 		}
 
 		.formBox
 		{
 			width: 100%;
-			padding: 30px 40px;
+			padding: 10px 40px;
 			box-sizing: border-box;
-			height: 480px;
+			height: 400px;
 			background: #fff;
 			background-image: "my-app/src/Capture.PNG";
 			background-size: auto;
