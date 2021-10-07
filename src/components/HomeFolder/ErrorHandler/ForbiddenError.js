@@ -17,8 +17,8 @@ export default function ForbiddenError(props) {
                     <div class="inner">
                    
                         <div class="inner-circle"><i class="fa fa-cogs"></i><span>403</span></div>
-                        <span class="inner-status">Opps! your session time our!</span>
-                        <span class="inner-detail">Unfortunately you wrere logged out of the app. Please login again    .</span>
+                        <span class="inner-status">Opps! your session time out!</span>
+                        <span class="inner-detail">Unfortunately you wrer logged out of the app. Please login again        .</span>
                       
                     </div>
                 </div>

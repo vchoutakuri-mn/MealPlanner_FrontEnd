@@ -64,6 +64,7 @@ export default function MyApp(props) {
   const[notifdate, setNotifdate] = useState();
   const[msgs,setMsgs] = useState([])
   const [showCalendar, setShowCalendar] = useState(true);
+  
 
   function goToEmphist() {
 
@@ -409,6 +410,7 @@ var selectedmealtype
   function goToTable() {
     console.log("in table",dates2)
     setShowCalendar(false)
+    
     console.log(dates2)
     var currentSelectedDatesList
     Employee.checkMealSubscription().then((Response)=>{
@@ -471,6 +473,7 @@ var selectedmealtype
           console.log("entering into gototable and non veg ")
           document.getElementById('mealsTable').style.display = 'block';
           document.getElementById('btn1').style.display = 'block';
+          document.getElementById('subbtn').style.display='block';
           setDates(currentSelectedDatesList)
           //console.log("type of dates ...",typeof datesArray)
         }
@@ -480,10 +483,12 @@ var selectedmealtype
           document.getElementById('mealsTableveg').style.display = 'block';
           document.getElementById('mealsTable').style.display = 'none';
           document.getElementById('btn1').style.display = 'block';
+          document.getElementById('subbtn').style.display='block';
           setDates(currentSelectedDatesList)
         }
         
         document.getElementById('btn1').style.display = 'block';
+        document.getElementById('subbtn').style.display='block';
     
           setDates(currentSelectedDatesList)
     
@@ -503,6 +508,7 @@ var selectedmealtype
 
 function cancelMeal(e){
   setShowCalendar(false)
+
   console.log("this is in cancel meal")
   MealDetails.getSelectedDates().then(Response=>{
     console.log("Fetching the selected mealdates",Response.data);
@@ -512,6 +518,7 @@ function cancelMeal(e){
 
       document.getElementById('btn2').style.display='block';
       document.getElementById('btn1').style.display='none';
+      document.getElementById('subbtn').style.display='block';
       document.getElementById('mealsTable').style.display='none'
       document.getElementById('selectedMealDates').style.display='block'
       document.getElementById('mealsTable').style.display='none'
@@ -619,6 +626,7 @@ function cancelSingleMeal(e){
     document.getElementById('selectedMealDates').style.display = 'none'
     document.getElementById('btn2').style.display = 'none';
     document.getElementById('btn1').style.display = 'none';
+    document.getElementById('subbtn').style.display = 'none';
     doReload();
   }
 
@@ -742,26 +750,23 @@ function cancelSingleMeal(e){
           <div style={{ marginLeft: "450px", marginRight: "auto" }}>
           </div>
           <div>
-            <div>
-
+          
+            <p style={{color:"white"}}>.</p>
             
-            <p style={{ textAlign: "center", marginTop: "20px"}} id="selectDatesid">Please select date range from the calendar : </p><br/>
-            </div>
             <div style={{
               alignItems: "center", justifyContent: "center", display: "flex",
               flexDirection: "column", marginTop: "-15px"
             }}>
             
-            <div style={{ marginLeft: "100px", marginRight: "100px" }} >
-              <Calendar selectRange onChange={onChangeDate} value={date} minDate={tomorrow} id="demo1" className={showCalendar ? "" : "hide"} />
+            <div style={{ marginLeft: "100px", marginRight: "100px" }} className={showCalendar ? "" : "hide"}>
+              <p style={{textAlign:"center"}}>Please select date range from the calendar : </p>
+              <Calendar selectRange onChange={onChangeDate} value={date} minDate={tomorrow} id="demo1"  />
               {console.log(date)}
               {/* {date.toString()}   */}
+            <button onClick={goToTable} class="btn btn-primary center " style={{ marginLeft: "35%", marginTop: "5px" }} >Select Dates</button>
+       
             </div>
-            <div>
-            <button onClick={closeTable} class="btn btn-primary pull-right " style={{ marginLeft: "10px", marginTop: "5px" }} >Close</button>
-            <button onClick={goToTable} class="btn btn-primary pull-right " style={{ marginLeft: "1px", marginTop: "5px" }} >Select Dates</button>
- 
-            </div>
+           
 
          
           <div>
@@ -879,8 +884,9 @@ prevoiusdatesforcancel.map(eachDay =>
               }
             </tbody>
           </table>
-          <button id="btn1" class="btn btn-primary" onClick={submitDetails} style={{ marginLeft: "48%", marginTop: "-40px", display: btn_hide }} >Submit</button>
-          <button id="btn2" class="btn btn-primary" onClick={updateDetails} style={{ marginLeft: "48%", marginTop: "-40px", display: btn_hide }} >Update</button>
+          <button id="btn1" class="btn btn-primary" onClick={submitDetails} style={{ marginLeft: "40%", marginTop: "-40px", display: btn_hide }} >Submit</button>
+          <button id="btn2" class="btn btn-primary" onClick={updateDetails} style={{ marginLeft: "40%", marginTop: "-40px", display: btn_hide }} >Update</button>
+          <button id="subbtn" class="btn btn-primary" onClick={closeTable}  style={{ marginLeft: "50%", marginTop: "-35px", display: btn_hide }} >Close</button>
           </div>
           </div>
         </div>
