@@ -13,5 +13,13 @@ class Employee {
     submitStatus(id){
         return axios.put(SUBMIT_REST_API_URL+id);
     }
+
+    downloadDataForFinance(start,end){
+        return axios.get(DOWNLOAD_API_FOR+start+'/'+end,
+        {
+
+            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+        })
+    }
 }
 export default new Employee();
