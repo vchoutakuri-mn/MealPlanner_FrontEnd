@@ -44,7 +44,7 @@ function reducer(state, action) {
       throw new Error()
   }
 }
-
+let pageNo=1;
 export default function Report(props) {
   const { downloadReport, closeDownloadReport } = props
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -57,8 +57,8 @@ export default function Report(props) {
   let [data, setDate] = useState([]);
   let [sessionTimeOut, setSessionTimeOut] = useState(false);
   const [downloadError, raiseDownloadError] = useState(false);
-  const [pageNo,setPageNo]=useState(1);
-  const [pageSize,setPageSize]=useState(5);
+
+  let [pageSize,setPageSize]=useState(5);
 
 
   function createRegularDateFormat(t, s) {
@@ -96,7 +96,7 @@ export default function Report(props) {
     }
 
   }
-  function fetchData(start, end,pageNo,pageSize,callback) {
+  function fetchData(start, end,callback) {
     MealDetails.getMealDates(start, end,pageNo,pageSize).then(Response => {
       console.log("status code ", Response.data)
       REPORTDETAILS = Response.data;
@@ -193,21 +193,19 @@ export default function Report(props) {
     doResetDates();
   }
 
-  function selectRowsPerPage() {
+  function selectRowsPerPage(value) {
     firstTime = false
-
-    if (data.length != 0) {
-      if (10 != 10) {
-        rowsPerPage = 10
-      } else {
-        rowsPerPage = document.getElementById("sortBy").value
-      }
+    console.log('chaning rows',value)
+    if (REPORTDETAILS.length != 0) {
+      pageSize=value
+      pageNo=1
+      console.log('chaning rows',START_DATE,END_DATE)
+      fetchData(START_DATE,END_DATE,doResetDates)
       REPORTDETAILS = data.slice(-data.length, rowsPerPage - data.length)
       startPage = 1;
       endPage = 10;
     }
-    //console.log(rowsPerPage,'/././.')
-    doResetDates()
+    //console.log(rowsPerPage,'/././.'
 
   }
   function setPaging(totalRows) {
@@ -227,37 +225,50 @@ export default function Report(props) {
   }
 
 
-  function backward() {
+  function previousPage() {
+    if(pageNo-1>0){
+      pageNo-=1
+      fetchData(START_DATE,END_DATE,doResetDates)
+    }
     console.log('backword')
   }
 
 
 
-  function previousPage() {
+  function backward() {
     console.log('previous page')
+    if(pageNo-2>0){
+      pageNo-=2
+      fetchData(START_DATE,END_DATE,doResetDates)
+    }
+    else if(pageNo-1>0){
+      pageNo-=1
+      fetchData(START_DATE,END_DATE,doResetDates)
+    }else{
+
+    }
   }
 
   function nextPage() {
-    let presentRowsPerPage = rowsPerPage
-    if (data.length != 0) {
-      if (data.length <= endPage + 10) {
-        rowsPerPage = data.length - endPage
-      } else {
-        rowsPerPage = 10
-      }
-
-      REPORTDETAILS = data.slice(presentRowsPerPage - data.length, presentRowsPerPage + rowsPerPage - data.length)
-      console.log(REPORTDETAILS.length + "./", presentRowsPerPage - data.length, presentRowsPerPage + rowsPerPage - data.length)
-      startPage = endPage;
-      endPage = rowsPerPage;
+    
+    if(REPORTDETAILS.length!=0){
+      console.log('next page')
+      console.log(pageNo)
+      pageNo=pageNo+1
+      console.log(pageNo)
+      fetchData(START_DATE,END_DATE,doResetDates)
+      
     }
 
-
-    console.log('next page')
     doResetDates();
   }
 
   function forward() {
+    if(REPORTDETAILS.length!=0){
+      pageNo+=2
+      fetchData(START_DATE,END_DATE,doResetDates)
+
+    }
     console.log('next page.next page')
   }
   var number = 0;
@@ -267,7 +278,7 @@ export default function Report(props) {
   }
   //create CSV file data in an array
 function getTableData(){
-  fetchData(START_DATE, END_DATE,pageNo,pageSize,doResetDates)
+  fetchData(START_DATE, END_DATE,doResetDates)
   
 }
 
@@ -285,7 +296,7 @@ function getTableData(){
           <DateRangeInput class='dateRangeInput'
             onDatesChange={(data) => {
               console.log("on Date change")
-              fetchData(START_DATE, END_DATE,pageNo,pageSize)
+              fetchData(START_DATE, END_DATE)
               dispatch({ type: 'dateChange', payload: data })
             }}
             onFocusChange={focusedInput => dispatch({ type: 'focusChange', payload: focusedInput })}
@@ -333,7 +344,7 @@ function getTableData(){
                       </tr>
                   ))
                 : <>
-                  <p style={{ width: '100%', marginTop: '10%' }}>No data found</p>
+                  <p style={{ width: '100%', marginTop: '10%' ,marginLeft:'45%'}}>No data found</p>
                 </>}
             </tbody>
           </table>
@@ -341,7 +352,7 @@ function getTableData(){
         <hr />
         <InvalidUser open={sessionTimeOut} />
 
-        <Footer selectRowsPerPage={selectRowsPerPage} rowsPerPage={rowsPerPage} startPage={startPage} data={data} backward={backward} previousPage={previousPage} nextPage={nextPage} forward={forward} />
+        <Footer selectRowsPerPage={selectRowsPerPage} rowsPerPage={rowsPerPage} startPage={startPage} data={data} backward={backward} previousPage={previousPage} nextPage={nextPage} forward={forward} pageNo={pageNo} />
       </div>
       {/* <DownloadError open={openDownloadErrorDialog} closeWindow={closeDownloadError} /> */}
     </>

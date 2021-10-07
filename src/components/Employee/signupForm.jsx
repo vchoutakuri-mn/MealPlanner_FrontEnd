@@ -76,13 +76,6 @@ function setUserType(e){
 
 function goToHome(e){
   e.preventDefault()
-  toast.success(
-    "User Created Successfully",
-    {
-      autoClose: 2000,
-      position: toast.POSITION.TOP_CENTER
-    }
-  )
   var useuse = document.getElementById("userType").value;
   console.log("use use",useuse)
   var userType=USERTYPE;
@@ -92,21 +85,17 @@ function goToHome(e){
   var userPassword = document.getElementById("password").value
   var confirmPassword = document.getElementById("confirmPassword").value
   //var mealSubscribed=document.getElementById("mealSubscribed").value;
-
   var mealSubscribed=false;
-  
-  
-  
   var lowerCaseLetters = /[a-z]/g;
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
-    
-
       if( userPassword.length >= 8  &&
        userPassword.match(lowerCaseLetters) != null && 
      userPassword.match(upperCaseLetters) !=null && 
-   userPassword.match(numbers) != null  
-     //userPassword.includes(confirmPassword)
+   userPassword.match(numbers) != null && 
+     userPassword.includes(confirmPassword) &&
+     userId.match(lowerCaseLetters) == null &&
+     userId.match(upperCaseLetters) == null 
       )
       {
     
@@ -115,30 +104,32 @@ function goToHome(e){
      //console.log(userType,userId,userPassword,userName,userEMail,mealSubscribed)
      Employee.createAccount(userType,userId,userPassword,userName,userEMail,mealSubscribed).then(Response=>{
        console.log(Response.status)
-       
-     
      //reactDom.render(<MyApp />,document.getElementById("root"))
       if(Response.status==200 ){
-                  //go to next page
-                  //console.log("response success")
-                  console.log("usertype",useuse)
-              
-                   token=Response.data;
-                  console.log('Token generated')
-                  console.log(token)
-                 
-                    reactDom.render(<LoginForm />,document.getElementById("root"))
-               
+          //go to next page
+          //console.log("response success")
+          console.log("usertype",useuse)
+          token=Response.data;
+          console.log('Token generated')
+          console.log(token)
+          reactDom.render(<LoginForm />,document.getElementById("root"))
               }else{
                 console.log('details wrong')
                   //Reload component or input fields make empty
               }
           }).catch(err=>console.log('Something went wrong'))
-  
-          
-        }else{
-          alert("Please provide proper password")
         }
+        else{
+          alert("Incorrect Details")
+          return
+        }
+        toast.success(
+          "User Created Successfully",
+          {
+            autoClose: 2000,
+            position: toast.POSITION.TOP_CENTER
+          }
+        )
       }
         
     
@@ -204,21 +195,21 @@ function goToStart(){
                         <option value="vendor" >Vendor</option>
                         <option value="financer">Finance Department</option>
                         </select><br></br>
-                        <p>UserId</p>
-                        {/* <input type="text" id="userId"  name="name" placeholder="Your Id" required/> */}
-                        <input type="text" name="userId" placeholder="User ID" required="" id="userId" style={{ textAlign: 'center' }} />
-                        <p>User Name</p>
-                        {/* <input type="text" id="userName"  name="name" placeholder="Your Name" required/> */}
-                        <input type="text" name="userName" placeholder="User Name" required="" id="userName" style={{ textAlign: 'center' }} />
+                        <p>ID</p>
+                        
+                        <input type="text" name="userId" placeholder="User ID"  id="userId" style={{ textAlign: 'center' }} required/>
+                        <p>Name</p>
+                       
+                        <input type="text" name="userName" placeholder="User Name"  id="userName" style={{ textAlign: 'center' }} required/>
                         <p>E-mail Address</p>
-                        {/* <input type="text" id ="userEmail" name="email" placeholder="Enter your Mail ID" required/> */}
-                        <input type="text" name="userId" placeholder="Enter your Mail ID" required="" id="userEmail" style={{ textAlign: 'center' }} />
+                      
+                        <input type="text" name="userId" placeholder="Enter your Mail ID" id="userEmail" style={{ textAlign: 'center' }} required/>
                         <p>Create Password</p>
-                        {/* <input type="Password" id="password" name="password" placeholder="Create a Strong Password" required /> */}
-                        <input type="Password" name="password" placeholder="Create a Strong Password" required="" id="password" style={{ textAlign: 'center' }} />
+ 
+                        <input type="Password" name="password" placeholder="Create a Strong Password" id="password" style={{ textAlign: 'center' }} required/>
                         <p>Confirm Password</p>
-                        <input type="Password" name="password" placeholder="Re-enter your Password" required="" id="confirmPassword" style={{ textAlign: 'center' }} />
-                        {/* <input type="Password" id="confirmPassword" placeholder="Re-enter your Password" required /> */}
+                        <input type="Password" name="password" placeholder="Re-enter your Password" id="confirmPassword" style={{ textAlign: 'center' }} required/>
+
                         <span id = "message2" style={{color:"red",fontSize: "10px"}}> </span> 
                         <button class="btn btn-primary" onClick={goToHome} >create an account</button>
                          
@@ -322,4 +313,3 @@ function goToStart(){
         </>
   );
 }
-

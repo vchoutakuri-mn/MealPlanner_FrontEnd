@@ -6,6 +6,7 @@ const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/employee/blogPageable?s
 
 class MealDetails {
     getMealDates(START_DATE,END_DATE,pageNo,pageSize){
+        console.log(MEAL_DETAILS_BETWEEN_DATES+"/"+START_DATE+"/"+END_DATE+"/"+pageNo+"/"+pageSize)
         return axios.get(MEAL_DETAILS_BETWEEN_DATES+"/"+START_DATE+"/"+END_DATE+"/"+pageNo+"/"+pageSize,{
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }
         });
@@ -19,7 +20,7 @@ class MealDetails {
     submitId(employeeIds){
 
         return axios.put(SUBMIT_REST_API_URL+[employeeIds],
-         {},
+        
         {
            
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }

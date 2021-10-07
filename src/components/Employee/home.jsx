@@ -142,21 +142,21 @@ export default function Start(props) {
             <div class="questions-container">
                 <div class="question">
                     <button onClick={buttons}>
-                        <span  style={{fontSize:"14px"}}>What is Meal Planner</span>
+                        <span  style={{fontSize:"14px"}}>What is Meal Planner?</span>
                         <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
-                    <p>Meal planner is an web service designed to digitalize the traditional system</p>
+                    <p>Meal planner is an web service designed to digitalize the traditional system.The objective of this application is to help food vendors, plan their resources for food/meal requirement in prior, for a given day and which eventually will lead to better planning and reduce food wastages.</p>
                 </div>
                 <div class="question"  onClick={buttons}>
                     <button>
                         <span style={{fontSize:"14px"}}>How it Works?</span>
                         <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
-                    <p>There are few entities like employees,vendors and finance department who are the main actors</p>
+                    <p>Employees can select dates to book meals and vendors will have employees’ data who all would be availing meal services based on reports/data generated for a future date, they can plan their resources. This report/data can be used by vendors for validation against Employee ID of employees who are availing food services.</p>
                 </div>
                 <div class="question"  onClick={buttons}>
                     <button>
-                        <span style={{fontSize:"14px"}}>What is meal subsciprion</span>
+                        <span style={{fontSize:"14px"}}>What is meal subscription?</span>
                         <i class="glyphicon glyphicon-menu-up"></i>
                     </button>
                     <p>The employee must subscribe mentioning a specific meal type 
