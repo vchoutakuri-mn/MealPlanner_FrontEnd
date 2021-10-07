@@ -22,6 +22,7 @@ export default function LoginForm(props) {
     const [value, onChange] = useState(false);
     var [userType, setUser] = useState('Employee');
     const [token, deleteToken] = useState('');
+    const [showText, setShowText] = useState(false);
     var [empid, setEmpId] = useState();
     //   const { switchToSignup  } = useContext(AccountContext);
 
@@ -115,27 +116,43 @@ console.log(currentSelectedDatesList[0][0])
 
         empid = document.getElementById("userId").value;
 
-
+        console.log(empid)
         var empasswd = document.getElementById("password").value;
-        if (empid == null || empasswd == null) {
+        if (empasswd == '' && empid=='' ) {
             console.log("null entered")
-            alert("please enter userid and password")
-
+            alert("Please enter ID and Password")
+            return
         }
+        
 
         var lowerCaseLetters = /[a-z]/g;
         var upperCaseLetters = /[A-Z]/g;
         var numbers = /[0-9]/g;
 
         var token = ''
-        //This is a comment 
+        console.log(/[A-Z]/.test(empid))
+        if(/[A-Z]/.test(empid) == true ||
+            /[a-z]/.test(empid) == true 
+        ){
+            alert("ID should only contain Integers!")
+            return
+        }
 
-        // if(empid.match(numbers) != null && 
-        //    empasswd.length >= 8  &&
-        //    empasswd.match(lowerCaseLetters) != null && 
-        //    empasswd.match(upperCaseLetters) !=null && 
-        //    empasswd.match(numbers) != null 
-        // )
+        if(empasswd.length < 8  ||
+            /[A-Z]/.test(empasswd) == false ||
+            /[a-z]/.test(empasswd) == false ||
+            /[0-9]/.test(empasswd) == false)
+            {
+               console.log("entering wrong pass")
+            setShowText(true)
+        }
+
+        if(empid.match(numbers) != null && 
+           empasswd.length >= 8  &&
+           empasswd.match(lowerCaseLetters) != null && 
+           empasswd.match(upperCaseLetters) !=null && 
+           empasswd.match(numbers) != null 
+        )
         {
             console.log("Registered user details", userType)
             console.log("User:", empid, empasswd)
@@ -153,8 +170,17 @@ console.log(currentSelectedDatesList[0][0])
                 strUser = "financer"
             }
             Employee.checkValidation( empid, empasswd, strUser).then(Response => {
-                console.log("In login", Response.status)
+                console.log("In login", Response.data)
+             
                 if (Response.status == 200 && Response.data != '' && Response.data != undefined) {
+                    if(Response.data  == 'id not found'){
+                        alert("User not found, Please Register!")
+                        return
+                    }
+                    if(Response.data == 'incorrect password'){
+                        alert("Incorrect password!")
+                        return
+                    }
                     token = Response.data.slice(7);
                     console.log("token generated", token)
                     SET_TOKEN(token, GET_TOKEN)
@@ -180,7 +206,7 @@ console.log(currentSelectedDatesList[0][0])
                 } else {
                     //Reload component or input fields make empty
                     console.log("Details are wrong" )
-                    alert("Incorrect Details found")
+                    alert("User not found")
                     document.getElementById('password').value=''
                     // reactDom.render(<MyApp/>,document.getElementById("root"))
                 }
@@ -299,9 +325,10 @@ console.log(currentSelectedDatesList[0][0])
                                                 <option value="financier">Finance</option>
                                             </select><br></br>
                                             <label style={{ fontSize: "14px", marginLeft: "25%" }}>ID  </label>
-                                            <input type="text" name="name" placeholder="User Id" required="" id="userId" style={{ width: "40%", marginLeft: "100px", textAlign: 'center' }} />
+                                            <input type="text" name="name" placeholder="User Id"  id="userId" style={{ width: "40%", marginLeft: "100px", textAlign: 'center' }} required/>
                                             <label style={{ fontSize: "14px", marginLeft: "25%" }}>Password  </label>
-                                            <input type="Password" name="password" placeholder="User Password" required="" id="password" style={{ width: "40%", marginLeft: "50px", textAlign: 'center' }} />
+                                            <input type="Password" name="password" placeholder="User Password"  id="password" style={{ width: "40%", marginLeft: "50px", textAlign: 'center' }} required/>
+                                            <p  className={showText ? "" : "hide"} style={{fontSize:"11px", color:"red"}}>Password should contain atleast one lower case, one upper case, one number and minimum length 8 </p>
                                             <button onClick={goToHome} class="btn btn-primary" style={{ marginLeft: "50%", top: "20%" }} >Sign in</button>
 
                                             <br></br>

@@ -330,11 +330,6 @@ function goToDel(e) {
           }
        })
     
-
-   
-
-    // this.handleModal();
-    // reactDom.render(<Demo/>,document.getElementById("root"))
   }
 
   function closeFormprofile() {
@@ -750,7 +745,7 @@ function cancelSingleMeal(e){
             <div>
 
             
-            <p style={{ textAlign: "center", marginTop: "20px" }}>Please select date range from the calendar : </p><br/>
+            <p style={{ textAlign: "center", marginTop: "20px"}} id="selectDatesid">Please select date range from the calendar : </p><br/>
             </div>
             <div style={{
               alignItems: "center", justifyContent: "center", display: "flex",

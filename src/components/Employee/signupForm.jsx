@@ -16,6 +16,7 @@ var USERTYPE='employee';
 export default function SignupForm(props) {
 //   const { switchToSignin } = useContext(AccountContext);
     const [userType,changeUserType]=useState('employee');
+    const [showText, setShowText] = useState(false);
 //   const [email, setEmail] = useState('');
 //   const [password, setPassword] = useState('');
 //   const [repeatPassword, setRepeatPassword] = useState('');
@@ -89,6 +90,30 @@ function goToHome(e){
   var lowerCaseLetters = /[a-z]/g;
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(/[A-Z]/.test(userId) == true ||
+            /[a-z]/.test(userId) == true 
+        ){
+            alert("ID should only contain Integers!")
+            return
+        }
+        if(!userPassword.includes(confirmPassword)){
+          alert("passwords dindn't match")
+          return
+        }
+        
+      console.log(typeof userName)
+      if(userName.match(numbers)){
+        alert("Name should contain only alphabets" )
+        return
+      }
+
+      if(!userEMail.match(mailformat)){
+        alert("You have entered an invalid email address!" )
+        return
+      }
+
+
       if( userPassword.length >= 8  &&
        userPassword.match(lowerCaseLetters) != null && 
      userPassword.match(upperCaseLetters) !=null && 
@@ -108,6 +133,9 @@ function goToHome(e){
       if(Response.status==200 ){
           //go to next page
           //console.log("response success")
+          if(Response.data == 'exists'){
+            alert("User already exists")
+          }
           console.log("usertype",useuse)
           token=Response.data;
           console.log('Token generated')
@@ -120,16 +148,11 @@ function goToHome(e){
           }).catch(err=>console.log('Something went wrong'))
         }
         else{
-          alert("Incorrect Details")
+          setShowText(true)
+          //alert("Incorrect Details")
           return
         }
-        toast.success(
-          "User Created Successfully",
-          {
-            autoClose: 2000,
-            position: toast.POSITION.TOP_CENTER
-          }
-        )
+        
       }
         
     
@@ -141,19 +164,7 @@ function goToStart(){
 }
 
 
-// class Demo extends React.Component {  
-//   constructor(){  
-//     super();  
-//     this.state={  
-//       show:false  
-//     }  
-//   } 
 
-
-// handleModal(){  
-//   this.setState({show:!this.state.show})  
-// } 
-// }
 
   return (
     <>
@@ -182,125 +193,42 @@ function goToStart(){
       
       </div>
         <body>
- 
       
         <div class="container">
             <div class="right" style={{marginLeft:"25%",marginTop:"1%"}}>
-                <div class="formBox" style={{backgroundColor:"#D3D3D3", height:"550px"}}>
-                    <p class="sign" style={{marginTop:"-50px"}}>Create Account</p>
+                <div class="formBox" style={{backgroundColor:"#D3D3D3", height:"560px"}}>
+                    <p class="sign" style={{marginTop:"-30px"}}>Create Account</p>
                     <form  style={{marginTop:"-35px"}}>
-                        <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px"}}>SignUp</p>
-                        <select name="cars" id="userType" style={{marginTop:"-10px",width:"40%",marginLeft:"6px",textAlign: 'center' }} onChange={setUserType} >
+                        <p style={{marginTop:"-10px",fontSize:"15px",marginLeft:"1px"}}>SignUp
+                        <select name="cars" id="userType" style={{marginTop:"1px",width:"40%",marginLeft:"6px",textAlign: 'center' }} class = "btn btn-primary" onChange={setUserType} >
                         <option value="employee">Employee</option>
                         <option value="vendor" >Vendor</option>
                         <option value="financer">Finance Department</option>
-                        </select><br></br>
+                        </select>
+                        </p>
+                        <br></br>
+                        <div style={{marginTop:"-20px"}}>
                         <p>ID</p>
+                        <input type="text" name="userId" placeholder="ID"  id="userId" style={{ textAlign: 'center' }} required/>
                         
-                        <input type="text" name="userId" placeholder="User ID"  id="userId" style={{ textAlign: 'center' }} required/>
                         <p>Name</p>
-                       
-                        <input type="text" name="userName" placeholder="User Name"  id="userName" style={{ textAlign: 'center' }} required/>
+                        <input type="text" name="userName" placeholder="Name"  id="userName" style={{ textAlign: 'center' }} required/>
+                        
                         <p>E-mail Address</p>
-                      
-                        <input type="text" name="userId" placeholder="Enter your Mail ID" id="userEmail" style={{ textAlign: 'center' }} required/>
+                        <input type="email" name="userId" placeholder="Enter your Mail ID" id="userEmail" style={{ textAlign: 'center' }} required/>
+                        
                         <p>Create Password</p>
- 
                         <input type="Password" name="password" placeholder="Create a Strong Password" id="password" style={{ textAlign: 'center' }} required/>
+                        
                         <p>Confirm Password</p>
                         <input type="Password" name="password" placeholder="Re-enter your Password" id="confirmPassword" style={{ textAlign: 'center' }} required/>
-
+                        
+                        <p  className={showText ? "" : "hide"} style={{fontSize:"11px", color:"red"}}>Password should contain atleast one lower case, one upper case, one number and minimum length 8 </p>
                         <span id = "message2" style={{color:"red",fontSize: "10px"}}> </span> 
                         <button class="btn btn-primary" onClick={goToHome} >create an account</button>
                          
-
-                        {/* <p style={{marginTop:"-30px",fontSize:"14px",marginLeft:"1px" }}>Subscribe</p>
-                        <select name="cars" id="cars" style={{marginTop:"-10px",width:"40%",marginLeft:"6px"}} >
-                        <option value="volvo">
-                        <p>The minimum meal price for vegetarian is Rs.800/-</p>
-                        <p>The minimum meal price for non-vegetarian is Rs.1400/-</p>
-                        <p>Please select the meal type : </p>
-                        <input type="checkbox"/>
-                          <label>veg</label>
-                        <br></br>
-                        <input type="checkbox"/>
-                          <label>nonveg</label>
-                          <p>NOTE:</p>
-                        <p>
-                          The meal price will be deducted from your account according to the subscription chosen whether you take the meals or not.After the subscription amount is null you need to pay for the meal .
-                        </p>
-                        </option>
-                       
-                        </select><br></br> */}
-
- 
-
-{/* <Dialog aria-labelledby="simple-dialog-title" open={true}>
-    <DialogTitle id="simple-dialog-title"> Please select atleast one employee to Submit</DialogTitle>
-        <div>
-          <div>
-          <button 
-          class="btn btn-primary pull-right" 
-          style={{marginBottom:'15px',marginRight:'15px'}} 
-          data-title="Validate" 
-          data-toggle="modal" 
-          data-target="#validate" >close</button>
-          </div>
-        </div>
-  </Dialog> */}
-
- 
-  {/* <Modal show={showDialog}>  
-          <Modal.Header closeButton>SUBSCRIPTION</Modal.Header>  
-          <Modal.Body>
-            {console.log('This is in dialg') }
-          <p>The minimum meal price for vegetarian is Rs.800/-</p>
-          <p>The minimum meal price for non-vegetarian is Rs.1400/-</p>
-           <p>Please select the meal type : </p>
-           <input type="checkbox"/>
-            <label>veg</label>
-           <br></br>
-           <input type="checkbox"/>
-            <label>nonveg</label>
-            <p>NOTE:</p>
-           <p>
-             The meal price will be deducted from your account according to the subscription chosen whether you take the meals or not.After the subscription amount is null you need to pay for the meal .
-           </p>
-          </Modal.Body>  
-          <Modal.Footer>  
-            <Button >Yes</Button>  
-            <Button >No</Button>  
-          </Modal.Footer>  
-        </Modal>  */}
-        {/* <div>  
-        <div className="modalClass">  
-          <Button onClick={()=>this.handleModal()}>subscribe</Button>  
-        </div>  
-          
-        <Modal show={this.state.show} onHide={()=>this.handleModal()}>  
-          <Modal.Header closeButton>SUBSCRIPTION</Modal.Header>  
-          <Modal.Body>
-          <p>The minimum meal price for vegetarian is Rs.800/-</p>
-          <p>The minimum meal price for non-vegetarian is Rs.1400/-</p>
-           <p>Please select the meal type : </p>
-           <input type="checkbox"/>
-            <label>veg</label>
-           <br></br>
-           <input type="checkbox"/>
-            <label>nonveg</label>
-            <p>NOTE:</p>
-           <p>
-             The meal price will be deducted from your account according to the subscription chosen whether you take the meals or not.After the subscription amount is null you need to pay for the meal .
-           </p>
-          </Modal.Body>  
-          <Modal.Footer>  
-            <Button onClick={()=>this.handleModal()}>Yes</Button>  
-            <Button onClick={()=>this.handleModal()}>No</Button>  
-          </Modal.Footer>  
-        </Modal>  
-      </div>    */}
-                         
                         <p class="create" style={{marginTop:"-95px",marginLeft:"-100px"}}>Already a Member?<a class="tag" onClick={goToLogin}>Sign In</a></p>
+                   </div>
                     </form>
                 </div>
             </div>
