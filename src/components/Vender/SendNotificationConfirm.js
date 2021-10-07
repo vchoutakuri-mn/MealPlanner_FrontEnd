@@ -210,7 +210,7 @@ function SaveSubmit(props) {
 
 
 function DownloadConfirm(props) {
-  let TABLE_HEAD = ['Date', 'Day', 'Veg', 'Non-veg', 'Total_meals']
+  let TABLE_HEAD = ['Date', 'Day', 'Name', 'Email', 'Total_meals','Total_money']
   const { open, closeWindow, error, report, startDate, endDate } = props
 
   function goBack() {
@@ -228,7 +228,7 @@ function DownloadConfirm(props) {
     let data = report;
     data.forEach(function (row) {
 
-      csvData += row[0] + ',' + weekdays[new Date(row[0]).getDay()] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ',';
+      csvData += row[0] + ',' + weekdays[new Date(row[0]).getDay()] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ','+ row[4]+',';
       csvData += "\n";
     });
     var hiddenElement = document.createElement('a');

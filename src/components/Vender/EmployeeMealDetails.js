@@ -59,9 +59,8 @@ export default class EmployeeMealDetails extends React.Component {
     componentDidMount() {
         this.getNumberOfRecords(this.checkList)
         this.getData(this.state.pageNo,this.state.pageSize)
-        
-        
     };
+    
     checkList(){
         //data is stores in totalNoOfRecords variable
         //console.log(this.state.totalNoOfRecords)
@@ -101,7 +100,7 @@ export default class EmployeeMealDetails extends React.Component {
       
     }
     reload(){
-        document.getElementById('searchData').value=
+        document.getElementById('searchData').value=''
         this.getData(1,5);
     }
     setShowUsers() {

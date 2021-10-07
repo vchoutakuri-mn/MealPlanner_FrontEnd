@@ -180,13 +180,15 @@ console.log(currentSelectedDatesList[0][0])
                     }
                 } else {
                     //Reload component or input fields make empty
-                    console.log("Details are wrong")
+                    console.log("Details are wrong" )
                     alert("Incorrect Details found")
+                    document.getElementById('password').value=''
                     // reactDom.render(<MyApp/>,document.getElementById("root"))
                 }
             }).catch(function (error) {
+                console.log("details wrong ",error)
                if(error.response){
-                   console.log("details wrong ",error)
+                   
                    if(error.response!=undefined ){
                     reactDom.render(<PageNotFound/>,document.getElementById("root"))
                    }

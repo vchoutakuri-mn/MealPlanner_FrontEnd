@@ -4,26 +4,26 @@
 //Request:pageNo:int and pageSize:int
 //Expected : List of json objects
 //Method type:
-export const USERS_REST_API_URL="http://localhost:8080/vendor/home";
+export const USERS_REST_API_URL="http://localhost:8083/vendor/home";
 
 // For updating daily meal status of particular employee or list of employees
 // Request:list of empId 
 //Expected:'sucess' message on sucessful updation . 'failed' message on unsucessful updation
 //Method type:put
-export const SUBMIT_REST_API_URL="http://localhost:8080/vendor/updateMealStatus/"
+export const SUBMIT_REST_API_URL="http://localhost:8083/vendor/updateMealStatus/"
 
 
 
 // Return the number of employees of particular vendor id
 //Expected :number
 //Method type:
-export const NUMBER_OF_RECORDS="http://localhost:8080/employee/numberOfRecord"
+export const NUMBER_OF_RECORDS="http://localhost:8083/employee/numberOfRecord"
 
 //In vendor's report page , need an API which return the list which have a details like total number of meals
 //Request :startDate and endDate as path variable
 //Expected:List of json objects
 //Method type:
-export const MEAL_DETAILS_BETWEEN_DATES='http://localhost:8080/vendor/report';
+export const MEAL_DETAILS_BETWEEN_DATES='http://localhost:8083/vendor/report';
 
 //For updating or changing the meal price in vendor's home page
 //Request:veg:$ and nonVeg:$
@@ -40,7 +40,7 @@ export const MEAL_PRICE='';
 //Request:
 //Expected:
 //Method type:
-export const DATES_WITH_MEAL_DETAILS="http://localhost:8080/employee/getAll";
+export const DATES_WITH_MEAL_DETAILS="http://localhost:8083/employee/getAll";
 
 
 
@@ -48,7 +48,7 @@ export const DATES_WITH_MEAL_DETAILS="http://localhost:8080/employee/getAll";
 //Request:startdate and enddate,pageno,pagesize
 //Expected:List of json objects
 //Method type:get
-export const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/mealCalender/home/financer";
+export const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8083/mealCalender/home/financer";
 
 
 
@@ -57,26 +57,26 @@ export const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/mealCalender/hom
 
 
 //Login URL
-export const LOGIN="http://localhost:8080/userCred/login";
+export const LOGIN="http://localhost:8083/userCred/login";
 
 
 
 //Signup url
-export const SIGNUP="http://localhost:8080/userCred/signup";
+export const SIGNUP="http://localhost:8083/userCred/signup";
 
 
 //
 //request:token or employee id
 //Expected:true or false
-export const MEAL_SUBSCRIPTION='http://localhost:8080/employee/subscribe';
+export const MEAL_SUBSCRIPTION='http://localhost:8083/employee/subscribe';
 
 
 
-export const EMPLOYEE_SELECTED_MEAL_DATES="http://localhost:8080/mealCalender/selectMeals"
+export const EMPLOYEE_SELECTED_MEAL_DATES="http://localhost:8083/mealCalender/selectMeals"
 
 
 
-export const EMPLOYEE_UPDATED_MEAL_DATES="http://localhost:8080/mealCalender/cancelMeal";
+export const EMPLOYEE_UPDATED_MEAL_DATES="http://localhost:8083/mealCalender/cancelMeal";
 
 
 
@@ -84,7 +84,7 @@ export const EMPLOYEE_UPDATED_MEAL_DATES="http://localhost:8080/mealCalender/can
 //request:List<date,mealtype,vendorid,subscribed>
 //Expected:delete cancelled meals/dates
 //method type:delete
-export const EMPLOYEE_CANCEL_MEAL_DATES="http://localhost:8080/mealCalender/cancelMeal"
+export const EMPLOYEE_CANCEL_MEAL_DATES="http://localhost:8083/mealCalender/cancelMeal"
 
 
 
@@ -92,13 +92,13 @@ export const EMPLOYEE_CANCEL_MEAL_DATES="http://localhost:8080/mealCalender/canc
 //Request:vendorid
 //Expected:mealdate,mealtype
 //Method type:get
-export const EXISTDATES="http://localhost:8080/employee/getexistdates/1";
+export const EXISTDATES="http://localhost:8083/employee/getexistdates/1";
 
 //History url
 //Request:startdate,enddate,pageno,pagesize
 //Expected:mealdate,mealtaken,mealtype
 //Method type:get
-export const EMPLOYEE_HISTORY="http://localhost:8080/employee/history/{startdate}/{enddate}/{pageno}/{pagesize}";
+export const EMPLOYEE_HISTORY="http://localhost:8083/employee/history/{startdate}/{enddate}/{pageno}/{pagesize}";
 
 
 
@@ -108,16 +108,16 @@ export const EMPLOYEE_HISTORY="http://localhost:8080/employee/history/{startdate
 //Request:startdate,enddate,pageno,pagesize
 //Expected:mealdate,mealtaken,mealtype
 //Method type:get
-export const HISTORY="http://localhost:8080/employee/history/";
+export const HISTORY="http://localhost:8083/employee/history/";
 
-export const EMPLOYEE_NOTIFICATIONS = "http://localhost:8080/notifications/sendlist";
+export const EMPLOYEE_NOTIFICATIONS = "http://localhost:8083/notifications/sendlist";
 
 
-export const UPDATE_MEAL_TYPE = "http://localhost:8080/employee/updatePlanType";
+export const UPDATE_MEAL_TYPE = "http://localhost:8083/employee/updatePlanType";
 
             //---------------------TOKEN-------------------//
 export const TOKEN='';
 
 
-export const VALIDATE_TOKEN="http://localhost:8080/userCred/validate"
+export const VALIDATE_TOKEN="http://localhost:8083/userCred/validate"
 
