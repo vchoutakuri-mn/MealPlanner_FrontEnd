@@ -210,9 +210,13 @@ function SaveSubmit(props) {
 
 
 function DownloadConfirm(props) {
-  let TABLE_HEAD = ['Date', 'Day', 'Name', 'Email', 'Total_meals','Total_money']
-  const { open, closeWindow, error, report, startDate, endDate } = props
-
+  let TABLE_HEAD =[]
+  const { open, closeWindow, error, report, startDate, endDate ,type} = props
+  if(type!=undefined && type=='vendor'){
+    TABLE_HEAD = ['Date', 'Day', 'Vegeterian', 'Non vegetrain', 'Total_meals']
+  }else{
+    TABLE_HEAD = ['Date', 'Day', 'Name', 'Email', 'Total_meals','Total_money']
+  }
   function goBack() {
     closeWindow()
   }
@@ -226,11 +230,20 @@ function DownloadConfirm(props) {
     }
     csvData = csvData + '\n'
     let data = report;
-    data.forEach(function (row) {
+    if(type!=undefined && type=='vendor'){
+      data.forEach(function (row) {
 
-      csvData += row[0] + ',' + weekdays[new Date(row[0]).getDay()] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ','+ row[4]+',';
-      csvData += "\n";
-    });
+        csvData += row[0] + ',' + weekdays[new Date(row[0]).getDay()] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ',';
+        csvData += "\n";
+      });
+    }else{
+      data.forEach(function (row) {
+
+        csvData += row[0] + ',' + weekdays[new Date(row[0]).getDay()] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ','+ row[4]+',';
+        csvData += "\n";
+      });
+    }
+
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
     hiddenElement.target = '_blank';

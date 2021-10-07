@@ -76,7 +76,7 @@ export default function Report(props) {
     let date = createRegularDateFormat(startDate, '-');
     START_DATE = createRegularDateFormat(startDate, '-');
 
-    fetchData(START_DATE, START_DATE + 1,pageNo,pageSize)
+    //fetchData(START_DATE, START_DATE + 1,pageNo,pageSize)
     let dateObj = startDate
     // if(date!=null){
     // if(DateArray[0]==undefined ){
@@ -96,11 +96,13 @@ export default function Report(props) {
     }
 
   }
-  function fetchData(start, end,pageNo,pageSize) {
+  function fetchData(start, end,pageNo,pageSize,callback) {
     MealDetails.getMealDates(start, end,pageNo,pageSize).then(Response => {
       console.log("status code ", Response.data)
       REPORTDETAILS = Response.data;
-
+      if(callback!=undefined && callback!=""){
+        callback()
+      }
     }).catch(err => {
       console.log("Something went wrong")
       //setSessionTimeOut(true)
@@ -112,7 +114,7 @@ export default function Report(props) {
     //console.log("end date selected")
     let date = createRegularDateFormat(endDate, '-');
     END_DATE = createRegularDateFormat(endDate, '-');
-    fetchData(START_DATE, END_DATE,pageNo,pageSize)
+    //fetchData(START_DATE, END_DATE,pageNo,pageSize)
 
     // if(date!=null){
 
@@ -167,9 +169,7 @@ export default function Report(props) {
         data.push([(DAYLIST[meals + 1]), DAYS[meals], veg, nonVeg, (nonVeg + veg)])
       }
       TABLEHIDE = 'block'
-
       if (firstTime == true) {
-
         if (data.length != 0) {
           if (data.length <= 10) {
             rowsPerPage = data.length
@@ -177,7 +177,6 @@ export default function Report(props) {
             rowsPerPage = 10
           }
           //REPORTDETAILS=data.slice(0,rowsPerPage)
-
           startPage = 1;
           endPage = rowsPerPage;
         }
@@ -267,7 +266,10 @@ export default function Report(props) {
     return number
   }
   //create CSV file data in an array
-
+function getTableData(){
+  fetchData(START_DATE, END_DATE,pageNo,pageSize,doResetDates)
+  
+}
 
   function closeDownloadError() {
     setOpenDownloadErrorDialog(false)
@@ -292,7 +294,7 @@ export default function Report(props) {
             focusedInput={state.focusedInput} // START_DATE, END_DATE or null
           />
         </div>
-        <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={() => { doReload(!reload) }}><span class="fa fa-file" ></span> Get Details</button>
+        <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={getTableData}><span class="fa fa-file" ></span> Get Details</button>
         <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={reset}><span class="fa fa-refresh" ></span> Reset</button>
 
 
@@ -314,7 +316,7 @@ export default function Report(props) {
                 <th>Total number of meals</th>
               </tr>
             </thead>
-            <DownloadConfirm open={downloadReport} error={REPORTDETAILS.length} closeWindow={closeDownloadReport} report={REPORTDETAILS} startDate={START_DATE} endDate={END_DATE} />
+            <DownloadConfirm open={downloadReport} error={REPORTDETAILS.length} closeWindow={closeDownloadReport} report={REPORTDETAILS} startDate={START_DATE} endDate={END_DATE} type={"vendor"} />
             <tbody style={{ height: "300px" }}>{console.log(REPORTDETAILS, 'last lins')}
 
               {(REPORTDETAILS.length != 0) ?

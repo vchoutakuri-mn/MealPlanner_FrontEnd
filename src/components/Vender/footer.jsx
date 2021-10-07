@@ -22,7 +22,7 @@ function Footer(props){
 
 <select id="rowsPerPage"   style={{ float: 'left', marginLeft: '5px' }} onChange={selectRowsPerPageHelper} >
 
-                            <option value={pageSize}>{pageSize}</option>
+                           
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>

@@ -16,7 +16,7 @@ var SelectedEmployees = []
 var Users = [];
 var ShowUsers = []
 var TEMPORERY_SIZE=13
-let DEFAULT_PAGE_SIZE=10;
+let DEFAULT_PAGE_SIZE=5;
 
 export default class EmployeeMealDetails extends React.Component {
     constructor(props) {
@@ -300,10 +300,10 @@ goToHome(){
                     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js" />
                     <script src="//code.jquery.com/jquery-1.11.1.min.js" />
                     <div>
-                        <input type="text" id="searchData" style={{ float: 'left', marginTop: '5px' }} placeholder={this.state.searchBy} onKeyUp={this.search} name="search" />
+                        <input type="text" id="searchData" style={{ float: 'left', marginTop: '5px' }} onKeyUp={this.search} name="search" />
                         
                         <select name="sortBy" id="sortBy" onChange={this.search} class="btn btn-primary pull-left" style={{ float: 'left', marginTop: '5px', marginLeft: '5px' }} onClick={this.selectSearchType}>
-                                <option value="Employee ID">Search by</option>
+
                                 <option value="Employee ID">EmployeeID</option>
                                 <option value="Employee name">Employee name</option>
                                 <option value="Employee email">Employee email</option>
@@ -314,7 +314,7 @@ goToHome(){
                     </div>
 
 
-                    <table id="mytable" class="table" style={{height:'50%'}}>
+                    <table id="mytable" class="table" style={{height:'40%'}}>
                         <thead>
                             <tr>
                                 {/* <th><input type="checkbox" id="checkall" /></th> */}

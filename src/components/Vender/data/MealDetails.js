@@ -17,12 +17,11 @@ class MealDetails {
     }
 
     submitId(employeeIds){
-        console.log(SUBMIT_REST_API_URL+employeeIds)
-       
-        return axios.get(SUBMIT_REST_API_URL+[employeeIds],
-         
+
+        return axios.put(SUBMIT_REST_API_URL+[employeeIds],
+         {},
         {
-            
+           
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }
         })
     }
