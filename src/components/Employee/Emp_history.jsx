@@ -24,7 +24,8 @@ weekdays[3] = "Tuesday";
 weekdays[4] = "Wednesday";
 weekdays[5] = "Thursday";
 weekdays[6] = "Friday";
-
+let END="";
+let START="";
 
 const initialState = {
   startDate: null,
@@ -48,7 +49,7 @@ export default function Hist (props) {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [doReset,startDoingReset]=useState([])
   const [_, doResetDates] = useReducer((x) => x + 1, 0);
-
+  const [reload, doReload] = useState(false)
 
     function createRegularDateFormat(t, s) {
       let a = [{month: 'numeric'},{day: 'numeric'},  {year: 'numeric'}];
@@ -67,21 +68,21 @@ export default function Hist (props) {
     }
     return a.map(format).join(s);
  }
-let START='';
+ START='';
   function start(startDate){
     let date = createRegularDateFormat(startDate, '-');
     //console.log('date is start ',date,typeof startDate)
       let dateObj=startDate
        START=createIrregularDateFormat(startDate, '-');
       if(date!=null){
-        MealDetails.getHistory(START,START+1).then(
-          Response=>{
+        // MealDetails.getHistory(START,START+1).then(
+        //   Response=>{
      
-            DAYLIST=Response.data
-          }
-        ).catch(err=>{
-          console.error("something went wrong ",err)
-        })
+        //     DAYLIST=Response.data
+        //   }
+        // ).catch(err=>{
+        //   console.error("something went wrong ",err)
+        // })
       // let startDateArray=dateObj.getUTCFullYear()+'-'+ (dateObj.getUTCMonth())  +'-'+ (dateObj.getUTCDate()) 
 
       // if(DateArray[0]==undefined ){
@@ -101,17 +102,17 @@ let START='';
   function end(endDate){
     console.log("end date selected")
     let date = createRegularDateFormat(endDate, '-');
-    let END=createIrregularDateFormat(endDate, '-');
+     END=createIrregularDateFormat(endDate, '-');
       if(date!=null){
       // let startDateArray=dateObj.getUTCFullYear()+'-'+ (dateObj.getUTCMonth())  +'-'+ (dateObj.getUTCDate()) 
-      MealDetails.getHistory(START,END).then(
-        Response=>{
-          DAYLIST=Response.data
-         console.log(Response.data)
-        }
-      ).catch(err=>{
-        console.error("something went wrong ",err)
-      })
+      // MealDetails.getHistory(START,END).then(
+      //   Response=>{
+      //     DAYLIST=Response.data
+      //    console.log(Response.data)
+      //   }
+      // ).catch(err=>{
+      //   console.error("something went wrong ",err)
+      // })
       // if(DateArray[1]==undefined ){
       //         DateArray.push(date)
       //       } else{
@@ -120,7 +121,7 @@ let START='';
       // //console.log('s date',date)
       // showTableData(DateArray)
       }
-     
+ 
 
     //resetAllDates=false
     // if(resetStartDate=='reset'){
@@ -143,6 +144,18 @@ let START='';
   
      
   }
+
+  function ShowAllDatesTable(){
+    MealDetails.getHistory(START,END).then(
+    Response=>{
+      DAYLIST=Response.data
+     console.log(Response.data)
+     doReload(!reload)
+    }
+  ).catch(err=>{
+    console.error("something went wrong ",err)
+  })
+ }
 
   var getDaysArray = function(start, end) {
     for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
@@ -252,6 +265,9 @@ function goToHome(){
 
         
       </div>
+      <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={ShowAllDatesTable}
+           
+      ><span class="fa fa-file" ></span> Get Details</button>
           <button class="btn btn-primary pull-left" style={{margin:"5px"}} id="home" data-title="Home" onClick={reset}><span class="fa fa-refresh" ></span> Reset</button>
     </div>
     <br/>
@@ -275,7 +291,9 @@ function goToHome(){
       </tr>
     </thead> 
         <tbody>
-                {
+          {DAYLIST.length!=0?
+          
+                
                   DAYLIST.map(
                     eachDay=>
                 <tr>
@@ -289,7 +307,10 @@ function goToHome(){
                     <td><span class="label label-info">{eachDay[5]}</span></td>
                 </tr>
                     )
-                }
+                
+                :<>
+                <p style={{textAlign:'center'}}>No data found</p>
+                </>}
             </tbody>
   </table>
         </div>

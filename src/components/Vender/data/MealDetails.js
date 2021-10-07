@@ -22,6 +22,7 @@ class MealDetails {
         return axios.get(SUBMIT_REST_API_URL+[employeeIds],
          
         {
+            
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }
         })
     }

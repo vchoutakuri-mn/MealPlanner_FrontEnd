@@ -149,13 +149,12 @@ console.log(currentSelectedDatesList[0][0])
             //    }
             //    this.handleAxiosError(error)
             // }
-            if(strUser == "Finance Department"){
+            if(strUser == "Finance"){
                 strUser = "financer"
             }
             Employee.checkValidation( empid, empasswd, strUser).then(Response => {
                 console.log("In login", Response.status)
                 if (Response.status == 200 && Response.data != '' && Response.data != undefined) {
-
                     token = Response.data.slice(7);
                     console.log("token generated", token)
                     SET_TOKEN(token, GET_TOKEN)
@@ -180,13 +179,15 @@ console.log(currentSelectedDatesList[0][0])
                     }
                 } else {
                     //Reload component or input fields make empty
-                    console.log("Details are wrong")
+                    console.log("Details are wrong" )
                     alert("Incorrect Details found")
+                    document.getElementById('password').value=''
                     // reactDom.render(<MyApp/>,document.getElementById("root"))
                 }
             }).catch(function (error) {
+                console.log("details wrong ",error)
                if(error.response){
-                   console.log("details wrong ",error)
+                   
                    if(error.response!=undefined ){
                     reactDom.render(<PageNotFound/>,document.getElementById("root"))
                    }

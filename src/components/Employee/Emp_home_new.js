@@ -11,6 +11,7 @@ import Employee from './data/Employee';
 import { SET_TOKEN } from '../Vender/data/Storage';
 import MealDetails from './data/MealDetails';
 import { dateSingleInputPhrases } from '@datepicker-react/styled';
+import { Notifications } from '@material-ui/icons';
 
 toast.configure();
 
@@ -128,42 +129,38 @@ export default function MyApp(props) {
 
 
 function getDetails(e){
+  
   var n = e.target.id
   console.error("e.target",e.target.id)
   datespulsmealtype.push(n)
   var date=e.target.id
   date=e.target.id.slice(0,10)
-  //console.log("datespulsmealtype",date)
+
   var mealtype = e.target.id.slice(10,)
-  //console.log(mealtype)
-  //console.log(date+'nonveg'==e.target.id)
-  
+
   if(e.target.id.includes('nonveg') ){
     
   if(e.target.checked){
 
-   console.log("NON VEG checked ",document.getElementById(date+'nonveg').checked)
     document.getElementById(date+'nonveg').disabled=false
     document.getElementById(date+'veg').checked=false
     document.getElementById(date+'veg').disabled=true
     }else{
-      console.log("NON VEG unchecked")
+
      document.getElementById(date+'veg').disabled=false
       document.getElementById(date+'nonveg').checked=false
     }
 
   }else{
-    // console.log("in getdetails in veg",date+'veg',e.target.id)
-    // console.log(date,e.target.id)
+
     if(e.target.checked){
-      console.log("veg checked")
-      //console.log(date,"printing dates..",date+'nonveg')
+
   
       document.getElementById(date+'veg').disabled=false
       document.getElementById(date+'nonveg').checked=false
        document.getElementById(date+'nonveg').disabled=true
     }else{
-      console.log("veg unchecked")
+
        document.getElementById(date+'nonveg').disabled=false
        document.getElementById(date+'veg').disabled=false
 
@@ -359,13 +356,13 @@ return today = yyyy + '-' + mm + '-' + dd;
 const [date , setDate] = useState(new Date()) 
 const onChangeDate = date => {
   setDate(date);
-  console.log("ALL DATESSSS ", getDaysArray(date[0], date[1]))
+
   datesArray = getDaysArray(date[0], date[1])
   var newdate = date.toString()
   var tempDatesArray=[]
   var arr1 = newdate.split(' ');
   for (let i = 0; i < datesArray.length; i++) {
-    console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i]))
+
    // console.log("STRING CONVERSION",createRegularDateFormat(datesArray[i],'-'))
     tempDatesArray.push([ createRegularDateFormat(datesArray[i])])
   }
@@ -412,88 +409,87 @@ var selectedmealtype
     setShowCalendar(false)
     console.log(dates2)
     Employee.checkMealSubscription().then((Response)=>{
-      console.log(Response.data);
-      meal_subscribed=Response.data
+      console.log(Response.status);
+      if(Response.data!='' &&Response.data!=undefined && Response.data.length!=0){
+        meal_subscribed=Response.data
       
-    selectedmealtype = meal_subscribed[0][1]
-    MealDetails.getSelectedDates(empId).then(Response=>{
-      console.log("Fetching the selected mealdates",Response.status);
-      if(Response.status==200){
-        console.log(Response.data,'from api');
-        prevoiusdatesforcancel =Response.data;
-        if(!meal_subscribed[0][0]) {
-          alert("Please subscribe! ")
-          return
+        selectedmealtype = meal_subscribed[0][1]
+        MealDetails.getSelectedDates(empId).then(Response=>{
+          console.log("Fetching the selected mealdates",Response.status);
+          if(Response.status==200){
+            console.log(Response.data,'from api');
+            prevoiusdatesforcancel =Response.data;
+            if(!meal_subscribed[0][0]) {
+              alert("Please subscribe! ")
+              return
+              
+            }
+            setSelectedMealDatesHide('block')
           
-        }
-        setSelectedMealDatesHide('block')
-      
-        for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
-          if(!prevoiusdatesforcancel[eachDay][1]){
-            prevoiusdatesforcancel[eachDay][1]='veg'
-          }else{
-            prevoiusdatesforcancel[eachDay][1]='nonveg'
-          }
-        }
-
-        
-    console.log(prevoiusdatesforcancel,'///../',datesArray)
-    selectedDatesList=prevoiusdatesforcancel
-    var currentSelectedDatesList=datesArray
-    for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
-      for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
-       console.log(selectedDatesList[previouslySelectedDate][0]+"][][]["+currentSelectedDatesList[currentSelectedDate][0])
-          if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
-              if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
-                currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
+            for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
+              if(!prevoiusdatesforcancel[eachDay][1]){
+                prevoiusdatesforcancel[eachDay][1]='veg'
               }else{
-                currentSelectedDatesList[currentSelectedDate].push(selectedDatesList[previouslySelectedDate][1])
+                prevoiusdatesforcancel[eachDay][1]='nonveg'
+              }
+            }
+    
+            
+        console.log(prevoiusdatesforcancel,'///../',datesArray)
+        selectedDatesList=prevoiusdatesforcancel
+        var currentSelectedDatesList=datesArray
+        for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
+          for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
+              if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
+                  if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
+                    currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
+                  }else{
+                    currentSelectedDatesList[currentSelectedDate].push(selectedDatesList[previouslySelectedDate][1])
+                  }
               }
           }
       }
-  }
+        
+       
     
-   
-console.log(currentSelectedDatesList)
-
     
-    document.getElementById('mealsTable').style.display = 'none'
-    document.getElementById('selectedMealDates').style.display = 'none'
-    document.getElementById('btn1').style.display = 'none'
-    document.getElementById('btn2').style.display = 'none';
-    //document.getElementById('demo1').style.display = 'none';
+        
+        document.getElementById('mealsTable').style.display = 'none'
+        document.getElementById('selectedMealDates').style.display = 'none'
+        document.getElementById('btn1').style.display = 'none'
+        document.getElementById('btn2').style.display = 'none';
+        
+        //console.log("meal_subscribed[1][0]",meal_subscribed[1][0])
+        console.log("subveg,selectedmealtypesubnv",selectedmealtype)
+       // selectedmealtype == true ? subnv = true : subveg = true
+        console.log("subveg,subnv",subveg,subnv)
     
-    //console.log("meal_subscribed[1][0]",meal_subscribed[1][0])
-    console.log("subveg,selectedmealtypesubnv",selectedmealtype)
-   // selectedmealtype == true ? subnv = true : subveg = true
-    console.log("subveg,subnv",subveg,subnv)
-    var d = new Date()
-    d.toString()
-    //d.slice(3,13)
-    console.log("date",typeof d)
-    if (!selectedmealtype) {
-      console.log("entering into gototable and non veg ")
-      document.getElementById('mealsTable').style.display = 'block';
-      document.getElementById('btn1').style.display = 'block';
-      setDates(currentSelectedDatesList)
-     
-      //console.log("type of dates ...",typeof datesArray)
-    }
-
-    else  {
-      console.log("entering into gototable and veg section ")
-      document.getElementById('mealsTableveg').style.display = 'block';
-      document.getElementById('mealsTable').style.display = 'none';
-      document.getElementById('btn1').style.display = 'block';
-      setDates(currentSelectedDatesList)
-    }
+        if (!selectedmealtype) {
+          console.log("entering into gototable and non veg ")
+          document.getElementById('mealsTable').style.display = 'block';
+          document.getElementById('btn1').style.display = 'block';
+          setDates(currentSelectedDatesList)
+          //console.log("type of dates ...",typeof datesArray)
+        }
     
-    document.getElementById('btn1').style.display = 'block';
-
-      setDates(currentSelectedDatesList)
-      console.log(selectedDatesList,'...',datesArray)
+        else  {
+          console.log("entering into gototable and veg section ")
+          document.getElementById('mealsTableveg').style.display = 'block';
+          document.getElementById('mealsTable').style.display = 'none';
+          document.getElementById('btn1').style.display = 'block';
+          setDates(currentSelectedDatesList)
+        }
+        
+        document.getElementById('btn1').style.display = 'block';
+    
+          setDates(currentSelectedDatesList)
+    
+          }
+        });
       }
-    });
+     
+  }).catch(err=>{
+  console.log(JSON.stringify(err))
   })
   }
 
@@ -505,9 +501,9 @@ function cancelMeal(e){
   MealDetails.getSelectedDates().then(Response=>{
     console.log("Fetching the selected mealdates",Response.data);
     if(Response.status==200){
-      console.log(Response.data,'from api');
+
       prevoiusdatesforcancel =Response.data;
-      console.log(prevoiusdatesforcancel)
+
       document.getElementById('btn2').style.display='block';
       document.getElementById('btn1').style.display='none';
       document.getElementById('mealsTable').style.display='none'
@@ -560,8 +556,7 @@ function updateDetails(){
   //  for(var i =0; i< deleteddates.length;i++){
   //    selectedDatesList[i] = deleteddates[i]
   //  }
-   console.log("delete dates",deleteddates)
-   console.log("selectedDatesList",prevoiusdatesforcancel)
+
   
     
   MealDetails.updateMealDetails(deleteddates,empId).then(Response=>{
@@ -625,6 +620,7 @@ function cancelSingleMeal(e){
   function goToNotify(){
     MealDetails.ViewNotifications().then(Response =>{
       console.log("notifications",Response.data)
+      
       var notif = Response.data
       for(var i= 0; i< notif.length; i++){
        setMessage(notif[i][0]) 
@@ -649,10 +645,20 @@ function cancelSingleMeal(e){
       console.log("Response code for updating the mealdates ",Response.data)
     }).catch(err=>console.log("Caught err ",err))
   }
-
+  
+  document.body.onmousedown = function (e) {
+    // Get IE event object
+   
+    e = e || window.event;
+    var elementId = (e.target || e.srcElement).id;
+    console.log(elementId," id")
+    
+   
+  }
+  
   return (
     <>
-      <div>
+      <div >
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="StyleSheet.css" rel="stylesheet" type="text/css" media="only screen" />
         <link href="MobileStyleSheet.css" rel="stylesheet" type="text/css" media="only screen and (max-device-width: 480px) , only screen and (-webkit-min-device-pixel-ratio: 2) , screen and (-webkit-device-pixel-ratio:1.5)" />
@@ -776,7 +782,9 @@ function cancelSingleMeal(e){
             </thead>
             
             <tbody>
+            {console.log("near html tbale")}
               {
+                
                 dates2.map(eachDay =>
                   <tr >
                     {console.log(eachDay.length)}
@@ -794,7 +802,6 @@ function cancelSingleMeal(e){
                       {eachDay.length==1?document.getElementById(eachDay+'nonveg')!=undefined?document.getElementById(eachDay+'nonveg').disabled=false:'':''}
                       
                       {eachDay.length==1?document.getElementById(eachDay+'veg')!=undefined?document.getElementById(eachDay+'veg').disabled=false:'':''}
-
                     </th>
                     <th>
                       <span onClick={goToDel} id={eachDay + "delete"}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
