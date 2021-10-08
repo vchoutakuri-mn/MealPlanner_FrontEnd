@@ -110,6 +110,10 @@ const downloadVendorReport=()=>{
 }
 
 const signout=()=>{
+  if(isSelected()){
+    saving(true)
+    return
+  }
   console.log("Signout")
   localStorage.removeItem('token')
    localStorage.removeItem('role')

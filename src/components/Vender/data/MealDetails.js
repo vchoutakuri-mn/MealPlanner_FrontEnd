@@ -19,7 +19,7 @@ class MealDetails {
 
     submitId(employeeIds){
 
-        return axios.put(SUBMIT_REST_API_URL+[employeeIds],
+        return axios.get(SUBMIT_REST_API_URL+[employeeIds],
         
         {
            
