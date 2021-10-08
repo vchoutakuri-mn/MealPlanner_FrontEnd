@@ -374,13 +374,18 @@ const onChangeDate = date => {
   console.log("todays date",now.toString(),"type",typeof now)
   console.log("datesArray",datesArray)
  //var nn = createRegularDateFormat(d.getDate())
+ if(datesArray.length!=0 ){
+
+ 
  console.log("datesArray.includes(['2021-07-10'])",datesArray[0].includes(now))
-  if(datesArray[0].includes(now.toString())){
+ console.log(datesArray)
+  if( datesArray[0].includes(now.toString())){
     datesArray.shift()
     // var inf = datesArray.indexOf(now) 
     // datesArray.splice(inf,1)
     console.log("after removing",datesArray)
   }
+}
   
 }
 
@@ -433,9 +438,9 @@ var selectedmealtype
           
             for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
               if(!prevoiusdatesforcancel[eachDay][1]){
-                prevoiusdatesforcancel[eachDay][1]='veg'
-              }else{
                 prevoiusdatesforcancel[eachDay][1]='nonveg'
+              }else{
+                prevoiusdatesforcancel[eachDay][1]='veg'
               }
             }
     
@@ -526,9 +531,9 @@ function cancelMeal(e){
     
       for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
         if(!prevoiusdatesforcancel[eachDay][1]){
-          prevoiusdatesforcancel[eachDay][1]='veg'
-        }else{
           prevoiusdatesforcancel[eachDay][1]='nonveg'
+        }else{
+          prevoiusdatesforcancel[eachDay][1]='veg'
         }
       }
 
@@ -830,15 +835,15 @@ function cancelSingleMeal(e){
 
 prevoiusdatesforcancel.map(eachDay =>
                   <tr >
-                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0].slice(0,10)}</p></th>
+                    <th style={{ padding: "10px 20px" }} scope="row"  value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0].slice(0,10)}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
-                      <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={(eachDay[1]) == 'veg'} />
+                      <input type="checkbox" id={eachDay + 'veg'} disabled onChange={getDetails} checked={(eachDay[1]) == 'veg'} />
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>
 
-                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={(eachDay[1]) == 'nonveg'} />
+                      <input type="checkbox" id={eachDay + 'nonveg'} disabled onChange={getDetails} checked={(eachDay[1]) == 'nonveg'} />
 
                     </th>
                     <th>
