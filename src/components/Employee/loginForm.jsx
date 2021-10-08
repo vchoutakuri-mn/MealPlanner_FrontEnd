@@ -223,7 +223,7 @@ console.log(currentSelectedDatesList[0][0])
                 console.log("details wrong ",error)
                if(error.response){
                     if(error.response.status == 500 && error.response.data == 'no such user exist'){
-                    alert("no such user exist")
+                    alert("User not found, Please Register!")
                     return
                 }
                    if(error.response!=undefined ){

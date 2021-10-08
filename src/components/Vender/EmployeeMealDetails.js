@@ -28,7 +28,7 @@ export default class EmployeeMealDetails extends React.Component {
             open: false,
             noOfDaysInPercentage: 0,
             noOfDays: 0,
-            searchBy:'Employee ID',
+            searchBy:'EmployeeID',
             pageSize:DEFAULT_PAGE_SIZE,
             pageNo:1,
             totalNoOfRecords:0,
@@ -194,6 +194,8 @@ o
      * Chnages the data of state users
      * @returns 
      */
+
+ 
     search() {
         let searchData = document.getElementById('searchData').value
         //console.log('value..',searchData,this.state.users)
@@ -203,48 +205,16 @@ o
             return;
         }
         this.state.users=[]
-        switch(this.state.searchBy){
-            case "Employee ID":
-               
-                for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    console.log("In employee",searchData,Users[userNumber][0])
-                    if(searchData!='' && String(Users[userNumber][0]).includes(searchData)){
-                        console.log('ds c')
-                        this.state.users.push(Users[userNumber])
-                    }
-                }
-                console.log("In " ,this.state.users,Users)
-                break;
-            case "Employee name":
-                for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(Users[userNumber][1].toUpperCase().includes(searchData.toUpperCase())){
-                        this.state.users.push(Users[userNumber])
-                    }
-                }
-                break;
-            case "Employee email":
-                for(let userNumber=0;userNumber<Users.length;userNumber++){
-                    if(Users[userNumber][2].toUpperCase().includes(searchData.toUpperCase())){
-                        this.state.users.push(Users[userNumber])
-                    }
-                }
-                break;
 
-                case "Number of days skipped":
-                    for(let userNumber=0;userNumber<Users.length;userNumber++){
-                        if(searchData!='' && String(Users[userNumber][3]).includes(searchData)){
-                            this.state.users.push(Users[userNumber])
-                        }
-                    }
-                    break;
-            default:
-                console.log("In default")
-                this.state.users=Users
-                break;
-        }
-       
-        this.setState({ShowUsers:[0]})
-        
+        MealDetails.searchBy(this.state.searchBy,searchData).then(Response=>{
+            console.log(Response.data,"???????????")
+      
+            this.state.users=Response.data
+      
+            this.setState({ShowUsers:[0]})
+          }).catch(er=>{
+            console.error("something went wrong while calling an api.Error ",er)
+          })
     }
 
 
@@ -325,12 +295,12 @@ goToHome(){
                         
                         <select name="sortBy" id="sortBy" onChange={this.search} class="btn btn-primary pull-left" style={{ float: 'left', marginTop: '5px', marginLeft: '5px' }} onClick={this.selectSearchType}>
                                
-                                <option value="Employee ID">EmployeeID</option>
-                                <option value="Employee name">Employee name</option>
-                                <option value="Employee email">Employee email</option>
-                                <option value="Number of days skipped">Number of days skipped</option>
+                                <option value="EmployeeID">EmployeeID</option>
+                                <option value="EmployeeName">Employee name</option>
+                                <option value="EmployeeEmail">Employee email</option>
+                            
                             </select>
-                            <input type="text" id="searchData" style={{ float: 'left', marginTop: '5px', marginLeft: '5px', marginTop: '8px'  }}  onKeyUp={this.search} name="search" />
+                            <input type="text" id="searchData" style={{ float: 'left', marginTop: '5px', marginLeft: '5px', marginTop: '8px'  }}  name="search" />
                         <button type="submit" onClick={this.search} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button>
                         <button type="submit" onClick={this.reload} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout" ><i class="fa fa-refresh"></i></button>
                     </div>

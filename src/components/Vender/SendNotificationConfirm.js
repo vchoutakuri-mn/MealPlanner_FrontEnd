@@ -214,44 +214,98 @@ function DownloadConfirm(props) {
   const { open, closeWindow, error, report, startDate, endDate ,type} = props
   if(type!=undefined && type=='vendor'){
     TABLE_HEAD = ['Date', 'Day', 'Vegeterian', 'Non vegetrain', 'Total_meals']
+
+
+
   }else{
-    TABLE_HEAD = ['Date', 'Day', 'Name', 'Email', 'Total_meals','Total_money']
+    TABLE_HEAD = ['Employee ID', 'Name', 'Email', 'Total_meals','Total_money']
   }
+  
   function goBack() {
     closeWindow()
   }
   function download() {
 
-
-    var csvData = TABLE_HEAD[0];
-    //define the heading for each row of the data
-    for (let each = 1; each < TABLE_HEAD.length; each = each + 1) {
-      csvData = csvData + ',' + TABLE_HEAD[each]
-    }
-    csvData = csvData + '\n'
-    let data = report;
     if(type!=undefined && type=='vendor'){
-      data.forEach(function (row) {
-
-        csvData += row[0] + ',' + weekdays[new Date(row[0]).getDay()] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ',';
-        csvData += "\n";
-      });
+      MealDetails.downloadData(startDate,endDate).then(
+        function(Response){
+          if(Response.status!=200){
+            return
+          }
+          var csvData = TABLE_HEAD[0];
+          //define the heading for each row of the data
+          for (let each = 1; each < TABLE_HEAD.length; each = each + 1) {
+            csvData = csvData + ',' + TABLE_HEAD[each]
+          }
+          let name=''
+          csvData = csvData + '\n'
+          let data = Response.data;
+          if(type!=undefined && type=='vendor'){
+            console.log("Vendor downloading")
+            name="vendor"
+            data.forEach(function (row) {
+     
+              csvData += row[0] + ',' + weekdays[new Date(row[0]).getDay()] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ',';
+              csvData += "\n";
+            });
+          }else{
+            console.log("finanace downloading")
+            name="Finanace"
+            data.forEach(function (row) {
+      
+              csvData += row[0] + ',' + weekdays[new Date(row[0]).getDay()] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ','+ row[4]+',';
+              csvData += "\n";
+            });
+          }
+      
+          var hiddenElement = document.createElement('a');
+          hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
+          hiddenElement.target = '_blank';
+      
+          //provide the name for the CSV file to be downloaded
+          hiddenElement.download = name+' Meal Report ' + startDate + " to " + endDate + '.csv';
+          hiddenElement.click();
+          closeWindow()
+        }
+      )
     }else{
-      data.forEach(function (row) {
-
-        csvData += row[0] + ',' + weekdays[new Date(row[0]).getDay()] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ','+ row[4]+',';
-        csvData += "\n";
-      });
+      MealDetails.downloadDataForFinance(startDate,endDate).then(
+        function(Response){
+          if(Response.status!=200){
+            return
+          }
+          var csvData = TABLE_HEAD[0];
+          //define the heading for each row of the data
+          for (let each = 1; each < TABLE_HEAD.length; each = each + 1) {
+            csvData = csvData + ',' + TABLE_HEAD[each]
+          }
+          let name=''
+          csvData = csvData + '\n'
+          let data = Response.data;
+          
+            console.log("finanace downloading")
+            name="Finanace"
+            data.forEach(function (row) {
+      
+              csvData += row[0]  + ',' + row[1] + ',' + row[2] + ',' + row[3] + ','+ row[4]+',';
+              csvData += "\n";
+            });
+          
+      
+          var hiddenElement = document.createElement('a');
+          hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
+          hiddenElement.target = '_blank';
+      
+          //provide the name for the CSV file to be downloaded
+          hiddenElement.download = name+' Meal Report ' + startDate + " to " + endDate + '.csv';
+          hiddenElement.click();
+          closeWindow()
+        }
+      )
     }
 
-    var hiddenElement = document.createElement('a');
-    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
-    hiddenElement.target = '_blank';
-
-    //provide the name for the CSV file to be downloaded
-    hiddenElement.download = 'Meal Report ' + startDate + " to " + endDate + '.csv';
-    hiddenElement.click();
-    closeWindow()
+  
+    
   }
   if (error != 0) {
 
@@ -316,6 +370,7 @@ function DownloadConfirm(props) {
       </>
     );
   }
+  
 }
 
 

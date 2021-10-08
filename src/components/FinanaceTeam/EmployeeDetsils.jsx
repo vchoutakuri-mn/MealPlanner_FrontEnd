@@ -239,6 +239,7 @@ export default function EmployeeDesils(props) {
       console.log(Response.data,"???????????")
 
         REPORTDETAILS=Response.data
+
       
       doResetDates()
     }).catch(er=>{
@@ -343,17 +344,17 @@ function forward() {
         <button class="btn btn-primary pull-left" style={{ margin: "5px", marginTop:"10px" }} id="home" data-title="Home" onClick={reset}><span class="fa fa-refresh" ></span> Reset</button>
 
 
-        <button type="submit" onClick={download} class="btn btn-primary pull-right" style={{ marginLeft: '5px', height: "30px", marginTop: '10px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-download"></i> Download Report</button>
+        <button type="submit" onClick={download} class="btn btn-primary pull-right" style={{ marginLeft: '5px', height: "30px", marginTop: '10px',marginLeft: '10px'  }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-download"></i> Download Report</button>
              
              <button type="submit" onClick={search} class="btn btn-primary pull-right" style={{marginLeft:'5px' ,height:"30px", marginTop:'10px'}} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button>
+             <input type="text" class="pull-right"id="searchData" style={{float:'left' , marginTop:'13px',marginLeft: '5px' }} name="search" />
              <select name="cars" id="searchBy" onChange={search} class="btn btn-primary pull-right" style={{ float: 'left', marginTop: '10px', marginLeft: '5px' }} onClick={selectSearchType}>
                                
                                 <option value="EmployeeID">EmployeeID</option>
                                 <option value="EmployeeName">Employee name</option>
                                 <option value="EmployeeEmail">Employee email</option>
                             </select>
-                            <input type="text" class="pull-right"id="searchData" style={{float:'left' , marginTop:'13px'}} name="search" />
-
+                  
       </div>
       <br />
       <br />

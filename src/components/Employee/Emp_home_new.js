@@ -308,8 +308,9 @@ function goToDel(e) {
           pro='vyshali'
           //console.log("meal_subscribed",meal_subscribed[0][0])
           if (meal_subscribed[0][0] == true) {
-              alert("subscribed")
-              //fade button
+              document.getElementById("myprofile").style.display = "none";
+              document.getElementById("myFormNotif").style.display = "none";
+              alert("subscribed")   
               return
             }
             else{
@@ -322,8 +323,11 @@ function goToDel(e) {
               }
              
               document.getElementById("sub").style.display = "block";
+              document.getElementById("myprofile").style.display = "none";
+              document.getElementById("myFormNotif").style.display = "none";
+
             }
-            console.log("meal_subscribed 324",meal_subscribed[0][1])
+            //console.log("meal_subscribed 324",meal_subscribed[0][1])
            
       //goToTable(meal_subscribed[0][1])
           }else{
@@ -343,6 +347,8 @@ function goToDel(e) {
 
 function goToprofile(){
   document.getElementById("myprofile").style.display = "block";
+  document.getElementById("myFormNotif").style.display = "none";
+  document.getElementById("sub").style.display = "none";
 }
 
 
@@ -374,13 +380,18 @@ const onChangeDate = date => {
   console.log("todays date",now.toString(),"type",typeof now)
   console.log("datesArray",datesArray)
  //var nn = createRegularDateFormat(d.getDate())
- //console.log("datesArray.includes(['2021-07-10'])",datesArray[0].includes(now))
-  if(datesArray[0].includes(now.toString())){
+ if(datesArray.length!=0 ){
+
+ 
+ console.log("datesArray.includes(['2021-07-10'])",datesArray[0].includes(now))
+ console.log(datesArray)
+  if( datesArray[0].includes(now.toString())){
     datesArray.shift()
     // var inf = datesArray.indexOf(now) 
     // datesArray.splice(inf,1)
     console.log("after removing",datesArray)
   }
+}
   
 }
 
@@ -407,10 +418,9 @@ const onChangeDate = date => {
   }
 
 var selectedmealtype
+
   function goToTable() {
     console.log("in table",dates2)
-    
-    
     console.log(dates2)
     var currentSelectedDatesList
     Employee.checkMealSubscription().then((Response)=>{
@@ -433,9 +443,9 @@ var selectedmealtype
           
             for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
               if(!prevoiusdatesforcancel[eachDay][1]){
-                prevoiusdatesforcancel[eachDay][1]='veg'
-              }else{
                 prevoiusdatesforcancel[eachDay][1]='nonveg'
+              }else{
+                prevoiusdatesforcancel[eachDay][1]='veg'
               }
             }
     
@@ -511,8 +521,16 @@ function cancelMeal(e){
   MealDetails.getSelectedDates().then(Response=>{
     console.log("Fetching the selected mealdates",Response.data);
     if(Response.data == ''){
-      alert("No data")
-      document.getElementById('nodata').style.display='block'
+      toast.error(
+        'You have not selected any dates!',
+        {
+          autoClose: false,
+          position: toast.POSITION.TOP_CENTER
+        }
+      )
+      document.getElementById('myprofile').style.display='none'
+      document.getElementById('myFormNotif').style.display='none'
+      document.getElementById('sub').style.display='none'
       return
     }
     if(Response.status==200){
@@ -525,24 +543,75 @@ function cancelMeal(e){
       document.getElementById('mealsTable').style.display='none'
       document.getElementById('selectedMealDates').style.display='block'
       document.getElementById('mealsTable').style.display='none'
+      document.getElementById('myprofile').style.display='none'
+      document.getElementById('myFormNotif').style.display='none'
+      document.getElementById('sub').style.display='none'
       setSelectedMealDatesHide('block')
     
       for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
         if(!prevoiusdatesforcancel[eachDay][1]){
-          prevoiusdatesforcancel[eachDay][1]='veg'
-        }else{
           prevoiusdatesforcancel[eachDay][1]='nonveg'
+        }else{
+          prevoiusdatesforcancel[eachDay][1]='veg'
         }
       }
-
+      setShowCalendar(false)
       doReload();
     }
   }).catch(err=>console.log("Caught error ",err)).finally()
   //meal_date,meal_type
-
-  setShowCalendar(false)
 }
 
+
+// function cancelMeal(e){
+//   setShowCalendar(false)
+//
+//   console.log("this is in cancel meal")
+//   MealDetails.getSelectedDates().then(Response=>{
+//     console.log("Fetching the selected mealdates",Response.data);
+//     if(Response.data == ''){
+//             toast.error(
+//               'You have not selected any dates!',
+//               {
+//                 autoClose: false,
+//                 position: toast.POSITION.TOP_CENTER
+//               }
+//             )
+//             document.getElementById('myprofile').style.display='none'
+//             document.getElementById('myFormNotif').style.display='none'
+//             document.getElementById('sub').style.display='none'
+//             return
+//           }
+//     if(Response.status==200){
+
+//       prevoiusdatesforcancel =Response.data;
+
+//       document.getElementById('btn2').style.display='block';
+//       document.getElementById('btn1').style.display='none';
+//       document.getElementById('subbtn').style.display='block';
+//       document.getElementById('mealsTable').style.display='none'
+//       document.getElementById('selectedMealDates').style.display='block'
+//       document.getElementById('myprofile').style.display='none'
+//       document.getElementById('myFormNotif').style.display='none'
+//       //document.getElementById('sub').style.display='none'
+//       document.getElementById('mealsTable').style.display='none'
+//       setSelectedMealDatesHide('block')
+    
+//       for(var eachDay=0;eachDay<prevoiusdatesforcancel.length;eachDay++){
+//         if(!prevoiusdatesforcancel[eachDay][1]){
+//           prevoiusdatesforcancel[eachDay][1]='nonveg'
+//         }else{
+//           prevoiusdatesforcancel[eachDay][1]='veg'
+//         }
+//       }
+
+//       doReload();
+//     }
+//   }).catch(err=>console.log("Caught error in 595",err)).finally()
+//   //meal_date,meal_type
+
+  
+// }
 
 function submitDetails(){
   Employee.checkMealSubscription().then((Response)=>{
@@ -555,11 +624,20 @@ function submitDetails(){
       }
     MealDetails.submitMealDetails(datespulsmealtype,empId).then(Response=>{
       console.log("Response code for updating the mealdates ",Response.status)
-    }).catch(err=>console.log("Caught err ",err))
+      setShowCalendar(true)
+    document.getElementById('mealsTable').style.display = 'none'
+    document.getElementById('mealsTableveg').style.display = 'none'
+   // document.getElementById('selectedMealDates').style.display = 'none'
+    document.getElementById('btn2').style.display = 'none';
+    document.getElementById('btn1').style.display = 'none';
+    document.getElementById('subbtn').style.display = 'none';
     toast.success(
-       'submission successful',
-       {autoClose:2000}
-       )
+      'submission successful',
+      {autoClose:2000}
+      )
+    doReload();
+    }).catch(err=>console.log("Caught err ",err))
+   
   // }
   // else{
   //   alert("please select meal type")
@@ -577,6 +655,13 @@ function updateDetails(){
     
   MealDetails.updateMealDetails(deleteddates,empId).then(Response=>{
     console.log("Response code for updating the mealdates ",Response.status)
+    setShowCalendar(true)
+    document.getElementById('mealsTable').style.display = 'none'
+    document.getElementById('mealsTableveg').style.display = 'none'
+    document.getElementById('selectedMealDates').style.display = 'none'
+    document.getElementById('btn2').style.display = 'none';
+    document.getElementById('btn1').style.display = 'none';
+    document.getElementById('subbtn').style.display = 'none';
     toast.success(
       "Meal  updated  successfully",
       {
@@ -626,6 +711,7 @@ function cancelSingleMeal(e){
     //dates2= []
     setShowCalendar(true)
     document.getElementById('mealsTable').style.display = 'none'
+    document.getElementById('mealsTableveg').style.display = 'none'
     document.getElementById('selectedMealDates').style.display = 'none'
     document.getElementById('btn2').style.display = 'none';
     document.getElementById('btn1').style.display = 'none';
@@ -636,7 +722,14 @@ function cancelSingleMeal(e){
  
   function goToNotify(){
     MealDetails.ViewNotifications().then(Response =>{
-      console.log("notifications",Response.data)
+      console.log("notifications",Response.data.length)
+      if(Response.data.length == 0){
+        document.getElementById('noNotif').style.display = 'block'
+        document.getElementById("myFormNotif").style.display = 'block'
+        document.getElementById("myprofile").style.display = "none";
+        document.getElementById("sub").style.display = "none";
+        return
+      }
       
       var notif = Response.data
       for(var i= 0; i< notif.length; i++){
@@ -650,6 +743,7 @@ function cancelSingleMeal(e){
       }
       console.log("after fot loop")
       document.getElementById("myFormNotif").style.display = 'block'
+      document.getElementById("myprofile").style.display = "none";
       doReload();
     })
   }
@@ -687,9 +781,9 @@ function cancelSingleMeal(e){
           <div class="panel-heading" style={{ textAlign: "center", fontSize: "30px", height: '10%' }}>MEAL PLANNER
 
             <div>
-            <button onClick={goToprofile} class="btn btn-primary pull-right " style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-user"> Profile</i></button>
+            <button onClick={goToprofile} id="myprof" class="btn btn-primary pull-right " style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-user"> Profile</i></button>
             <button onClick={cancelMeal} id="caninheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Cancel Meal</i></button>
-            <button onClick={goToNotify} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-bell">  Notifications</i></button>
+            <button onClick={goToNotify} id="mynotif" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-bell">  Notifications</i></button>
             <button onClick={goToEmphist} class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-history">  History</i></button>
             <button onClick={goToSubs} id="subinheader" class="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}} ><i class="fa fa-envelope">  Subscribe</i></button>
             </div>
@@ -704,9 +798,10 @@ function cancelSingleMeal(e){
                 </form>
               </div>
 
-              <div class="form-popup" id="myFormNotif" style={{ position: "fixed", top: "18%", left: "100%", marginLeft: "-300px" }}>
+              <div class="form-popup" id="myFormNotif" style={{ position: "fixed", top: "18%", left: "100%", marginLeft: "-400px" }}>
               <form class="form-container" style={{ textAlign: "left" }}>
               <h4>Employee Notifications</h4>
+              <p id = "noNotif" style={{display:btn_hide}}>No notifications</p>
               {console.log(msgs)}
               {msgs.map(
                 i => 
@@ -833,16 +928,16 @@ function cancelSingleMeal(e){
 
 prevoiusdatesforcancel.map(eachDay =>
                   <tr >
-                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0].slice(0,10)}</p></th>
+                    <th style={{ padding: "10px 20px" }} scope="row"  value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0].slice(0,10)}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
-                      <input type="checkbox" id={eachDay + 'veg'} onChange={getDetails} checked={(eachDay[1]) == 'veg'} />
+                      <input type="checkbox" id={eachDay + 'veg'} disabled onChange={getDetails} checked={(eachDay[1]) == 'veg'} />
 
                     </th>
                     <th style={{ padding: "10px 50px" }}>
 
-                      <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={(eachDay[1]) == 'nonveg'} />
-                    <p id="nodata" style={{display:btn_hide}}>no data found</p>
+                      <input type="checkbox" id={eachDay + 'nonveg'} disabled onChange={getDetails} checked={(eachDay[1]) == 'nonveg'} />
+
                     </th>
                     <th>
                       <span onClick={cancelSingleMeal} id={eachDay}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
