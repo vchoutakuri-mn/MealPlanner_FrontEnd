@@ -20,7 +20,7 @@ import Error from "../HomeFolder/ErrorHandler/Error";
 
 export default function LoginForm(props) {
     const [value, onChange] = useState(false);
-    var [userType, setUser] = useState('Employee');
+    var [userType, setUser] = useState('employee');
     const [token, deleteToken] = useState('');
     const [showText, setShowText] = useState(false);
     var [empid, setEmpId] = useState();
@@ -194,7 +194,7 @@ console.log(currentSelectedDatesList[0][0])
                     localStorage.setItem('token', GET_TOKEN());
                     localStorage.setItem('empId',empid)
 
-                    if (userType == "Employee") {
+                    if (userType == "employee") {
                         var meal_subscribed;
                         reactDom.render(<MyApp empId={empid} meal_subscribed={false} token={token} />, document.getElementById("root"))
                         Employee.checkMealSubscription(empid).then((Response) => {
@@ -270,7 +270,7 @@ console.log(currentSelectedDatesList[0][0])
                     <Vender />
                 </>
             )
-        } else if (localStorage.getItem('role') != undefined && localStorage.getItem('role').includes("Employee")) {
+        } else if (localStorage.getItem('role') != undefined && localStorage.getItem('role').includes("employee")) {
             return (
                 <>
                     <MyApp empId={localStorage.getItem('empId')} />

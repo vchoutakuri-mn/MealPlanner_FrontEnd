@@ -2,6 +2,7 @@ import { indigo } from '@material-ui/core/colors';
 import { Refresh } from '@material-ui/icons';
 import React, { useState } from 'react'
 import { DownloadConfirm, InvalidUser } from './SendNotificationConfirm';
+import { SaveSubmit } from './SendNotificationConfirm'
 import './css/App.css'
 import Employee from './data/Employee';
 import { GET_TOKEN } from './data/Storage';
@@ -34,7 +35,8 @@ export default class EmployeeMealDetails extends React.Component {
             totalNoOfRecords:0,
             reload:false,
             sessionTimeOut:false,
-            compReload:false
+            compReload:false,
+            saveSubmit :false
         }
         this.setEmployes = this.setEmployes.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -46,11 +48,12 @@ export default class EmployeeMealDetails extends React.Component {
         this.selectSearchType=this.selectSearchType.bind(this);
         this.backward=this.backward.bind(this);
         this.previousPage=this.previousPage.bind(this);
-        this.forward=this.forward.bind(this)
+        this.forward=this.forward.bind(this);
         this.nextPage=this.nextPage.bind(this);
         this.selectRowsPerPage=this.selectRowsPerPage.bind(this);
-        this.checkList=this.checkList.bind(this)
-        this.reload=this.reload.bind(this)
+        this.checkList=this.checkList.bind(this);
+        this.reload=this.reload.bind(this);
+        this.onSaveClose=this.onSaveClose.bind(this);
     }
     /**
      * Get the data from an api and store in the state vairable 'users'
@@ -225,6 +228,10 @@ o
 
     
   backward(){
+    if(isSelected()){
+        this.setState({saveSubmit:true})
+        return
+    }
     if(this.state.pageNo-2>0 ){
       this.state.pageNo=this.state.pageNo-2
       this.getData(this.state.pageNo,this.state.pageSize); 
@@ -238,6 +245,10 @@ o
 }
 
 previousPage(){
+    if(isSelected()){
+        this.setState({saveSubmit:true})
+        return
+    }
   if(this.state.pageNo-1>0){
       this.state.pageNo=this.state.pageNo-1
       this.getData(this.state.pageNo,this.state.pageSize); 
@@ -246,6 +257,10 @@ previousPage(){
 //Get the length of  data present in database
 
 nextPage(){
+    if(isSelected()){
+        this.setState({saveSubmit:true})
+        return
+    }
     console.log(this.state.pageNo)
     if(this.state.users.length==0){
         console.log(this.state.pageNo)
@@ -260,6 +275,10 @@ nextPage(){
 }
 
 forward(){
+    if(isSelected()){
+        this.setState({saveSubmit:true})
+        return
+    }
     if(this.state.users.length==0){
         if(this.state.pageNo+2<TEMPORERY_SIZE){
             this.state.pageNo=this.state.pageNo
@@ -273,13 +292,24 @@ forward(){
     }
 }
 selectRowsPerPage(pageSize){
+    if(isSelected()){
+        this.setState({saveSubmit:true})
+        return
+    }
     this.state.pageSize=pageSize;
     this.getData(this.state.pageNo,pageSize);
 }
 goToHome(){
+    
     reactDom.render(<Start/>,document.getElementById('root'))
 }
 
+onClose(){
+    this.setState({saveSubmit:false})
+}
+onSaveClose(){
+    this.setState({saveSubmit:false})
+}
 
     render() {
         ////console.log("This is in body page")
@@ -349,7 +379,7 @@ goToHome(){
                 
                 <Footer selectRowsPerPage={this.selectRowsPerPage} rowsPerPage={10} pageNo={this.state.pageNo} noOfRecords={this.state.totalNoOfRecords} backward={this.backward} previousPage={this.previousPage} nextPage={this.nextPage} forward={this.forward} pageSize={this.state.pageSize}/>
                 <SimpleDialog open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} Users={Users} doSave={this.props.doSave} />
-
+                <SaveSubmit doSave={this.state.saveSubmit} onSaveClose={this.onSaveClose}/>
                 <InvalidUser open={this.state.sessionTimeOut}  />
 
             </>
