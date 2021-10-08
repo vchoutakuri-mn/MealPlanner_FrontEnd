@@ -374,7 +374,7 @@ const onChangeDate = date => {
   console.log("todays date",now.toString(),"type",typeof now)
   console.log("datesArray",datesArray)
  //var nn = createRegularDateFormat(d.getDate())
- console.log("datesArray.includes(['2021-07-10'])",datesArray[0].includes(now))
+ //console.log("datesArray.includes(['2021-07-10'])",datesArray[0].includes(now))
   if(datesArray[0].includes(now.toString())){
     datesArray.shift()
     // var inf = datesArray.indexOf(now) 
@@ -409,7 +409,7 @@ const onChangeDate = date => {
 var selectedmealtype
   function goToTable() {
     console.log("in table",dates2)
-    setShowCalendar(false)
+    
     
     console.log(dates2)
     var currentSelectedDatesList
@@ -455,7 +455,7 @@ var selectedmealtype
           }
       }
         
-       
+      setShowCalendar(false)
     
     
         
@@ -507,11 +507,14 @@ var selectedmealtype
 
 
 function cancelMeal(e){
-  setShowCalendar(false)
-
   console.log("this is in cancel meal")
   MealDetails.getSelectedDates().then(Response=>{
     console.log("Fetching the selected mealdates",Response.data);
+    if(Response.data == ''){
+      alert("No data")
+      document.getElementById('nodata').style.display='block'
+      return
+    }
     if(Response.status==200){
 
       prevoiusdatesforcancel =Response.data;
@@ -537,7 +540,7 @@ function cancelMeal(e){
   }).catch(err=>console.log("Caught error ",err)).finally()
   //meal_date,meal_type
 
-  
+  setShowCalendar(false)
 }
 
 
@@ -839,7 +842,7 @@ prevoiusdatesforcancel.map(eachDay =>
                     <th style={{ padding: "10px 50px" }}>
 
                       <input type="checkbox" id={eachDay + 'nonveg'} onChange={getDetails} checked={(eachDay[1]) == 'nonveg'} />
-
+                    <p id="nodata" style={{display:btn_hide}}>no data found</p>
                     </th>
                     <th>
                       <span onClick={cancelSingleMeal} id={eachDay}><i class="fa fa-trash" style={{ fontSize: "14px", color: "black" }} ></i></span>
