@@ -91,22 +91,29 @@ function goToHome(e){
     var upperCaseLetters = /[A-Z]/g;
     var numbers = /[0-9]/g;
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(userId == '' || userName == '' || userPassword == '' || userType == '' || userEMail== '' || confirmPassword== ''){
+      alert("please fill all fields")
+      return
+    }
     if(/[A-Z]/.test(userId) == true ||
             /[a-z]/.test(userId) == true 
         ){
             alert("ID should only contain Integers!")
             return
         }
+
+        console.log(typeof userName)
+        if(userName.match(numbers)){
+          alert("Name should contain only alphabets" )
+          return
+        }
+        
         if(!userPassword.includes(confirmPassword)){
           alert("passwords dindn't match")
           return
         }
         
-      console.log(typeof userName)
-      if(userName.match(numbers)){
-        alert("Name should contain only alphabets" )
-        return
-      }
+     
 
       if(!userEMail.match(mailformat)){
         alert("You have entered an invalid email address!" )
@@ -132,15 +139,24 @@ function goToHome(e){
      //reactDom.render(<MyApp />,document.getElementById("root"))
       if(Response.status==200 ){
           //go to next page
-          //console.log("response success")
+          console.log("response success",Response.data)
           if(Response.data == 'exists'){
             alert("User already exists")
+            return
           }
           console.log("usertype",useuse)
           token=Response.data;
           console.log('Token generated')
           console.log(token)
           reactDom.render(<LoginForm />,document.getElementById("root"))
+          toast.success(
+            "Registered Successfully",
+            {
+              autoClose: 2000,
+              position: toast.POSITION.TOP_CENTER
+            }
+          )
+       // }
               }else{
                 console.log('details wrong')
                   //Reload component or input fields make empty
