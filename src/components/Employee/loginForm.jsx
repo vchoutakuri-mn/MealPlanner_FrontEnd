@@ -20,9 +20,8 @@ import Error from "../HomeFolder/ErrorHandler/Error";
 
 export default function LoginForm(props) {
     const [value, onChange] = useState(false);
-    var [userType, setUser] = useState('Employee');
+    var [userType, setUser] = useState('employee');
     const [token, deleteToken] = useState('');
-    const [showText, setShowText] = useState(false);
     var [empid, setEmpId] = useState();
     //   const { switchToSignup  } = useContext(AccountContext);
 
@@ -116,47 +115,27 @@ console.log(currentSelectedDatesList[0][0])
 
         empid = document.getElementById("userId").value;
 
-        console.log(empid)
+
         var empasswd = document.getElementById("password").value;
-        if (empasswd == '' && empid=='' ) {
+        if (empid == null || empasswd == null) {
             console.log("null entered")
-            alert("Please enter ID and Password")
-            return
+            alert("please enter userid and password")
+
         }
-        
 
         var lowerCaseLetters = /[a-z]/g;
         var upperCaseLetters = /[A-Z]/g;
         var numbers = /[0-9]/g;
 
         var token = ''
-        console.log(/[A-Z]/.test(empid))
-        if(empid==''){
-            alert("Please enter ID")
-            return
-        }
-        if(/[A-Z]/.test(empid) == true ||
-            /[a-z]/.test(empid) == true 
-        ){
-            alert("ID should only contain Integers!")
-            return
-        }
+        //This is a comment 
 
-        if(empasswd.length < 8  ||
-            /[A-Z]/.test(empasswd) == false ||
-            /[a-z]/.test(empasswd) == false ||
-            /[0-9]/.test(empasswd) == false)
-            {
-            console.log("entering wrong pass")
-            setShowText(true)
-        }
-
-        if(empid.match(numbers) != null && 
-           empasswd.length >= 8  &&
-           empasswd.match(lowerCaseLetters) != null && 
-           empasswd.match(upperCaseLetters) !=null && 
-           empasswd.match(numbers) != null 
-        )
+        // if(empid.match(numbers) != null && 
+        //    empasswd.length >= 8  &&
+        //    empasswd.match(lowerCaseLetters) != null && 
+        //    empasswd.match(upperCaseLetters) !=null && 
+        //    empasswd.match(numbers) != null 
+        // )
         {
             console.log("Registered user details", userType)
             console.log("User:", empid, empasswd)
@@ -174,18 +153,8 @@ console.log(currentSelectedDatesList[0][0])
                 strUser = "financer"
             }
             Employee.checkValidation( empid, empasswd, strUser).then(Response => {
-                console.log("In login", Response.data)
-
-               
+                console.log("In login", Response.status)
                 if (Response.status == 200 && Response.data != '' && Response.data != undefined) {
-                    if(Response.data  == 'id not found'){
-                        alert("User not found, Please Register!")
-                        return
-                    }
-                    if(Response.data == 'invalid userid/password'){
-                        alert("Incorrect UserId/Password!")
-                        return
-                    }
                     token = Response.data.slice(7);
                     console.log("token generated", token)
                     SET_TOKEN(token, GET_TOKEN)
@@ -193,8 +162,8 @@ console.log(currentSelectedDatesList[0][0])
                     localStorage.setItem('validUser', true)
                     localStorage.setItem('token', GET_TOKEN());
                     localStorage.setItem('empId',empid)
-
-                    if (userType == "Employee") {
+                    console.log(userType,' usertype ',userType=="employee")
+                    if (userType==="employee") {
                         var meal_subscribed;
                         reactDom.render(<MyApp empId={empid} meal_subscribed={false} token={token} />, document.getElementById("root"))
                         Employee.checkMealSubscription(empid).then((Response) => {
@@ -203,29 +172,21 @@ console.log(currentSelectedDatesList[0][0])
 
 
                         })
-                    } else if (userType == "vendor") {
+                    } else if (userType==="vendor") {
                         reactDom.render(<Vender token={token} />, document.getElementById("root"))
                     } else {
                         reactDom.render(<Finance token={token} />, document.getElementById("root"))
                     }
                 } else {
-                    if(Response.status==500){
-
-                    }
                     //Reload component or input fields make empty
                     console.log("Details are wrong" )
-                    alert("User not found")
+                    alert("Incorrect Details found")
                     document.getElementById('password').value=''
-                    return
                     // reactDom.render(<MyApp/>,document.getElementById("root"))
                 }
             }).catch(function (error) {
                 console.log("details wrong ",error)
                if(error.response){
-                    if(error.response.status == 500 && error.response.data == 'no such user exist'){
-                    alert("no such user exist")
-                    return
-                }
                    if(error.response!=undefined ){
                     reactDom.render(<PageNotFound/>,document.getElementById("root"))
                    }
@@ -270,7 +231,7 @@ console.log(currentSelectedDatesList[0][0])
                     <Vender />
                 </>
             )
-        } else if (localStorage.getItem('role') != undefined && localStorage.getItem('role').includes("Employee")) {
+        } else if (localStorage.getItem('role') != undefined && localStorage.getItem('role').includes("employee")) {
             return (
                 <>
                     <MyApp empId={localStorage.getItem('empId')} />
@@ -337,10 +298,9 @@ console.log(currentSelectedDatesList[0][0])
                                                 <option value="financier">Finance</option>
                                             </select><br></br>
                                             <label style={{ fontSize: "14px", marginLeft: "25%" }}>ID  </label>
-                                            <input type="text" name="name" placeholder="User Id"  id="userId" style={{ width: "40%", marginLeft: "100px", textAlign: 'center' }} required/>
+                                            <input type="text" name="name" placeholder="User Id" required="" id="userId" style={{ width: "40%", marginLeft: "100px", textAlign: 'center' }} />
                                             <label style={{ fontSize: "14px", marginLeft: "25%" }}>Password  </label>
-                                            <input type="Password" name="password" placeholder="User Password"  id="password" style={{ width: "40%", marginLeft: "50px", textAlign: 'center' }} required/>
-                                            <p  className={showText ? "" : "hide"} style={{fontSize:"11px", color:"red"}}>Password should contain atleast one lower case, one upper case, one number and minimum length 8 </p>
+                                            <input type="Password" name="password" placeholder="User Password" required="" id="password" style={{ width: "40%", marginLeft: "50px", textAlign: 'center' }} />
                                             <button onClick={goToHome} class="btn btn-primary" style={{ marginLeft: "50%", top: "20%" }} >Sign in</button>
 
                                             <br></br>
