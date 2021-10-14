@@ -2,7 +2,7 @@ pipeline {
   agent any
   tools {nodejs "node"}
   stages {
-    stage('Test') {
+    stage('Test1') {
       steps {
    
         bat 'npm install'
