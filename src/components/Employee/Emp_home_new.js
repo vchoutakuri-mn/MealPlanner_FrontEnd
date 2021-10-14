@@ -423,6 +423,8 @@ var selectedmealtype
     console.log("in table",dates2)
     console.log(dates2)
     var currentSelectedDatesList
+    document.getElementById("myprofile").style.display = 'none'
+    document.getElementById("myFormNotif").style.display = 'none'
     Employee.checkMealSubscription().then((Response)=>{
       console.log(Response.status);
       if(Response.data!='' &&Response.data!=undefined && Response.data.length!=0){
@@ -964,7 +966,7 @@ prevoiusdatesforcancel.map(eachDay =>
               {
                 dates2.map(eachDay =>
                   <tr >
-                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay}><p id="datesFromCheckBox">{eachDay}</p></th>
+                    <th style={{ padding: "10px 20px" }} scope="row" value={eachDay}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     {/* <th style={{ padding: "10px 50px"}}>
              
               <input type="checkbox" id={eachDay+'veg'} onChange={getDetails} />

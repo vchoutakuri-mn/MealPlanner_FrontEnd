@@ -5,7 +5,6 @@ import './css/loginFormcss.css'
 //import { Datepicker } from "@datepicker-react/styled";
 //import background from "./Capture.PNG"
 import SignupForm from "./signupForm";
-import ReactCalendar from "./emp-home";
 import App from "./Emp_history";
 import MyApp from "./Emp_home_new";
 import Employee from "./data/Employee";
