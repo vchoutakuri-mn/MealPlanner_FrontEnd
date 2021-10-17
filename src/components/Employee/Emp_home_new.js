@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useReducer } from 'react';
+import React, { useState, useReducer } from 'react';
 import Calendar from 'react-calendar';
 import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';
@@ -8,10 +8,10 @@ import './css/empHomecss.css'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Employee from './data/Employee';
-import { SET_TOKEN } from '../Vender/data/Storage';
+
 import MealDetails from './data/MealDetails';
-import { dateSingleInputPhrases } from '@datepicker-react/styled';
-import { Notifications } from '@material-ui/icons';
+
+import {  InvalidUser } from '../Vender/SendNotificationConfirm';
 
 toast.configure();
 
@@ -38,16 +38,13 @@ var selectedDatesList = []
 var TABLE_HIDE = 'none';
 var btn_hide = 'none';
 var datesArray=[];
-var dates = []
+
 var typeOfMeal;
 var subnv = false;
 var subveg = false;
 var enable = false;
 var deleteddates = [];
 var datespulsmealtype = []
-var datesmealtype2d = []
-var duplicate = []
-var empHistData 
 
 
 
@@ -64,6 +61,7 @@ export default function MyApp(props) {
   const[notifdate, setNotifdate] = useState();
   const[msgs,setMsgs] = useState([])
   const [showCalendar, setShowCalendar] = useState(true);
+  const [sessionTimeOut,setSessionTimeOut]=useState(false);
   
 
   function goToEmphist() {
@@ -212,11 +210,11 @@ function subscribed(e){
     //alert("subscribed for "+typeOfMeal+" successfully")
     if (typeOfMeal == 'nonveg') {
       subnv = true
-      console.log("making subnv true")
+      //console.log("making subnv true")
     }
     if (typeOfMeal == 'veg') {
       subveg = true
-      console.log("making subveg true")
+      //console.log("making subveg true")
     }
 
     document.getElementById("subinheader").disabled = true;
@@ -246,29 +244,27 @@ var getDaysArray = function (start, end) {
 
 var index
 function goToDel(e) {
-  console.log("onclickkkkk", e.target.parentNode.id)
+  //console.log("onclickkkkk", e.target.parentNode.id)
   //document.getElementById(e.target.id)
   //console.log(e.target.parentNode.parentNode)
   var a = e.target.parentNode.id
   var getdate = a.slice(0, 10)
-  console.log(getdate)
-  console.log("dates2",dates2)
+  //console.log(getdate)
+  //console.log("dates2",dates2)
   for(var i = 0;i<dates2.length;i++){
     if(getdate == dates2[i][0]){
-      console.log(i)
+      //console.log(i)
       index = i
     }
   }
   //index = dates2.indexOf(getdate)
-  console.log("checking index",getdate,index)
 
-
-  //console.log("deleted delete and index ",getdate,index,dates2)
 
   dates2.splice(index, 1)
   
   
-  console.log("dates after deleting ",dates2)
+  if (process.env.NODE_ENV === "development")console.error("dates after deleting development",dates2,process.env.NODE_ENV)
+  if (process.env.NODE_ENV !== "development")console.error("dates after deleting production",dates2)
   var i = e.target.parentNode.parentNode.parentNode.rowIndex;
   //document.getElementById("mealsTable").deleteRow(i);
   //e.target.parentNode.parentNode.parentNode.style.display="none"
@@ -513,6 +509,7 @@ var selectedmealtype
      
   }).catch(err=>{
   console.log(JSON.stringify(err))
+  setSessionTimeOut(true);
   })
   }
 
@@ -560,7 +557,7 @@ function cancelMeal(e){
       setShowCalendar(false)
       doReload();
     }
-  }).catch(err=>console.log("Caught error ",err)).finally()
+  }).catch(err=>setSessionTimeOut(true)).finally()
   //meal_date,meal_type
 }
 
@@ -638,7 +635,7 @@ function submitDetails(){
       {autoClose:2000}
       )
     doReload();
-    }).catch(err=>console.log("Caught err ",err))
+    }).catch(err=>setSessionTimeOut(true))
    
   // }
   // else{
@@ -671,7 +668,7 @@ function updateDetails(){
         position: toast.POSITION.TOP_CENTER
       }
     )
-  }).catch(err=>console.log("Caught err ",err))
+  }).catch(err=>setSessionTimeOut(true))
 }
 
 
@@ -756,7 +753,7 @@ function cancelSingleMeal(e){
     console.log(subnv,subveg)
     MealDetails.updatemealplantype(typeOfMeal).then(Response=>{
       console.log("Response code for updating the mealdates ",Response.data)
-    }).catch(err=>console.log("Caught err ",err))
+    }).catch(err=>setSessionTimeOut(true))
   }
 
   
@@ -992,6 +989,7 @@ prevoiusdatesforcancel.map(eachDay =>
         </div>
       </div>
       </div>
+      <InvalidUser open={sessionTimeOut}  />
     </>
 
   );

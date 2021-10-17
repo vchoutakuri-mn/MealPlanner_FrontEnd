@@ -78,7 +78,7 @@ function setUserType(e){
 function goToHome(e){
   e.preventDefault()
   var useuse = document.getElementById("userType").value;
-  console.log("use use",useuse)
+  if (process.env.NODE_ENV !== "development")console.log("use use",useuse)
   var userType=USERTYPE;
   var userId=document.getElementById("userId").value;
   var userName=document.getElementById("userName").value;
@@ -102,7 +102,7 @@ function goToHome(e){
             return
         }
 
-        console.log(typeof userName)
+        if (process.env.NODE_ENV !== "development")console.log(typeof userName)
         if(userName.match(numbers)){
           alert("Name should contain only alphabets" )
           return
@@ -132,22 +132,22 @@ function goToHome(e){
       {
     
      var token=''
-     //console.log("New User details")
-     //console.log(userType,userId,userPassword,userName,userEMail,mealSubscribed)
+     //if (process.env.NODE_ENV !== "development")console.log("New User details")
+     //if (process.env.NODE_ENV !== "development")console.log(userType,userId,userPassword,userName,userEMail,mealSubscribed)
      Employee.createAccount(userType,userId,userPassword,userName,userEMail,mealSubscribed).then(Response=>{
-       console.log(Response.status)
+       if (process.env.NODE_ENV !== "development")console.log(Response.status)
      //reactDom.render(<MyApp />,document.getElementById("root"))
       if(Response.status==200 ){
           //go to next page
-          console.log("response success",Response.data)
+          if (process.env.NODE_ENV !== "development")console.log("response success",Response.data)
           if(Response.data == 'exists'){
             alert("User already exists")
             return
           }
-          console.log("usertype",useuse)
+          if (process.env.NODE_ENV !== "development")console.log("usertype",useuse)
           token=Response.data;
-          console.log('Token generated')
-          console.log(token)
+          if (process.env.NODE_ENV !== "development")console.log('Token generated')
+          if (process.env.NODE_ENV !== "development")console.log(token)
           reactDom.render(<LoginForm />,document.getElementById("root"))
           toast.success(
             "Registered Successfully",
@@ -158,14 +158,16 @@ function goToHome(e){
           )
        // }
               }else{
-                console.log('details wrong')
+                if (process.env.NODE_ENV !== "development")console.log('details wrong')
                   //Reload component or input fields make empty
               }
-          }).catch(err=>console.log('Something went wrong'))
+          }).catch(err=>{
+
+            if (process.env.NODE_ENV !== "development")console.log('Something went wrong')})
         }
         else{
           setShowText(true)
-          //alert("Incorrect Details")
+
           return
         }
         

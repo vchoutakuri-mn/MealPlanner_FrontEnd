@@ -50,8 +50,8 @@ export default function LoginForm(props) {
         //     if(res.STATUS_CODE==200){
         //         //ON success
         //     }
-        // }).catch(err=>console.log('error'))
-        // console.log("Going to signup")
+        // }).catch(err=>if (process.env.NODE_ENV !== "development")console.log('error'))
+        // if (process.env.NODE_ENV !== "development")console.log("Going to signup")
         reactDom.render(<SignupForm />, document.getElementById("root"))
 
 
@@ -71,11 +71,11 @@ export default function LoginForm(props) {
         ["2021-10-06"],
         ["2021-10-07"]
       ]
-console.log(currentSelectedDatesList[0][0])
+if (process.env.NODE_ENV !== "development")console.log(currentSelectedDatesList[0][0])
       for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
           for(var currentSelectedDate=0;currentSelectedDate<currentSelectedDatesList.length;currentSelectedDate++){
               if(selectedDatesList[previouslySelectedDate][0].includes(currentSelectedDatesList[currentSelectedDate][0])){
-                  console.log(selectedDatesList[previouslySelectedDate][0],currentSelectedDatesList[currentSelectedDate][0])
+                  if (process.env.NODE_ENV !== "development")console.log(selectedDatesList[previouslySelectedDate][0],currentSelectedDatesList[currentSelectedDate][0])
                   if(currentSelectedDatesList[currentSelectedDate][1]!=undefined){
                     currentSelectedDatesList[currentSelectedDate][1]=selectedDatesList[previouslySelectedDate][1]
                   }else{
@@ -84,7 +84,7 @@ console.log(currentSelectedDatesList[0][0])
               }
           }
       }
-      console.log(currentSelectedDatesList[5][1])
+      if (process.env.NODE_ENV !== "development")console.log(currentSelectedDatesList[5][1])
       
       var finalDatesList=[
         ["2021-09-30" ,'veg'],
@@ -96,7 +96,7 @@ console.log(currentSelectedDatesList[0][0])
       ]
     }
     function goToStart() {
-        console.log("test working")
+        if (process.env.NODE_ENV !== "development")console.log("test working")
         reactDom.render(<Start />, document.getElementById("root"))
     }
 
@@ -108,17 +108,17 @@ console.log(currentSelectedDatesList[0][0])
     function goToHome(e) {
         e.preventDefault();
         //Filter the data
-        console.log("im in gotohome")
+        if (process.env.NODE_ENV !== "development")console.log("im in gotohome")
         var e = document.getElementById("log");
         var strUser = e.options[e.selectedIndex].text;
-        console.log("struser", strUser)
+        if (process.env.NODE_ENV !== "development")console.log("struser", strUser)
 
         empid = document.getElementById("userId").value;
 
-        console.log(empid)
+        if (process.env.NODE_ENV !== "development")console.log(empid)
         var empasswd = document.getElementById("password").value;
         if (empasswd == '' && empid=='' ) {
-            console.log("null entered")
+            if (process.env.NODE_ENV !== "development")console.log("null entered")
             alert("Please enter ID and Password")
             return
         }
@@ -129,7 +129,7 @@ console.log(currentSelectedDatesList[0][0])
         var numbers = /[0-9]/g;
 
         var token = ''
-        console.log(/[A-Z]/.test(empid))
+        if (process.env.NODE_ENV !== "development")console.log(/[A-Z]/.test(empid))
         if(empid==''){
             alert("Please enter ID")
             return
@@ -146,7 +146,7 @@ console.log(currentSelectedDatesList[0][0])
             /[a-z]/.test(empasswd) == false ||
             /[0-9]/.test(empasswd) == false)
             {
-            console.log("entering wrong pass")
+            if (process.env.NODE_ENV !== "development")console.log("entering wrong pass")
             setShowText(true)
         }
 
@@ -157,15 +157,15 @@ console.log(currentSelectedDatesList[0][0])
            empasswd.match(numbers) != null 
         )
         {
-            console.log("Registered user details", userType)
-            console.log("User:", empid, empasswd)
+            if (process.env.NODE_ENV !== "development")console.log("Registered user details", userType)
+            if (process.env.NODE_ENV !== "development")console.log("User:", empid, empasswd)
             // try {
             //     await axios.get('/bad-call')
             // } catch (error) {
             //    const err = error //as import("axios").AxiosError
             //    if (err.response) {
-            //       console.log(err.response.status)
-            //       console.log(err.response.data)
+            //       if (process.env.NODE_ENV !== "development")console.log(err.response.status)
+            //       if (process.env.NODE_ENV !== "development")console.log(err.response.data)
             //    }
             //    this.handleAxiosError(error)
             // }
@@ -173,7 +173,7 @@ console.log(currentSelectedDatesList[0][0])
                 strUser = "financer"
             }
             Employee.checkValidation( empid, empasswd, strUser).then(Response => {
-                console.log("In login", Response.data)
+                if (process.env.NODE_ENV !== "development")console.log("In login", Response.data)
 
                
                 if (Response.status == 200 && Response.data != '' && Response.data != undefined) {
@@ -186,7 +186,7 @@ console.log(currentSelectedDatesList[0][0])
                         return
                     }
                     token = Response.data.slice(7);
-                    console.log("token generated", token)
+                    if (process.env.NODE_ENV !== "development")console.log("token generated", token)
                     SET_TOKEN(token, GET_TOKEN)
                     localStorage.setItem('role', userType)
                     localStorage.setItem('validUser', true)
@@ -197,7 +197,7 @@ console.log(currentSelectedDatesList[0][0])
                         var meal_subscribed;
                         reactDom.render(<MyApp empId={empid} meal_subscribed={false} token={token} />, document.getElementById("root"))
                         Employee.checkMealSubscription(empid).then((Response) => {
-                            console.log('typeof', Response.data);
+                            if (process.env.NODE_ENV !== "development")console.log('typeof', Response.data);
                             meal_subscribed = Response.data
 
 
@@ -212,14 +212,14 @@ console.log(currentSelectedDatesList[0][0])
 
                     }
                     //Reload component or input fields make empty
-                    console.log("Details are wrong" )
+                    if (process.env.NODE_ENV !== "development")console.log("Details are wrong" )
                     alert("User not found")
                     document.getElementById('password').value=''
                     return
                     // reactDom.render(<MyApp/>,document.getElementById("root"))
                 }
             }).catch(function (error) {
-                console.log("details wrong ",error)
+                if (process.env.NODE_ENV !== "development")if (process.env.NODE_ENV !== "development")console.log("details wrong ",error)
                if(error.response){
                     if(error.response.status == 500 && error.response.data == 'no such user exist'){
                     alert("User not found, Please Register!")
@@ -255,15 +255,15 @@ console.log(currentSelectedDatesList[0][0])
         // else{
         //         Login failed becz of wrong credentials
 
-        //  }).catch(err=>console.log('Login failed'))
+        //  }).catch(err=>if (process.env.NODE_ENV !== "development")if (process.env.NODE_ENV !== "development")console.log('Login failed'))
         //onChange(true)
         //reactDom.render(<MyApp/>,document.getElementById("root"))
     }
     if (localStorage.getItem('validUser') != undefined && localStorage.getItem('validUser').includes(true)) {
         SET_TOKEN(localStorage.getItem('token'))
-        console.log("finding details")
+        if (process.env.NODE_ENV !== "development")console.log("finding details")
         if (localStorage.getItem('role') != undefined && localStorage.getItem('role').includes("vendor")) {
-            console.log("vendor found")
+            if (process.env.NODE_ENV !== "development")console.log("vendor found")
             return (
                 <>
                     <Vender />
@@ -410,7 +410,7 @@ console.log(currentSelectedDatesList[0][0])
 // //     }    
 // // }
 // function goTOSignUp(){
-//     console.log("Going to signup")
+//     if (process.env.NODE_ENV !== "development")console.log("Going to signup")
 //     reactDom.render(<SignupForm/>,document.getElementById("root"))
 // }
 
