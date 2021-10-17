@@ -4,7 +4,7 @@ function Footer(props){
     const {selectRowsPerPage,rowsPerPage,pageNo,noOfRecords,backward,previousPage,nextPage,forward,pageSize}=props
 
     function selectRowsPerPageHelper(){
-        console.log("//////",document.getElementById("rowsPerPage").value)
+ 
         selectRowsPerPage(document.getElementById("rowsPerPage").value)
     }
     return(

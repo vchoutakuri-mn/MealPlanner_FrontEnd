@@ -22,7 +22,7 @@ class Demo extends React.Component {
         <Modal show={this.state.show} onHide={()=>this.handleModal()}>  
           <Modal.Header closeButton>SUBSCRIPTION</Modal.Header>  
           <Modal.Body>
-            {console.log('This is in dialg') }
+       
           <p>The minimum meal price for vegetarian is Rs.1200/-</p>
           <p>The minimum meal price for non-vegetarian is Rs.2400/-</p>
            <p>Please select the meal type : </p>

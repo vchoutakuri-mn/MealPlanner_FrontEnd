@@ -167,8 +167,8 @@ class MealDetails {
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
 }
 
-getHistory(startDate,endDate){
-    return axios.get(HISTORY+startDate+'/'+endDate+'/1/20',{
+getHistory(startDate,endDate,pageNo,pageSize){
+    return axios.get(HISTORY+startDate+'/'+endDate+'/'+pageNo+'/'+pageSize,{
         headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
 
 }

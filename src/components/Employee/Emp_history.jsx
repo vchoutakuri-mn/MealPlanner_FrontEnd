@@ -5,6 +5,8 @@ import Start from './home';
 import MyApp from './Emp_home_new';
 import ReactDOM from 'react-dom';
 import MealDetails from './data/MealDetails';
+import {  InvalidUser } from '../Vender/SendNotificationConfirm';
+import Footer from '../Vender/footer';
 //import EmployeeMealDetails from './EmployeeMealDetails';
 
 
@@ -24,8 +26,9 @@ weekdays[3] = "Tuesday";
 weekdays[4] = "Wednesday";
 weekdays[5] = "Thursday";
 weekdays[6] = "Friday";
-let END="";
-let START="";
+let START_DATE="";
+let END_DATE="";
+let pageNo=1;
 
 const initialState = {
   startDate: null,
@@ -50,6 +53,8 @@ export default function Hist (props) {
   const [doReset,startDoingReset]=useState([])
   const [_, doResetDates] = useReducer((x) => x + 1, 0);
   const [reload, doReload] = useState(false)
+  const [sessionTimeOut,setSessionTimeOut]=useState(false);
+  let [pageSize,setPageSize]=useState(5);
 
     function createRegularDateFormat(t, s) {
       let a = [{month: 'numeric'},{day: 'numeric'},  {year: 'numeric'}];
@@ -68,12 +73,13 @@ export default function Hist (props) {
     }
     return a.map(format).join(s);
  }
- START='';
+ START_DATE='';
   function start(startDate){
     let date = createRegularDateFormat(startDate, '-');
     //console.log('date is start ',date,typeof startDate)
       let dateObj=startDate
-       START=createIrregularDateFormat(startDate, '-');
+       START_DATE=createIrregularDateFormat(startDate, '-');
+       console.log(START_DATE)
       if(date!=null){
         // MealDetails.getHistory(START,START+1).then(
         //   Response=>{
@@ -100,9 +106,9 @@ export default function Hist (props) {
 
 
   function end(endDate){
-    console.log("end date selected")
+    if (process.env.NODE_ENV !== "development")console.log("end date selected")
     let date = createRegularDateFormat(endDate, '-');
-     END=createIrregularDateFormat(endDate, '-');
+    END_DATE=createIrregularDateFormat(endDate, '-');
       if(date!=null){
       // let startDateArray=dateObj.getUTCFullYear()+'-'+ (dateObj.getUTCMonth())  +'-'+ (dateObj.getUTCDate()) 
       // MealDetails.getHistory(START,END).then(
@@ -145,15 +151,17 @@ export default function Hist (props) {
      
   }
 
-  function ShowAllDatesTable(){
-    MealDetails.getHistory(START,END).then(
+  function fetchData(){
+    console.log(START_DATE,END_DATE,pageNo,pageSize)
+    MealDetails.getHistory(START_DATE,END_DATE,pageNo,pageSize).then(
     Response=>{
       DAYLIST=Response.data
-     console.log(Response.data)
+     if (process.env.NODE_ENV !== "development")console.log(Response.data)
      doReload(!reload)
     }
   ).catch(err=>{
     console.error("something went wrong ",err)
+    setSessionTimeOut(true)
   })
  }
 
@@ -231,6 +239,72 @@ function goToHome(){
   function search(){
    
   }
+
+  function selectRowsPerPage(value) {
+    
+    console.log('chaning rows',value)
+    if (DAYLIST.length != 0) {
+      pageSize=value
+      pageNo=1
+      console.log('chaning rows',START_DATE,END_DATE)
+      fetchData()
+     
+  
+    }
+    //console.log(rowsPerPage,'/././.'
+
+  }
+ 
+
+  
+
+
+  function previousPage() {
+    if(pageNo-1>0){
+      pageNo-=1
+      fetchData()
+    }
+    console.log('backword')
+  }
+
+
+
+  function backward() {
+    console.log('previous page')
+    if(pageNo-2>0){
+      pageNo-=2
+      fetchData()
+    }
+    else if(pageNo-1>0){
+      pageNo-=1
+      fetchData()
+    }else{
+
+    }
+  }
+
+  function nextPage() {
+    
+    if(DAYLIST.length!=0){
+      console.log('next page')
+      console.log(pageNo)
+      pageNo=pageNo+1
+      console.log(pageNo)
+      fetchData()
+      
+    }
+
+    doResetDates();
+  }
+
+  function forward() {
+    if(DAYLIST.length!=0){
+      pageNo+=2
+      fetchData()
+
+    }
+    console.log('next page.next page')
+  }
   
   return (
       <>
@@ -265,7 +339,7 @@ function goToHome(){
 
         
       </div>
-      <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={ShowAllDatesTable}
+      <button class="btn btn-primary pull-left" style={{ margin: "5px" }} id="home" data-title="Home" onClick={fetchData}
            
       ><span class="fa fa-file" ></span> Get Details</button>
           <button class="btn btn-primary pull-left" style={{margin:"5px"}} id="home" data-title="Home" onClick={reset}><span class="fa fa-refresh" ></span> Reset</button>
@@ -278,8 +352,9 @@ function goToHome(){
           {/* <button type="submit" onClick={search} class="btn btn-primary pull-left" style={{ marginLeft: '5px', height: "30px", marginTop: '5px' }} data-title="Signout" data-toggle="modal" data-target="#ssignout"><i class="fa fa-search"></i></button> */}
           </div>
     <div >
-
-    <table class="table" id="mealsTable"  style={{border:"1px" , paddingTop: "2px"}} >
+    <div style={{ height:'25%'}}>
+      
+    <table class="table" id="mealsTable"  style={{border:"1px" , paddingTop: "2px" , height:'25%'}} >
     <thead>
       <tr>
         <th>Date</th>
@@ -290,7 +365,7 @@ function goToHome(){
         
       </tr>
     </thead> 
-        <tbody>
+        <tbody  style={{ height: "300px" }}>
           {DAYLIST.length!=0?
           
                 
@@ -309,14 +384,17 @@ function goToHome(){
                     )
                 
                 :<>
-                <p style={{textAlign:'center'}}>No data found</p>
+                <p style={{ width: '10%', marginTop: '10%' ,marginLeft:'45%'}}>No data found</p>
                 </>}
             </tbody>
   </table>
+  </div>
         </div>
         </footer>
         </div>
         </div>
+        <InvalidUser open={sessionTimeOut}  />
+        <Footer selectRowsPerPage={selectRowsPerPage}  backward={backward} previousPage={previousPage} nextPage={nextPage} forward={forward} pageNo={pageNo} />
     </>
   )
 }

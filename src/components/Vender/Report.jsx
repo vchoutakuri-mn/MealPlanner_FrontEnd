@@ -6,6 +6,8 @@ import EmployeeMealDetails from './EmployeeMealDetails';
 import Footer from './footer'
 
 import MealDetails from './data/MealDetails';
+import reactDom from 'react-dom';
+import InternalServerError from '../HomeFolder/ErrorHandler/InternalServerError';
 var firstTime = true;
 var DateArray = []
 var TotalDates = []
@@ -50,14 +52,14 @@ export default function Report(props) {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [reload, doReload] = useState(false)
   const [_, doResetDates] = useReducer((x) => x + 1, 0);
-  let [rowsPerPage, setRowsPerPage] = useState('');
+
   const [openDownloadErrorDialog, setOpenDownloadErrorDialog] = useState(false)
   let [START_DATE, setStartDate] = useState('');
   let [END_DATE, setEndDate] = useState('');
   let [data, setDate] = useState([]);
   let [sessionTimeOut, setSessionTimeOut] = useState(false);
   const [downloadError, raiseDownloadError] = useState(false);
-
+  let [rowsPerPage, setRowsPerPage] = useState('');
   let [pageSize,setPageSize]=useState(5);
 
 
@@ -72,21 +74,7 @@ export default function Report(props) {
 
 
   function start(startDate) {
-
-    let date = createRegularDateFormat(startDate, '-');
     START_DATE = createRegularDateFormat(startDate, '-');
-
-    //fetchData(START_DATE, START_DATE + 1,pageNo,pageSize)
-    let dateObj = startDate
-    // if(date!=null){
-    // if(DateArray[0]==undefined ){
-    //   DateArray.push(date)
-    // } else{
-    //   DateArray[0]=date
-    // }
-    // showTableData(DateArray)
-    // }
-
     return startDate
   }
 
@@ -98,14 +86,23 @@ export default function Report(props) {
   }
   function fetchData(start, end,callback) {
     MealDetails.getMealDates(start, end,pageNo,pageSize).then(Response => {
+      
       console.log("status code ", Response.data)
       REPORTDETAILS = Response.data;
       if(callback!=undefined && callback!=""){
         callback()
       }
     }).catch(err => {
-      console.log("Something went wrong")
-      //setSessionTimeOut(true)
+      if(err.response.status==403){
+        console.log("Something went wrong ",err.response.status)
+        setSessionTimeOut(true)
+      }
+      else if(err.response.status==500){
+        reactDom.render(<InternalServerError/>,document.getElementById("root"))
+      }else{
+
+      }
+      
     })
 
   }
@@ -208,21 +205,9 @@ export default function Report(props) {
     //console.log(rowsPerPage,'/././.'
 
   }
-  function setPaging(totalRows) {
-    if (totalRows <= 10) {
-      rowsPerPage = totalRows
-    } else {
-      rowsPerPage = 10
-    }
-    startPage = 1
-    endPage = 10
-  }
+ 
 
-  function search() {
-    // let searchData = document.getElementById('searchData').value
-
-
-  }
+  
 
 
   function previousPage() {
@@ -328,6 +313,7 @@ function getTableData(){
               </tr>
             </thead>
             <DownloadConfirm open={downloadReport} error={REPORTDETAILS.length} closeWindow={closeDownloadReport} report={REPORTDETAILS} startDate={START_DATE} endDate={END_DATE} type={"vendor"} />
+            
             <tbody style={{ height: "300px" }}>{console.log(REPORTDETAILS, 'last lins')}
 
               {(REPORTDETAILS.length != 0) ?
@@ -350,6 +336,7 @@ function getTableData(){
           </table>
         </div>
         <hr />
+        {console.log(sessionTimeOut)}
         <InvalidUser open={sessionTimeOut} />
 
         <Footer selectRowsPerPage={selectRowsPerPage} rowsPerPage={rowsPerPage} startPage={startPage} data={data} backward={backward} previousPage={previousPage} nextPage={nextPage} forward={forward} pageNo={pageNo} />
