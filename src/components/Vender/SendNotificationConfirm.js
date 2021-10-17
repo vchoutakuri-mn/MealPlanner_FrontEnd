@@ -62,14 +62,14 @@ export default function SimpleDialog(props) {
     var data = JSON.parse('{"date":"' + date + '", "EmployeesIDs":' + JSON.stringify([SelectedEmployees]) + '}');
     MealDetails.submitId(SelectedEmployees).then(response=>{
       if(response.status==200){
-        if (process.env.NODE_ENV !== "development")console.log("Submitted sucessfully ",response.data)
+        if (process.env.NODE_ENV == "development")console.log("Submitted sucessfully ",response.data)
         onClose()
         uncheck(SelectedEmployees)
         releaseEmployee();
       }
     }).catch(err=>
       {
-        if (process.env.NODE_ENV !== "development")console.log("Found error ",err)
+        if (process.env.NODE_ENV == "development")console.log("Found error ",err)
       })
   
 
@@ -241,7 +241,7 @@ function DownloadConfirm(props) {
           csvData = csvData + '\n'
           let data = Response.data;
           if(type!=undefined && type=='vendor'){
-            if (process.env.NODE_ENV !== "development")console.log("Vendor downloading")
+            if (process.env.NODE_ENV == "development")console.log("Vendor downloading")
             name="vendor"
             data.forEach(function (row) {
      
@@ -249,7 +249,7 @@ function DownloadConfirm(props) {
               csvData += "\n";
             });
           }else{
-            if (process.env.NODE_ENV !== "development")console.log("finanace downloading")
+            if (process.env.NODE_ENV == "development")console.log("finanace downloading")
             name="Finanace"
             data.forEach(function (row) {
       
@@ -283,7 +283,7 @@ function DownloadConfirm(props) {
           csvData = csvData + '\n'
           let data = Response.data;
           
-            if (process.env.NODE_ENV !== "development")console.log("finanace downloading")
+            if (process.env.NODE_ENV == "development")console.log("finanace downloading")
             name="Finanace"
             data.forEach(function (row) {
       
@@ -382,7 +382,7 @@ function InvalidUser(props) {
 
 
   function goToHome() {
-    if (process.env.NODE_ENV !== "development")console.log("Going to home page")
+    if (process.env.NODE_ENV == "development")console.log("Going to home page")
     localStorage.clear()
     reactDom.render(<LoginForm />, document.getElementById('root'))
   }

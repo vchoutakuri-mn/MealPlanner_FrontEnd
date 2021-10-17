@@ -34,7 +34,7 @@ let doOpen=false;
   
 
     const handleClickOpen = () => {
-     if (process.env.NODE_ENV !== "development")console.log("This is in handleClickOpen ",EmployeeList)
+     if (process.env.NODE_ENV == "development")console.log("This is in handleClickOpen ",EmployeeList)
       setOpen(true);
     };
   
@@ -57,7 +57,7 @@ let doOpen=false;
           setHomePage('block')
           document.getElementById("viewReport").style.display="none"
           document.getElementById("submitValidation").style.display="none"
-          if (process.env.NODE_ENV !== "development")console.log("This is in viewReport")
+          if (process.env.NODE_ENV == "development")console.log("This is in viewReport")
           setHome(false);
           doSavePrice('none')
           //saving(true)
@@ -74,7 +74,7 @@ let doOpen=false;
     const basicHomePage=()=>{
       document.getElementById("viewReport").style.display="block"
       document.getElementById("submitValidation").style.display="block"
-      if (process.env.NODE_ENV !== "development")console.log("Going to home page")
+      if (process.env.NODE_ENV == "development")console.log("Going to home page")
       setHome(true);
       setPrice('block')
       doSavePrice('none')
@@ -83,7 +83,7 @@ let doOpen=false;
       setMealPriceClicked(false)
     }
     const submitValidation=()=>{
-      if (process.env.NODE_ENV !== "development")console.log("This is in submit validation")
+      if (process.env.NODE_ENV == "development")console.log("This is in submit validation")
       setSubmitValidationEmployee(true);
       
     }
@@ -114,7 +114,7 @@ const signout=()=>{
     saving(true)
     return
   }
-  if (process.env.NODE_ENV !== "development")console.log("Signout")
+  if (process.env.NODE_ENV == "development")console.log("Signout")
   localStorage.removeItem('token')
    localStorage.removeItem('role')
    localStorage.removeItem('validUser')
@@ -182,7 +182,7 @@ function sendNotification(doEnable ,EmployeesList,Employees){
   if(doEnable){
     EmployeeList=EmployeesList
     Users=Employees
-    if (process.env.NODE_ENV !== "development")console.log("In sendNotification",EmployeesList)
+    if (process.env.NODE_ENV == "development")console.log("In sendNotification",EmployeesList)
     //bindEmployee(EmployeesList,Employees)
     ;
   }
