@@ -106,7 +106,7 @@ export default function Hist (props) {
 
 
   function end(endDate){
-    if (process.env.NODE_ENV !== "development")console.log("end date selected")
+    if (process.env.NODE_ENV == "development")console.log("end date selected")
     let date = createRegularDateFormat(endDate, '-');
     END_DATE=createIrregularDateFormat(endDate, '-');
       if(date!=null){
@@ -156,7 +156,7 @@ export default function Hist (props) {
     MealDetails.getHistory(START_DATE,END_DATE,pageNo,pageSize).then(
     Response=>{
       DAYLIST=Response.data
-     if (process.env.NODE_ENV !== "development")console.log(Response.data)
+     if (process.env.NODE_ENV == "development")console.log(Response.data)
      doReload(!reload)
     }
   ).catch(err=>{

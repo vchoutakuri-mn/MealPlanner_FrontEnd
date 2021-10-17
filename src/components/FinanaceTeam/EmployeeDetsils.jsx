@@ -280,10 +280,10 @@ function backward() {
 function nextPage() {
   
   if(REPORTDETAILS.length!=0){
-    if (process.env.NODE_ENV !== "development")console.log('next page')
-    if (process.env.NODE_ENV !== "development")console.log(pageNo)
+    if (process.env.NODE_ENV == "development")console.log('next page')
+    if (process.env.NODE_ENV == "development")console.log(pageNo)
     pageNo=pageNo+1
-    if (process.env.NODE_ENV !== "development")console.log(pageNo)
+    if (process.env.NODE_ENV == "development")console.log(pageNo)
     fetchData(START_DATE,END_DATE,doResetDates)
     
   }
@@ -296,7 +296,7 @@ function forward() {
     pageNo+=2
     fetchData(START_DATE,END_DATE,doResetDates)
   }
-  if (process.env.NODE_ENV !== "development")console.log('next page.next page')
+  if (process.env.NODE_ENV == "development")console.log('next page.next page')
 }
   var number = 0;
   function sno() {
@@ -330,7 +330,7 @@ function forward() {
         <div style={{ float: 'left', marginTop: '5px' }}>
           <DateRangeInput class='dateRangeInput'
             onDatesChange={(data) => {
-              if (process.env.NODE_ENV !== "development")console.log("on Date change")
+              if (process.env.NODE_ENV == "development")console.log("on Date change")
               fetchData(START_DATE, END_DATE)
               dispatch({ type: 'dateChange', payload: data })
             }}

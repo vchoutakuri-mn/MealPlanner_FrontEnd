@@ -12,7 +12,7 @@ function Footer(props){
         <div class=" pull-right">  
 
 <p  class=" pull-left"> Rows Per Page </p>
-{console.log(pageSize,'THis is page size')}
+
 <p class=" pull-right" style={{ float: 'left', marginLeft: '50px',marginRight:'10px' }} >Page {pageNo} 
 <a ><i  class="fa fa-angle-double-left" disabled style={{ marginLeft: '30px' ,marginRight:'10px'}} onClick={backward} aria-hidden="true"></i></a>
 <a> <i class="fa fa-angle-left" aria-hidden="true"style={{ marginLeft: '10px',marginRight:'10px' }} onClick={previousPage} d></i></a>
