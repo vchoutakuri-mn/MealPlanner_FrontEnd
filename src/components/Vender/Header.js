@@ -34,7 +34,7 @@ let doOpen=false;
   
 
     const handleClickOpen = () => {
-     console.log("This is in handleClickOpen ",EmployeeList)
+     if (process.env.NODE_ENV == "development")console.log("This is in handleClickOpen ",EmployeeList)
       setOpen(true);
     };
   
@@ -57,7 +57,7 @@ let doOpen=false;
           setHomePage('block')
           document.getElementById("viewReport").style.display="none"
           document.getElementById("submitValidation").style.display="none"
-          console.log("This is in viewReport")
+          if (process.env.NODE_ENV == "development")console.log("This is in viewReport")
           setHome(false);
           doSavePrice('none')
           //saving(true)
@@ -74,7 +74,7 @@ let doOpen=false;
     const basicHomePage=()=>{
       document.getElementById("viewReport").style.display="block"
       document.getElementById("submitValidation").style.display="block"
-      console.log("Going to home page")
+      if (process.env.NODE_ENV == "development")console.log("Going to home page")
       setHome(true);
       setPrice('block')
       doSavePrice('none')
@@ -83,7 +83,7 @@ let doOpen=false;
       setMealPriceClicked(false)
     }
     const submitValidation=()=>{
-      console.log("This is in submit validation")
+      if (process.env.NODE_ENV == "development")console.log("This is in submit validation")
       setSubmitValidationEmployee(true);
       
     }
@@ -114,7 +114,7 @@ const signout=()=>{
     saving(true)
     return
   }
-  console.log("Signout")
+  if (process.env.NODE_ENV == "development")console.log("Signout")
   localStorage.removeItem('token')
    localStorage.removeItem('role')
    localStorage.removeItem('validUser')
@@ -152,7 +152,7 @@ const closeDownloadReport=()=>{
                         class="btn btn-primary pull-right" style={{margin:"5px",display:save}} data-title="save" data-toggle="modal" data-target="#ssignout"><span class="fa fa-save"></span>Save</button>
                         <button class="btn btn-primary pull-right" style={{margin:"5px",display:submitValidationEmployee}}  id="submitValidation" data-title="submitValidation" data-toggle="modal" onClick={handleClickOpen} data-target="#home" id="submitValidation" ><span class="fa fa-paper-plane"  ></span> Submit</button>
 
-                        <button class="btn btn-primary pull-right" style={{margin:"5px",display:price}} id="setMealPrice" data-title="Home" data-toggle="modal"  data-target="#home" onClick={setMealPrice}><span class="fa fa-inr" ></span> Meal Price</button>
+                        {/* <button class="btn btn-primary pull-right" style={{margin:"5px",display:price}} id="setMealPrice" data-title="Home" data-toggle="modal"  data-target="#home" onClick={setMealPrice}><span class="fa fa-inr" ></span> Meal Price</button> */}
                         <button class="btn btn-primary pull-right" style={{margin:"5px" ,display:veiwReport}} id="viewReport" data-title="Validate" data-toggle="modal" data-target="#validate"  onClick={viewReport}><span class="fa fa-file"></span> View Report</button>
                         <button class="btn btn-primary pull-right" style={{margin:"5px",display:homePage}} id="home" data-title="Home" data-toggle="modal"  data-target="#home" onClick={basicHomePage}><span class="fa fa-fw fa-home" ></span> Home</button>
                         <button class="btn btn-primary pull-right" style={{margin:"5px",display:homePage}} id="home" data-title="Home" data-toggle="modal"  data-target="#home" onClick={downloadVendorReport}><span class="fa fa-fw fa-download" ></span> Download Report </button>
@@ -182,7 +182,7 @@ function sendNotification(doEnable ,EmployeesList,Employees){
   if(doEnable){
     EmployeeList=EmployeesList
     Users=Employees
-    console.log("In sendNotification",EmployeesList)
+    if (process.env.NODE_ENV == "development")console.log("In sendNotification",EmployeesList)
     //bindEmployee(EmployeesList,Employees)
     ;
   }

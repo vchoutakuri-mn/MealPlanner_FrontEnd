@@ -280,10 +280,10 @@ function backward() {
 function nextPage() {
   
   if(REPORTDETAILS.length!=0){
-    console.log('next page')
-    console.log(pageNo)
+    if (process.env.NODE_ENV == "development")console.log('next page')
+    if (process.env.NODE_ENV == "development")console.log(pageNo)
     pageNo=pageNo+1
-    console.log(pageNo)
+    if (process.env.NODE_ENV == "development")console.log(pageNo)
     fetchData(START_DATE,END_DATE,doResetDates)
     
   }
@@ -296,7 +296,7 @@ function forward() {
     pageNo+=2
     fetchData(START_DATE,END_DATE,doResetDates)
   }
-  console.log('next page.next page')
+  if (process.env.NODE_ENV == "development")console.log('next page.next page')
 }
   var number = 0;
   function sno() {
@@ -330,7 +330,7 @@ function forward() {
         <div style={{ float: 'left', marginTop: '5px' }}>
           <DateRangeInput class='dateRangeInput'
             onDatesChange={(data) => {
-              console.log("on Date change")
+              if (process.env.NODE_ENV == "development")console.log("on Date change")
               fetchData(START_DATE, END_DATE)
               dispatch({ type: 'dateChange', payload: data })
             }}
@@ -375,8 +375,8 @@ function forward() {
               </tr>
             </thead>
             <DownloadConfirm open={downloadReport} error={REPORTDETAILS.length} closeWindow={closeDownload} report={REPORTDETAILS} startDate={START_DATE} endDate={END_DATE} />
-            <tbody style={{ height: "300px" }}>{console.log(REPORTDETAILS, 'last lins')}
-            {console.log('html is loading', REPORTDETAILS)}
+            <tbody style={{ height: "300px" }}>
+  
               {(REPORTDETAILS.length != 0) ?
                 (
                   REPORTDETAILS.map(

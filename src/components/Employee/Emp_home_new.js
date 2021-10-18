@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useReducer } from 'react';
+import React, { useState, useReducer } from 'react';
 import Calendar from 'react-calendar';
 import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';
@@ -8,10 +8,10 @@ import './css/empHomecss.css'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Employee from './data/Employee';
-import { SET_TOKEN } from '../Vender/data/Storage';
+
 import MealDetails from './data/MealDetails';
-import { dateSingleInputPhrases } from '@datepicker-react/styled';
-import { Notifications } from '@material-ui/icons';
+
+import {  InvalidUser } from '../Vender/SendNotificationConfirm';
 
 toast.configure();
 
@@ -38,16 +38,13 @@ var selectedDatesList = []
 var TABLE_HIDE = 'none';
 var btn_hide = 'none';
 var datesArray=[];
-var dates = []
+
 var typeOfMeal;
 var subnv = false;
 var subveg = false;
 var enable = false;
 var deleteddates = [];
 var datespulsmealtype = []
-var datesmealtype2d = []
-var duplicate = []
-var empHistData 
 
 
 
@@ -64,6 +61,7 @@ export default function MyApp(props) {
   const[notifdate, setNotifdate] = useState();
   const[msgs,setMsgs] = useState([])
   const [showCalendar, setShowCalendar] = useState(true);
+  const [sessionTimeOut,setSessionTimeOut]=useState(false);
   
 
   function goToEmphist() {
@@ -212,11 +210,11 @@ function subscribed(e){
     //alert("subscribed for "+typeOfMeal+" successfully")
     if (typeOfMeal == 'nonveg') {
       subnv = true
-      console.log("making subnv true")
+      //console.log("making subnv true")
     }
     if (typeOfMeal == 'veg') {
       subveg = true
-      console.log("making subveg true")
+      //console.log("making subveg true")
     }
 
     document.getElementById("subinheader").disabled = true;
@@ -246,29 +244,27 @@ var getDaysArray = function (start, end) {
 
 var index
 function goToDel(e) {
-  console.log("onclickkkkk", e.target.parentNode.id)
+  //console.log("onclickkkkk", e.target.parentNode.id)
   //document.getElementById(e.target.id)
   //console.log(e.target.parentNode.parentNode)
   var a = e.target.parentNode.id
   var getdate = a.slice(0, 10)
-  console.log(getdate)
-  console.log("dates2",dates2)
+  //console.log(getdate)
+  //console.log("dates2",dates2)
   for(var i = 0;i<dates2.length;i++){
     if(getdate == dates2[i][0]){
-      console.log(i)
+      //console.log(i)
       index = i
     }
   }
   //index = dates2.indexOf(getdate)
-  console.log("checking index",getdate,index)
 
-
-  //console.log("deleted delete and index ",getdate,index,dates2)
 
   dates2.splice(index, 1)
   
   
-  console.log("dates after deleting ",dates2)
+
+  if (process.env.NODE_ENV == "development")console.log("dates after deleting production",dates2)
   var i = e.target.parentNode.parentNode.parentNode.rowIndex;
   //document.getElementById("mealsTable").deleteRow(i);
   //e.target.parentNode.parentNode.parentNode.style.display="none"
@@ -296,15 +292,15 @@ function goToDel(e) {
     }
 
     function goToSubs() {
-      console.log("in subs")
+      if (process.env.NODE_ENV == "development")console.log("in subs")
       let pro='vikas'
         Employee.checkMealSubscription().then((Response)=>{
-          console.log(Response.data);
+          if (process.env.NODE_ENV == "development")console.log(Response.data);
           if(Response.data!=null && Response.data!=undefined &&Response.data!=''){
 
     
           meal_subscribed=Response.data
-          console.log("meal_subscribed",meal_subscribed[0][1])
+          if (process.env.NODE_ENV == "development")console.log("meal_subscribed",meal_subscribed[0][1])
           pro='vyshali'
           //console.log("meal_subscribed",meal_subscribed[0][0])
           if (meal_subscribed[0][0] == true) {
@@ -331,7 +327,7 @@ function goToDel(e) {
            
       //goToTable(meal_subscribed[0][1])
           }else{
-            console.log('wrong status....')
+            if (process.env.NODE_ENV == "development")console.log('wrong status....')
           }
        })
     
@@ -357,7 +353,7 @@ function getTodaysDate() {
 var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 var yyyy = today.getFullYear();
-console.log("printing todays date ..",today)
+if (process.env.NODE_ENV == "development")console.log("printing todays date ..",today)
 return today = yyyy + '-' + mm + '-' + dd;
 }
 
@@ -377,19 +373,19 @@ const onChangeDate = date => {
   datesArray=tempDatesArray
   
   var now = getTodaysDate()
-  console.log("todays date",now.toString(),"type",typeof now)
-  console.log("datesArray",datesArray)
+  if (process.env.NODE_ENV == "development")console.log("todays date",now.toString(),"type",typeof now)
+  if (process.env.NODE_ENV == "development")console.log("datesArray",datesArray)
  //var nn = createRegularDateFormat(d.getDate())
  if(datesArray.length!=0 ){
 
  
- console.log("datesArray.includes(['2021-07-10'])",datesArray[0].includes(now))
- console.log(datesArray)
+ if (process.env.NODE_ENV == "development")console.log("datesArray.includes(['2021-07-10'])",datesArray[0].includes(now))
+ if (process.env.NODE_ENV == "development")console.log(datesArray)
   if( datesArray[0].includes(now.toString())){
     datesArray.shift()
     // var inf = datesArray.indexOf(now) 
     // datesArray.splice(inf,1)
-    console.log("after removing",datesArray)
+    if (process.env.NODE_ENV == "development")console.log("after removing",datesArray)
   }
 }
   
@@ -420,21 +416,21 @@ const onChangeDate = date => {
 var selectedmealtype
 
   function goToTable() {
-    console.log("in table",dates2)
-    console.log(dates2)
+    if (process.env.NODE_ENV == "development")console.log("in table",dates2)
+    if (process.env.NODE_ENV == "development")console.log(dates2)
     var currentSelectedDatesList
     document.getElementById("myprofile").style.display = 'none'
     document.getElementById("myFormNotif").style.display = 'none'
     Employee.checkMealSubscription().then((Response)=>{
-      console.log(Response.status);
+      if (process.env.NODE_ENV == "development")console.log(Response.status);
       if(Response.data!='' &&Response.data!=undefined && Response.data.length!=0){
         meal_subscribed=Response.data
       
         selectedmealtype = meal_subscribed[0][1]
         MealDetails.getSelectedDates(empId).then(Response=>{
-          console.log("Fetching the selected mealdates",Response.status);
+          if (process.env.NODE_ENV == "development")console.log("Fetching the selected mealdates",Response.status);
           if(Response.status==200){
-            console.log(Response.data,'from api');
+            if (process.env.NODE_ENV == "development")console.log(Response.data,'from api');
             prevoiusdatesforcancel =Response.data;
             if(!meal_subscribed[0][0]) {
               alert("Please subscribe! ")
@@ -452,7 +448,7 @@ var selectedmealtype
             }
     
             
-        console.log(prevoiusdatesforcancel,'///../',datesArray)
+        if (process.env.NODE_ENV == "development")console.log(prevoiusdatesforcancel,'///../',datesArray)
         selectedDatesList=prevoiusdatesforcancel
         currentSelectedDatesList=datesArray
         for(var previouslySelectedDate=0;previouslySelectedDate<selectedDatesList.length;previouslySelectedDate++){
@@ -476,22 +472,22 @@ var selectedmealtype
         document.getElementById('btn1').style.display = 'none'
         document.getElementById('btn2').style.display = 'none';
         
-        //console.log("meal_subscribed[1][0]",meal_subscribed[1][0])
-        console.log("subveg,selectedmealtypesubnv",selectedmealtype)
+        //if (process.env.NODE_ENV == "development")console.log("meal_subscribed[1][0]",meal_subscribed[1][0])
+        if (process.env.NODE_ENV == "development")console.log("subveg,selectedmealtypesubnv",selectedmealtype)
        // selectedmealtype == true ? subnv = true : subveg = true
-        console.log("subveg,subnv",subveg,subnv)
+        if (process.env.NODE_ENV == "development")console.log("subveg,subnv",subveg,subnv)
     
         if (!selectedmealtype) {
-          console.log("entering into gototable and non veg ")
+          if (process.env.NODE_ENV == "development")console.log("entering into gototable and non veg ")
           document.getElementById('mealsTable').style.display = 'block';
           document.getElementById('btn1').style.display = 'block';
           document.getElementById('subbtn').style.display='block';
           setDates(currentSelectedDatesList)
-          //console.log("type of dates ...",typeof datesArray)
+          //if (process.env.NODE_ENV == "development")console.log("type of dates ...",typeof datesArray)
         }
     
         else  {
-          console.log("entering into gototable and veg section ")
+          if (process.env.NODE_ENV == "development")console.log("entering into gototable and veg section ")
           document.getElementById('mealsTableveg').style.display = 'block';
           document.getElementById('mealsTable').style.display = 'none';
           document.getElementById('btn1').style.display = 'block';
@@ -512,16 +508,17 @@ var selectedmealtype
       }
      
   }).catch(err=>{
-  console.log(JSON.stringify(err))
+  if (process.env.NODE_ENV == "development")console.log(JSON.stringify(err))
+  setSessionTimeOut(true);
   })
   }
 
 
 
 function cancelMeal(e){
-  console.log("this is in cancel meal")
+  if (process.env.NODE_ENV == "development")console.log("this is in cancel meal")
   MealDetails.getSelectedDates().then(Response=>{
-    console.log("Fetching the selected mealdates",Response.data);
+    if (process.env.NODE_ENV == "development")console.log("Fetching the selected mealdates",Response.data);
     if(Response.data == ''){
       toast.error(
         'You have not selected any dates!',
@@ -560,7 +557,7 @@ function cancelMeal(e){
       setShowCalendar(false)
       doReload();
     }
-  }).catch(err=>console.log("Caught error ",err)).finally()
+  }).catch(err=>setSessionTimeOut(true)).finally()
   //meal_date,meal_type
 }
 
@@ -568,9 +565,9 @@ function cancelMeal(e){
 // function cancelMeal(e){
 //   setShowCalendar(false)
 //
-//   console.log("this is in cancel meal")
+//   if (process.env.NODE_ENV == "development")console.log("this is in cancel meal")
 //   MealDetails.getSelectedDates().then(Response=>{
-//     console.log("Fetching the selected mealdates",Response.data);
+//     if (process.env.NODE_ENV == "development")console.log("Fetching the selected mealdates",Response.data);
 //     if(Response.data == ''){
 //             toast.error(
 //               'You have not selected any dates!',
@@ -609,7 +606,7 @@ function cancelMeal(e){
 
 //       doReload();
 //     }
-//   }).catch(err=>console.log("Caught error in 595",err)).finally()
+//   }).catch(err=>if (process.env.NODE_ENV == "development")console.log("Caught error in 595",err)).finally()
 //   //meal_date,meal_type
 
   
@@ -622,10 +619,10 @@ function submitDetails(){
     //if(datesArray.length == datespulsmealtype.length){
       if(selectedmealtype){
         datespulsmealtype = dates2
-        console.log("datespulsmealtype in submission",datespulsmealtype)
+        if (process.env.NODE_ENV == "development")console.log("datespulsmealtype in submission",datespulsmealtype)
       }
     MealDetails.submitMealDetails(datespulsmealtype,empId).then(Response=>{
-      console.log("Response code for updating the mealdates ",Response.status)
+      if (process.env.NODE_ENV == "development")console.log("Response code for updating the mealdates ",Response.status)
       setShowCalendar(true)
     document.getElementById('mealsTable').style.display = 'none'
     document.getElementById('mealsTableveg').style.display = 'none'
@@ -638,7 +635,7 @@ function submitDetails(){
       {autoClose:2000}
       )
     doReload();
-    }).catch(err=>console.log("Caught err ",err))
+    }).catch(err=>setSessionTimeOut(true))
    
   // }
   // else{
@@ -656,7 +653,7 @@ function updateDetails(){
   
     
   MealDetails.updateMealDetails(deleteddates,empId).then(Response=>{
-    console.log("Response code for updating the mealdates ",Response.status)
+    if (process.env.NODE_ENV == "development")console.log("Response code for updating the mealdates ",Response.status)
     setShowCalendar(true)
     document.getElementById('mealsTable').style.display = 'none'
     document.getElementById('mealsTableveg').style.display = 'none'
@@ -671,23 +668,23 @@ function updateDetails(){
         position: toast.POSITION.TOP_CENTER
       }
     )
-  }).catch(err=>console.log("Caught err ",err))
+  }).catch(err=>setSessionTimeOut(true))
 }
 
 
 function cancelSingleMeal(e){
-  console.log("onclickkkkk",e.target.parentNode.id)
+  if (process.env.NODE_ENV == "development")console.log("onclickkkkk",e.target.parentNode.id)
   document.getElementById(e.target.id)
-  console.log(e.target.parentNode.id)
+  if (process.env.NODE_ENV == "development")console.log(e.target.parentNode.id)
   var a =e.target.parentNode.id
   var getdate = a.slice(0,10)
-  console.log(getdate)
+  if (process.env.NODE_ENV == "development")console.log(getdate)
   var canceledmealtype = a.slice(11,)
-  console.log(deleteddates)
+  if (process.env.NODE_ENV == "development")console.log(deleteddates)
   if(!deleteddates.includes([getdate,canceledmealtype])){
     deleteddates.push([getdate,canceledmealtype])
   }
-  console.log(deleteddates)
+  if (process.env.NODE_ENV == "development")console.log(deleteddates)
 
   var index =-1
 
@@ -695,7 +692,7 @@ function cancelSingleMeal(e){
     
     if(prevoiusdatesforcancel[i][0].includes(getdate)){
       index=i;
-      console.log(prevoiusdatesforcancel[i][0],getdate)
+      if (process.env.NODE_ENV == "development")console.log(prevoiusdatesforcancel[i][0],getdate)
       break
     }
     index=-1
@@ -724,7 +721,7 @@ function cancelSingleMeal(e){
  
   function goToNotify(){
     MealDetails.ViewNotifications().then(Response =>{
-      console.log("notifications",Response.data.length)
+      if (process.env.NODE_ENV == "development")console.log("notifications",Response.data.length)
       if(Response.data.length == 0){
         document.getElementById('noNotif').style.display = 'block'
         document.getElementById("myFormNotif").style.display = 'block'
@@ -739,11 +736,11 @@ function cancelSingleMeal(e){
        setNotifdate(notif[i][1].slice(0,10))
        setMsgs(notif)
        //msgs.push(notifmessage,notifdate)
-       console.log(msgs)
+       if (process.env.NODE_ENV == "development")console.log(msgs)
        
        //document.getElementById("myFormNotif").innerHTML = msgs;
       }
-      console.log("after fot loop")
+      if (process.env.NODE_ENV == "development")console.log("after fot loop")
       document.getElementById("myFormNotif").style.display = 'block'
       document.getElementById("myprofile").style.display = "none";
       doReload();
@@ -753,10 +750,10 @@ function cancelSingleMeal(e){
 
   function updatemeal(typeOfMeal) {
     typeOfMeal == "veg"?subveg=true:subnv=true;
-    console.log(subnv,subveg)
+    if (process.env.NODE_ENV == "development")console.log(subnv,subveg)
     MealDetails.updatemealplantype(typeOfMeal).then(Response=>{
-      console.log("Response code for updating the mealdates ",Response.data)
-    }).catch(err=>console.log("Caught err ",err))
+      if (process.env.NODE_ENV == "development")console.log("Response code for updating the mealdates ",Response.data)
+    }).catch(err=>setSessionTimeOut(true))
   }
 
   
@@ -804,12 +801,12 @@ function cancelSingleMeal(e){
               <form class="form-container" style={{ textAlign: "left" }}>
               <h4>Employee Notifications</h4>
               <p id = "noNotif" style={{display:btn_hide}}>No notifications</p>
-              {console.log(msgs)}
+        
               {msgs.map(
                 i => 
                 <p>{i[0]} on {i[1]} </p>
               )}
-                  {console.log(notifmessage,notifdate)}
+           
                   <button type="button" class="btn btn-primary" onClick={closeFormNotif}><i class="fa fa-close"> Close </i></button>
                 </form>
               </div>
@@ -861,7 +858,7 @@ function cancelSingleMeal(e){
             <div style={{ marginLeft: "100px", marginRight: "100px" }} className={showCalendar ? "" : "hide"}>
               <p style={{textAlign:"center"}}>Please select date range from the calendar : </p>
               <Calendar selectRange onChange={onChangeDate} value={date} minDate={tomorrow} id="demo1"  />
-              {console.log(date)}
+             
               {/* {date.toString()}   */}
             <button onClick={goToTable} class="btn btn-primary center " style={{ marginLeft: "35%", marginTop: "5px" }} >Select Dates</button>
        
@@ -884,12 +881,12 @@ function cancelSingleMeal(e){
             </thead>
             
             <tbody>
-            {console.log("near html tbale")}
+
               {
                 
                 dates2.map(eachDay =>
                   <tr >
-                    {console.log(eachDay.length)}
+
                     <th style={{ padding: "10px 20px" }} scope="row" value={eachDay[0]}><p id="datesFromCheckBox">{eachDay[0]}</p></th>
                     <th style={{ padding: "10px 50px" }}>
                       {/* id={eachday} */}
@@ -924,7 +921,6 @@ function cancelSingleMeal(e){
                 <th>Cancel Meal</th>
               </tr>
             </thead>
-            {console.log(prevoiusdatesforcancel.length, "in html")}
             <tbody>
               {
 
@@ -992,6 +988,7 @@ prevoiusdatesforcancel.map(eachDay =>
         </div>
       </div>
       </div>
+      <InvalidUser open={sessionTimeOut}  />
     </>
 
   );

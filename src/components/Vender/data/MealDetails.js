@@ -6,7 +6,7 @@ const DATES_WITH_EMPLOYEE_DETSILS="http://localhost:8080/employee/blogPageable?s
 
 class MealDetails {
     getMealDates(START_DATE,END_DATE,pageNo,pageSize){
-        console.log(MEAL_DETAILS_BETWEEN_DATES+"/"+START_DATE+"/"+END_DATE+"/"+pageNo+"/"+pageSize)
+        if (process.env.NODE_ENV !== "development")console.log(MEAL_DETAILS_BETWEEN_DATES+"/"+START_DATE+"/"+END_DATE+"/"+pageNo+"/"+pageSize)
         return axios.get(MEAL_DETAILS_BETWEEN_DATES+"/"+START_DATE+"/"+END_DATE+"/"+pageNo+"/"+pageSize,{
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }
         });
@@ -33,8 +33,8 @@ class MealDetails {
             searchby:searchBy,
             value:searchData
         }
-        console.log("data ",data)
-        console.log(SEARCH_BY_IN_VENDOR,searchBy)
+        if (process.env.NODE_ENV !== "development")console.log("data ",data)
+        if (process.env.NODE_ENV !== "development")console.log(SEARCH_BY_IN_VENDOR,searchBy)
         return axios.get(SEARCH_BY_IN_VENDOR,
         {
            params:data,

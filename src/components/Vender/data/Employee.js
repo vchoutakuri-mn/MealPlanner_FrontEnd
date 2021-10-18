@@ -8,7 +8,7 @@ const NUMBER_OF_RECORDS="http://localhost:8080/employee/numberOfRecord"
 
 class Employee {
     getUsers(pageNo,pageSize){
-     console.log("At the last ",GET_TOKEN())
+
         const config = {
             headers: { Authorization: `Bearer ${GET_TOKEN()}` }
         };

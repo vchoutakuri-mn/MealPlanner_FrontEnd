@@ -6,7 +6,7 @@ import InternalServerError from '../HomeFolder/ErrorHandler/InternalServerError'
 
 export default function Vender(props){
 const token=GET_TOKEN()
-console.log("Going to vedor", token)
+if (process.env.NODE_ENV == "development")console.log("Going to vedor", token)
 if(token!=="" && token!==undefined){
     SET_TOKEN(token)
     return(<Header />)

@@ -45,9 +45,9 @@ export default function SendValidation(props) {
  
   const handleClose = () => {
     let date=new Date().toJSON().slice(0,10).replace(/-/g,'/');
-    console.log("Employees who took meal today ")
+    if (process.env.NODE_ENV == "development")console.log("Employees who took meal today ")
     var data=JSON.parse('{"date":"'+date+'", "EmployeesIDs":'+JSON.stringify([SelectedEmplopyees])+'}');
-    console.log(data)
+    if (process.env.NODE_ENV == "development")console.log(data)
     uncheck(SelectedEmplopyees)
     onClose()
   };
@@ -121,7 +121,7 @@ export default function SendValidation(props) {
 function bindEmployee(EmployeeList,Employeees){
   // EmployeesList=EmployeeList;
   // EmployeesList.sort();
-  // console.log("In bindEmployee",EmployeesList)
+  // if (process.env.NODE_ENV == "development")console.log("In bindEmployee",EmployeesList)
  return true;
 }
 

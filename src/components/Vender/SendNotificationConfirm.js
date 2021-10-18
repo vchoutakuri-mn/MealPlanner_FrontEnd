@@ -62,14 +62,14 @@ export default function SimpleDialog(props) {
     var data = JSON.parse('{"date":"' + date + '", "EmployeesIDs":' + JSON.stringify([SelectedEmployees]) + '}');
     MealDetails.submitId(SelectedEmployees).then(response=>{
       if(response.status==200){
-        console.log("Submitted sucessfully ",response.data)
+        if (process.env.NODE_ENV == "development")console.log("Submitted sucessfully ",response.data)
         onClose()
         uncheck(SelectedEmployees)
         releaseEmployee();
       }
     }).catch(err=>
       {
-        console.log("Found error ",err)
+        if (process.env.NODE_ENV == "development")console.log("Found error ",err)
       })
   
 
@@ -89,7 +89,7 @@ export default function SimpleDialog(props) {
   if (SelectedEmployees.length == 0 || SelectedEmployees.length == undefined) {
     return (
       <>
-        {console.log(SelectedEmployees, 'submitting')}
+     
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
 
@@ -241,7 +241,7 @@ function DownloadConfirm(props) {
           csvData = csvData + '\n'
           let data = Response.data;
           if(type!=undefined && type=='vendor'){
-            console.log("Vendor downloading")
+            if (process.env.NODE_ENV == "development")console.log("Vendor downloading")
             name="vendor"
             data.forEach(function (row) {
      
@@ -249,7 +249,7 @@ function DownloadConfirm(props) {
               csvData += "\n";
             });
           }else{
-            console.log("finanace downloading")
+            if (process.env.NODE_ENV == "development")console.log("finanace downloading")
             name="Finanace"
             data.forEach(function (row) {
       
@@ -283,7 +283,7 @@ function DownloadConfirm(props) {
           csvData = csvData + '\n'
           let data = Response.data;
           
-            console.log("finanace downloading")
+            if (process.env.NODE_ENV == "development")console.log("finanace downloading")
             name="Finanace"
             data.forEach(function (row) {
       
@@ -376,12 +376,13 @@ function DownloadConfirm(props) {
 
 
 function InvalidUser(props) {
+  console.log("edvsfgb")
   const classes = useStyles();
   let { open } = props;
 
 
   function goToHome() {
-    console.log("Going to home page")
+    if (process.env.NODE_ENV == "development")console.log("Going to home page")
     localStorage.clear()
     reactDom.render(<LoginForm />, document.getElementById('root'))
   }
@@ -400,9 +401,10 @@ function InvalidUser(props) {
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
       <Dialog aria-labelledby="simple-dialog-title" open={open}>
-        <DialogTitle id="simple-dialog-title"><h3 style={{ textAlign: "center" }}>Internal server error</h3></DialogTitle>
+        {console.log('wefrfbg')}
+        <DialogTitle id="simple-dialog-title"><h3 style={{ textAlign: "center" }}>Session time out</h3></DialogTitle>
         <div style={{ marginLeft: '15px' }}>
-          <span style={{ marginLeft: '5px' }}>Please try after some time</span>
+          <span style={{ marginLeft: '5px' }}>Please login</span>
         </div>
         <div>
           <br />

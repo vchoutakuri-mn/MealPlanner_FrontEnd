@@ -87,11 +87,11 @@ export default class EmployeeMealDetails extends React.Component {
             
             this.setState({ users: Response.data })
             Users=this.state.users;
-            console.log(Users)
+            if (process.env.NODE_ENV == "development")console.log(Users)
             
         }).catch(err=>{
-            //console.log("Something went wrong")
-            console.log("Session time out")
+            //if (process.env.NODE_ENV == "development")if (process.env.NODE_ENV == "development")if (process.env.NODE_ENV == "development")console.log("Something went wrong")
+            if (process.env.NODE_ENV == "development")console.log("Session time out")
             this.setState({sessionTimeOut:true})
         });
     }
@@ -174,7 +174,7 @@ o
         } else {
             SelectedEmployees.splice(SelectedEmployees.indexOf(IDs), 1)
         }
-        console.log("Selected Employees", SelectedEmployees)
+        if (process.env.NODE_ENV == "development")console.log("Selected Employees", SelectedEmployees)
     }
     /**
      * Search the employees based on employeeID
@@ -210,7 +210,7 @@ o
         this.state.users=[]
 
         MealDetails.searchBy(this.state.searchBy,searchData).then(Response=>{
-            console.log(Response.data,"???????????")
+            if (process.env.NODE_ENV == "development")console.log(Response.data,"???????????")
       
             this.state.users=Response.data
       
@@ -261,9 +261,9 @@ nextPage(){
         this.setState({saveSubmit:true})
         return
     }
-    console.log(this.state.pageNo)
+    if (process.env.NODE_ENV == "development")console.log(this.state.pageNo)
     if(this.state.users.length==0){
-        console.log(this.state.pageNo)
+        if (process.env.NODE_ENV == "development")console.log(this.state.pageNo)
   
         this.getData(this.state.pageNo,this.state.pageSize); 
         return 
