@@ -308,21 +308,32 @@ function goToHome(){
   
   return (
       <>
-      <div >
+      
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="StyleSheet.css" rel="stylesheet" type="text/css" media="only screen" />
+        <link href="MobileStyleSheet.css" rel="stylesheet" type="text/css" media="only screen and (max-device-width: 480px) , only screen and (-webkit-min-device-pixel-ratio: 2) , screen and (-webkit-device-pixel-ratio:1.5)" />
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js" />
+        <script src="//code.jquery.com/jquery-1.11.1.min.js" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"/>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"/>
     
         <div class="panel panel-default work-progress-table">
-        {/* Default panel contents */}
-       <div class="panel-heading" style={{textAlign:"center"}}>Meal Planer<i style={{textColor:'#f2f2f2'}}>Employee's page</i>
+        <div class="panel-heading" style={{ textAlign: "center", fontSize: "30px", height: '10%' }}>MEAL PLANNER
+        <div>
+          <button onClick={goToHome}  class ="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}}  ><i class="fa fa-arrow-left"> Back</i></button> 
+          </div>
       </div>
-       
-        <footer class="col-md-12 text-right">
-        <button onClick={goToStart}  class ="btn btn-primary pull-right " style={{marginTop:"-50px",marginRight:"188px"}} >Home</button>    
-        <button onClick={goToHome}  class ="btn btn-primary pull-right" style={{marginTop:"-50px",marginRight:"110px"}} >Back</button> 
-        
         
       <div id='reportPage' >
       <p style={{marginRight:"800px"}}>Please select start date and end date to view your history</p>
@@ -359,7 +370,6 @@ function goToHome(){
       <tr>
         <th>Date</th>
         <th>Day</th>
-        
         <th>Meal Status</th>
         <th>Veg/Non-veg</th>
         
@@ -373,13 +383,12 @@ function goToHome(){
                     eachDay=>
                 <tr>
                     <th scope="row">{eachDay[0].slice(0, 10)}</th>
-
-                    <td>{weekdays[new Date(eachDay[0]).getDay()]}</td>
+                   
+                    <td >{weekdays[new Date(eachDay[0]).getDay()]}</td>
                     <td >{eachDay[1]==true?<span class="label label-success">Taken</span>:<span class="label label-danger">Skipped</span>}</td>
                     <td>{eachDay[2]==true?"veg":"non-veg"}</td>
                     
                    
-                    <td><span class="label label-info">{eachDay[5]}</span></td>
                 </tr>
                     )
                 
@@ -390,9 +399,9 @@ function goToHome(){
   </table>
   </div>
         </div>
-        </footer>
+        
         </div>
-        </div>
+     
         <InvalidUser open={sessionTimeOut}  />
         <Footer selectRowsPerPage={selectRowsPerPage}  backward={backward} previousPage={previousPage} nextPage={nextPage} forward={forward} pageNo={pageNo} />
     </>
