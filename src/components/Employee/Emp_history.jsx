@@ -329,10 +329,10 @@ function goToHome(){
         <script src="//code.jquery.com/jquery-1.11.1.min.js"/>
     
         <div class="panel panel-default work-progress-table">
-        {/* Default panel contents */}
-        <div class="panel-heading" style={{textAlign:"center", fontSize:"30px",width:"100%"}}>MEAL PLANNER
-          <button onClick={goToHome}  class ="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}}  ><i class="fa fa-arrow-left">Back</i></button> 
-       
+        <div class="panel-heading" style={{ textAlign: "center", fontSize: "30px", height: '10%' }}>MEAL PLANNER
+        <div>
+          <button onClick={goToHome}  class ="btn btn-primary pull-right" style={{marginLeft:'3px',marginRight:"3px"}}  ><i class="fa fa-arrow-left"> Back</i></button> 
+          </div>
       </div>
         
       <div id='reportPage' >
@@ -370,7 +370,6 @@ function goToHome(){
       <tr>
         <th>Date</th>
         <th>Day</th>
-        
         <th>Meal Status</th>
         <th>Veg/Non-veg</th>
         
@@ -384,13 +383,12 @@ function goToHome(){
                     eachDay=>
                 <tr>
                     <th scope="row">{eachDay[0].slice(0, 10)}</th>
-
-                    <td>{weekdays[new Date(eachDay[0]).getDay()]}</td>
+                   
+                    <td >{weekdays[new Date(eachDay[0]).getDay()]}</td>
                     <td >{eachDay[1]==true?<span class="label label-success">Taken</span>:<span class="label label-danger">Skipped</span>}</td>
                     <td>{eachDay[2]==true?"veg":"non-veg"}</td>
                     
                    
-                    <td><span class="label label-info">{eachDay[5]}</span></td>
                 </tr>
                     )
                 
