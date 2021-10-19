@@ -35,7 +35,7 @@ class MealDetails {
         }
         if (process.env.NODE_ENV !== "development")console.log("data ",data)
         if (process.env.NODE_ENV !== "development")console.log(SEARCH_BY_IN_VENDOR,searchBy)
-        return axios.get(SEARCH_BY_IN_VENDOR,
+        return axios.get(SEARCH_BY_IN_VENDOR+'/1/5',
         {
            params:data,
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }

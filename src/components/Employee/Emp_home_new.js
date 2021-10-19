@@ -311,7 +311,13 @@ function goToDel(e) {
           if (meal_subscribed[0][0] == true) {
               document.getElementById("myprofile").style.display = "none";
               document.getElementById("myFormNotif").style.display = "none";
-              alert("subscribed")   
+              toast.info(
+                "Subscribed!",
+                {
+                  autoClose: 1500,
+                  position: toast.POSITION.TOP_CENTER
+                }
+              )
               return
             }
             else{
