@@ -438,7 +438,13 @@ var selectedmealtype
             console.log(Response.data,'from api');
             prevoiusdatesforcancel =Response.data;
             if(!meal_subscribed[0][0]) {
-              alert("Please subscribe! ")
+              toast.error(
+                "Please Subscribe!",
+                {
+                  autoClose: 2000,
+                  position: toast.POSITION.TOP_CENTER
+                }
+              )
               return
               
             }
@@ -527,7 +533,7 @@ function cancelMeal(e){
       toast.error(
         'You have not selected any dates!',
         {
-          autoClose: false,
+          autoClose: 2000,
           position: toast.POSITION.TOP_CENTER
         }
       )
@@ -780,7 +786,6 @@ function cancelSingleMeal(e){
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <div class="panel panel-default work-progress-table">
-          {/* Default panel contents */}
           <div class="panel-heading" style={{ textAlign: "center", fontSize: "30px", height: '10%' }}>MEAL PLANNER
 
             <div>

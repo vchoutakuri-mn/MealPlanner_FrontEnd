@@ -26,14 +26,14 @@ class MealDetails {
     // getSelectedMealDates(empID){
     //     return axios.get(EMPLOYEE_SELECTED_MEAL_DATES+"/"+empID,{
     //         headers: 
-    //         { Authorization: `Bearer ${GET_TOKEN()}` }
+    //         { Authorization: `Bearer ${localStorage.getItem('token')}` }
     //     });
     // }
     
     // checkMealSubscription(){
     //     return axios.get(MEAL_SUBSCRIPTION, {
     //         headers: 
-    //         { Authorization: `Bearer ${GET_TOKEN()}` }
+    //         { Authorization: `Bearer ${localStorage.getItem('token')}` }
     //     });
         
     // }
@@ -41,7 +41,7 @@ class MealDetails {
 
     getMealDates(start, end){
         return axios.get(EMPLOYEE_HISTORY, {
-                headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
     }
     
@@ -49,21 +49,21 @@ class MealDetails {
   
         return axios.get(EXISTDATES,{
             headers: 
-            { Authorization: `Bearer ${GET_TOKEN()}` }
+            { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
     }
 
     getSelectedMealDates(empID){
         return axios.get(EMPLOYEE_SELECTED_MEAL_DATES+"/"+empID,{
             headers: 
-            { Authorization: `Bearer ${GET_TOKEN()}` }
+            { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
     }
     
     checkMealSubscription(){
         return axios.get(MEAL_SUBSCRIPTION, {
             headers: 
-            { Authorization: `Bearer ${GET_TOKEN()}` }
+            { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         
     }
@@ -82,7 +82,7 @@ class MealDetails {
         // })
         // console.log(data)
         // return axios.delete(EMPLOYEE_UPDATED_MEAL_DATES+'/'+data,{
-        //     headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+        //     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         // })
         var data=[]
         updatedDatesList.map(eachDay=>{
@@ -106,7 +106,7 @@ class MealDetails {
          console.log(data)
          return axios.delete(EMPLOYEE_CANCEL_MEAL_DATES,{
             headers: 
-            { Authorization: `Bearer ${GET_TOKEN()}` },data})
+            { Authorization: `Bearer ${localStorage.getItem('token')}` },data})
          }
 
     createRegularDateFormat(arr1) {
@@ -161,21 +161,21 @@ class MealDetails {
         })
         //console.log("selected dates",dates2)
         console.log("data in submitmealdetails  ",data1)
-        console.log("TOKEN",GET_TOKEN())
+        console.log("TOKEN",localStorage.getItem('token'))
         
         return axios.post(EMPLOYEE_SELECTED_MEAL_DATES,data1,{
-            headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }})
 }
 
 getHistory(startDate,endDate,pageNo,pageSize){
     return axios.get(HISTORY+startDate+'/'+endDate+'/'+pageNo+'/'+pageSize,{
-        headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }})
 
 }
 
 ViewNotifications(){
     return axios.get(EMPLOYEE_NOTIFICATIONS,{
-        headers: { Authorization: `Bearer ${GET_TOKEN()}` }})
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }})
 
 }
 
@@ -183,6 +183,6 @@ updatemealplantype(mealtype){
     console.log(mealtype)
     mealtype = mealtype.includes('nonveg')?false:true 
     return axios.put(UPDATE_MEAL_TYPE+"/"+mealtype,{},{
-        headers: { Authorization: `Bearer ${GET_TOKEN()}`}})
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}})
     }}
 export default new MealDetails();

@@ -3,14 +3,14 @@ import { USERS_REST_API_URL } from "../../API's/CommonService";
 import { GET_TOKEN } from "./Storage";
 // const USERS_REST_API_URL="https://api.github.com/users";
 
-const SUBMIT_REST_API_URL="http://localhost:8080/employee//employees/"
+const SUBMIT_REST_API_URL="http://localhost:8080/employee/employees/"
 const NUMBER_OF_RECORDS="http://localhost:8080/employee/numberOfRecord"
 
 class Employee {
     getUsers(pageNo,pageSize){
-
+     console.log("At the last ",localStorage.getItem('token'))
         const config = {
-            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         };
         return axios.get(USERS_REST_API_URL+"/"+pageNo+"/"+pageSize,config);
     }

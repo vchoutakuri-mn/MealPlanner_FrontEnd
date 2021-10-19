@@ -54,6 +54,7 @@ export default class EmployeeMealDetails extends React.Component {
         this.checkList=this.checkList.bind(this);
         this.reload=this.reload.bind(this);
         this.onSaveClose=this.onSaveClose.bind(this);
+        this.timeOut=this.timeOut.bind(this);
     }
     /**
      * Get the data from an api and store in the state vairable 'users'
@@ -217,6 +218,7 @@ o
             this.setState({ShowUsers:[0]})
           }).catch(er=>{
             console.error("something went wrong while calling an api.Error ",er)
+            this.setState({sessionTimeOut:true})
           })
     }
 
@@ -310,6 +312,9 @@ onClose(){
 onSaveClose(){
     this.setState({saveSubmit:false})
 }
+timeOut(){
+    this.setState({sessionTimeOut:true})
+}
 
     render() {
         ////console.log("This is in body page")
@@ -378,7 +383,7 @@ onSaveClose(){
                 </div>
                 
                 <Footer selectRowsPerPage={this.selectRowsPerPage} rowsPerPage={10} pageNo={this.state.pageNo} noOfRecords={this.state.totalNoOfRecords} backward={this.backward} previousPage={this.previousPage} nextPage={this.nextPage} forward={this.forward} pageSize={this.state.pageSize}/>
-                <SimpleDialog open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} Users={Users} doSave={this.props.doSave} />
+                <SimpleDialog open={this.props.open} onClose={this.props.onClose} SelectedEmployees={SelectedEmployees} Users={Users} doSave={this.props.doSave} timeOut={this.timeOut} />
                 <SaveSubmit doSave={this.state.saveSubmit} onSaveClose={this.onSaveClose}/>
                 <InvalidUser open={this.state.sessionTimeOut}  />
 

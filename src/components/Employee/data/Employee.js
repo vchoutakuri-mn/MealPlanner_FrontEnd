@@ -19,6 +19,9 @@ class Employee {
     }
     createAccount(userType,userId,password,userName,userEmail,mealSubscribed){
         console.log("Type of user",userType);
+        // var d = []
+        // d.push(userId,userType,password)
+        // con
         return axios.post(SIGNUP,
             {
                 id:userId,
@@ -32,7 +35,7 @@ class Employee {
     }
     checkMealSubscription(){
         const config = {
-            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         };
         console.log(MEAL_SUBSCRIPTION)
         return axios.get(MEAL_SUBSCRIPTION,config);

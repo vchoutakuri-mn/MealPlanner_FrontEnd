@@ -8,7 +8,7 @@ class MealDetails {
     getMealDates(START_DATE,END_DATE,pageNo,pageSize){
         if (process.env.NODE_ENV !== "development")console.log(MEAL_DETAILS_BETWEEN_DATES+"/"+START_DATE+"/"+END_DATE+"/"+pageNo+"/"+pageSize)
         return axios.get(MEAL_DETAILS_BETWEEN_DATES+"/"+START_DATE+"/"+END_DATE+"/"+pageNo+"/"+pageSize,{
-            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
     }
 
@@ -23,7 +23,7 @@ class MealDetails {
         
         {
            
-            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
     }
 
@@ -38,14 +38,14 @@ class MealDetails {
         return axios.get(SEARCH_BY_IN_VENDOR,
         {
            params:data,
-            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
     }
     downloadData(start,end){
         return axios.get(DOWNLOAD_API+start+'/'+end,
         {
 
-            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
     }
 
@@ -53,7 +53,7 @@ class MealDetails {
         return axios.get(DOWNLOAD_API_FOR_FINANCER+start+'/'+end,
         {
 
-            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
     }
 }

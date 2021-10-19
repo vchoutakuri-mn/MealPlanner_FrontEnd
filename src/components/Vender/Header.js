@@ -143,7 +143,7 @@ const closeDownloadReport=()=>{
                 
                     <div class="panel panel-default work-progress-table">
                             {/* Default panel contents */}
-                        <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER<i style={{textColor:'#f2f2f2'}}>Vender's Page &  (vendor@gmail.com)</i>
+                        <div class="panel-heading" style={{textAlign:"center", fontSize:"30px"}}>MEAL PLANNER<i style={{textColor:'#f2f2f2'}}></i>
 
                         <button 
                         class="btn btn-primary pull-right" style={{margin:"5px"}} data-title="Signout" data-toggle="modal" data-target="#ssignout"  onClick={signout}><span class="fa fa-sign-out"></span>Signout</button>
