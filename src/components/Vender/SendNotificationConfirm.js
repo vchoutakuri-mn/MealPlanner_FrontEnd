@@ -196,9 +196,11 @@ function SaveSubmit(props) {
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
       <Dialog onClose={closeWindow} aria-labelledby="simple-dialog-title" open={doSave}>
-        <DialogTitle id="simple-dialog-title"><h3 style={{ textAlign: "center" }}>Please submit validation</h3></DialogTitle>
+        <DialogTitle id="simple-dialog-title"><h3 style={{ textAlign: "center" }}>Please submit</h3></DialogTitle>
         <div style={{ marginLeft: '15px' }}>
           <span style={{ marginLeft: '5px' }}>The changes you made will be lost if you won't submit</span>
+          &nbsp;
+          &nbsp;
         </div>
         <div>
           <br />
