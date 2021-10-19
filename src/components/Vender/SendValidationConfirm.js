@@ -129,4 +129,53 @@ function bindEmployee(EmployeeList,Employeees){
 function updateOpen(){
  // open=true
 }
-export { bindEmployee ,updateOpen}
+
+
+function InvalidUsers(props) {
+  console.log("edvsfgb")
+  const classes = useStyles();
+  let { open } = props;
+
+
+  function goToHome() {
+    if (process.env.NODE_ENV == "development")console.log("Going to home page")
+    localStorage.clear()
+    reactDom.render(<LoginForm />, document.getElementById('root'))
+  }
+
+  const goBack = () => {
+    goToHome()
+  }
+
+  //For confirmation whether the list of SelectedEmployees contains any ids or not
+
+  return (
+    <>
+
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+      <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+      <Dialog aria-labelledby="simple-dialog-title" open={open}>
+        {console.log('wefrfbg')}
+        <DialogTitle id="simple-dialog-title"><h3 style={{ textAlign: "center" }}>Session time out</h3></DialogTitle>
+        <div style={{ marginLeft: '15px' }}>
+          <span style={{ marginLeft: '5px' }}>Please login</span>
+        </div>
+        <div>
+          <br />
+          <div>
+            <button onClick={goBack}
+              style={{ marginBottom: '5px', marginRight: '5px' }}
+              class="btn btn-primary pull-right"
+              data-title="Back" data-toggle="modal"
+              data-target="#validate" > Close</button>
+          </div>
+        </div>
+      </Dialog>
+    </>
+  );
+
+}
+
+export { bindEmployee ,updateOpen ,InvalidUsers}

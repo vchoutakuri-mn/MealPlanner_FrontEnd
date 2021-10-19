@@ -22,6 +22,7 @@ import reactDom from 'react-dom';
 import LoginForm from '../Employee/loginForm';
 import MealDetails from './data/MealDetails';
 
+
 var weekdays = new Array(7);
 weekdays[0] = "Saturday";
 weekdays[1] = "Sunday";
@@ -54,7 +55,8 @@ var EmployeesList = []
 
 export default function SimpleDialog(props) {
   const classes = useStyles();
-  let { open, onClose, SelectedEmployees, Users } = props;
+  let { open, onClose, SelectedEmployees, Users ,timeOut } = props;
+  const [sessionTimeOut,setSessionTimeOut]=useState(false)
 
   const submitIds = () => {
     let date = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
@@ -69,6 +71,13 @@ export default function SimpleDialog(props) {
       }
     }).catch(err=>
       {
+        if(err.response.status == 403){
+         
+          timeOut()
+          console.log("session time out......",sessionTimeOut)
+          onClose()
+        }
+        
         if (process.env.NODE_ENV == "development")console.log("Found error ",err)
       })
   
@@ -107,6 +116,7 @@ export default function SimpleDialog(props) {
             </div>
           </div>
         </Dialog>
+        <InvalidUser open={sessionTimeOut}  />
       </>
     );
   } else {
@@ -354,7 +364,9 @@ function DownloadConfirm(props) {
         <Dialog onClose={closeWindow} aria-labelledby="simple-dialog-title" open={open}>
           <DialogTitle id="simple-dialog-title"><h3 style={{ textAlign: "center" }}>Download Error<i class="fa fa-exclamation-triangle" style={{ color: 'red' }}></i></h3></DialogTitle>
           <div style={{ marginLeft: '15px' }}>
-            <span style={{ marginLeft: '5px' }}>Please select the dates to download report</span>
+            <span style={{ marginLeft: '5px' }}>Please select the dates to download report </span>
+            &nbsp;
+            &nbsp;
           </div>
           <div>
             <br />

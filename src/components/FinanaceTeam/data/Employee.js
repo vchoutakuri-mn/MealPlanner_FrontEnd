@@ -18,7 +18,7 @@ class Employee {
         return axios.get(DOWNLOAD_API_FOR+start+'/'+end,
         {
 
-            headers: { Authorization: `Bearer ${GET_TOKEN()}` }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
     }
 }
