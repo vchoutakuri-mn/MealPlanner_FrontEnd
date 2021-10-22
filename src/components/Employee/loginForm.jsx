@@ -331,7 +331,7 @@ if (process.env.NODE_ENV == "development")console.log(currentSelectedDatesList[0
                                         <form>
                                             <label style={{ marginTop: "1%", fontSize: "14px", marginLeft: "25%" }}>Login</label>
                                             <select name="logs" id="log" style={{ marginTop: "1%", width: "150px", marginLeft: "21%",height:"1%", textAlign: 'center'}} class = "btn btn-primary" onChange={setTypeOfUser} >
-                                                <option value="employee" >Employee...</option>
+                                                <option value="employee" >Employee</option>
                                                 <option value="vendor" >Vendor</option>
                                                 <option value="financier">Finance</option>
                                             </select><br></br>
